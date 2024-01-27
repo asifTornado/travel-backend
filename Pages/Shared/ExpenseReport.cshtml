@@ -1,0 +1,181 @@
+@using backEnd.Models;
+
+@model ExpenseReport;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Travel Expense Report</title>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Travel Expense Report</h1>
+
+        <div>
+           <table class="table table-bordered mt-4">
+              <tbody>
+                <tr>
+                    <th>
+                        Employee Name:
+                    </th>
+                    <td>
+                       @Model.EmployeeName
+                    </td>
+                    <th>
+                        Employee Id
+                    </th>
+                    <td>
+                        @Model.EmployeeId
+                    </td>
+                    <th>
+                        Department
+                    </th>
+                    <td>
+                        @Model.Department
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>
+                        Travel Period
+                    </th>
+                    <td>
+                        Start Date:
+                    </td>
+                    <td>
+                        @Model.StartDate
+                    </td>
+                    <td>
+                        End Date:
+                    </td>
+                    <td>
+                        @Model.EndDate
+                    </td>
+                </tr>
+              </tbody>
+           </table>
+        </div>
+
+
+        <div>
+            <table class="table table-bordered mt-4">
+                 <thead>
+                    <th>
+                        <th></th>
+                    </tr>
+                 </thead>
+            </table>
+        </div>
+
+        <table class="table table-bordered mt-4">
+            <thead>
+                    <th>Date</th>
+                    <th>Expense Type</th>
+                    <th>Description</th>
+                    <th>Amount(USD)</th>
+                    <th>Notes</th>
+            </thead>
+            <tbody>
+                @foreach (var expense in Model.Expenses)
+                {
+                    <tr>
+                        <td>
+                            @expense.Date
+                        </td>
+                        <td>
+                            @expense.ExpenseType
+                        </td>
+                        <td>
+                            @expense.Description
+                        </td>
+                        <td>
+                            @expense.Amount
+                        </td>
+                        <td>
+                            @expense.Notes
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                  Approval
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                   Name:
+            </div>
+                 <div class="col-md-3">
+                   
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="col-md-3">
+                   Date:
+            </div>
+                 <div class="col-md-3">
+                   
+            </div>
+        </div>
+ 
+    </div>
+
+
+     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                 Reimbursement Processed
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                   Date:
+            </div>
+                 <div class="col-md-3">
+                   
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="col-md-3">
+                   Amount:
+            </div>
+                 <div class="col-md-3">
+                   
+            </div>
+        </div>
+ 
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+             <div class="col-md-6">
+                  Approved By Accounts:
+             </div>
+        </div>
+
+        <div class="row">
+             <div class="col-md-3">
+                  Date:
+             </div>
+             <div class="col-md-3">
+
+             </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JavaScript (optional) -->
+   
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
