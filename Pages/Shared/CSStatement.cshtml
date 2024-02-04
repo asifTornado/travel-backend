@@ -382,15 +382,15 @@
         </div>
         <div class="row">
           <div class="col-md-2">Total Daily Allowance</div>
-          <div class="col-md-10">@Model.Request.Budget.TotalDailyAllowance</div>
+          <div class="col-md-10">@Model.Request.RequestBudget.TotalDailyAllowance</div>
         </div>
         <div class="row">
           <div class="col-md-2">Total Budget</div>
-          <div class="col-md-10">@Model.Request.Budget.TotalBudget</div>
+          <div class="col-md-10">@Model.Request.RequestBudget.TotalBudget</div>
         </div>
         <div class="row">
           <div class="col-md-2">Notes</div>
-          <div class="col-md-10">@Model.Request.Budget.Notes</div>
+          <div class="col-md-10">@Model.Request.RequestBudget.Notes</div>
         </div>
         <div class="row border">
           <div class="col-md-12 text-center font-weight-bold h6">Budget Breakdown</div>
@@ -401,7 +401,7 @@
           <div class="col">Cost</div>
           <div class="col">Total</div>
         </div>
-        @foreach(var breakdown in Model.Request.Budget.Breakdown){
+        @foreach(var breakdown in Model.Request.RequestBudget.Breakdown){
             <div class="row">
           <div class="col-md-3">@breakdown.Item</div>
           <div class="col-md-3">@breakdown.Quantity</div>

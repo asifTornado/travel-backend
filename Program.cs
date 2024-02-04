@@ -24,7 +24,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });;
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
@@ -34,6 +34,7 @@ builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAgentsService, AgentsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IReportGenerator, ReportGenerator>();
+builder.Services.AddScoped<IIDCheckService, IDCheckService>();
 
 builder.Services.AddScoped<BudgetsService>();
 builder.Services.AddScoped<ICounterService, CounterService>();

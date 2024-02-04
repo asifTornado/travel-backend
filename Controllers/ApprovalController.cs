@@ -69,13 +69,17 @@ public class ApprovalController : ControllerBase
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
+    private IIDCheckService _idCheckService;
+
 
 
 
    
 
 
-    public ApprovalController(TripService tripService,   BudgetsService budgetsService, 
+    public ApprovalController(
+    IIDCheckService iDCheckService,
+    TripService tripService,   BudgetsService budgetsService, 
     ILogService logService, IQuotationService quotationService, 
     TravelContext travelContext, IHelperClass helperClass, 
     IFileHandler fileHandler, IUsersService usersService, 
@@ -97,13 +101,15 @@ public class ApprovalController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = iDCheckService;
     }
 
 
     [HttpPost]
     [Route("/getUnapprovedRequests")]
     public async Task<IActionResult> GetUnapprovedRequests(IFormCollection data){
-        var result = await _requestService.GetUnapprovedRequests();
+        var id = int.Parse(data["id"]);
+        var result = await _requestService.GetUnapprovedRequests(id);
         return Ok(result);
     }
 
@@ -124,13 +130,20 @@ public class ApprovalController : ControllerBase
     [HttpPost]
     [Route("/permanentlyReject")]
     public async Task<IActionResult> PermanentlyReject(IFormCollection data){
+        var token = data["token"];
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        
+        var allowed = _idCheckService.CheckSupervisor(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
+
         request.PermanentlyRejected = true;
         request.Status = "Request Permanently Rejected By Supervisor";
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been permanently rejected by your supervisor";
         _notifier.InsertNotification(message, request.Requester?.SuperVisorId, request.RequesterId, request.Id, Events.PermanentlyRejected);
-        var token = _jwtTokenConverter.GenerateToken(request.Requester!);
+        token = _jwtTokenConverter.GenerateToken(request.Requester!);
         _mailer.PermanentlyRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.RequesterId, Events.PermanentlyRejected);
         return Ok(request);
@@ -140,12 +153,17 @@ public class ApprovalController : ControllerBase
     [Route("/reject")]
     public async Task<IActionResult> Reject(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        var token = data["token"];
+        var allowed = _idCheckService.CheckSupervisor(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         request.Status = "Seeking Trip Details Rectification";
         request.CurrentHandlerId = request.RequesterId;
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been rejected";
         _notifier.InsertNotification(message, request.Requester.SuperVisorId, request.RequesterId, request.Id, Events.TripRejected);
-        var token = _jwtTokenConverter.GenerateToken(request.Requester);
+        token = _jwtTokenConverter.GenerateToken(request.Requester);
         _mailer.SeekRectification(request, token);
         _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.RequesterId, Events.TripRejected);
         return Ok(request);
@@ -156,6 +174,11 @@ public class ApprovalController : ControllerBase
     [Route("/approve")]
     public async Task<IActionResult> Approve(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        var token = data["token"];
+        var allowed = _idCheckService.CheckSupervisor(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         if(request.Custom == true){
         request.Status = "Seeking Departmenat Head's Approval";
         request.CurrentHandlerId = request.Requester.ZonalHeadId;
@@ -168,7 +191,7 @@ public class ApprovalController : ControllerBase
         await _requestService.UpdateRequestForApproval(request);
        
         var message2 = $"The trip numbered {request.BudgetId} for the traveler {request.Requester.EmpName} has been approved by his/her supervisor";
-            var token = _jwtTokenConverter.GenerateToken(request.Requester);
+        token = _jwtTokenConverter.GenerateToken(request.Requester);
 
         if(request.Custom == false){
         var message = $"Your trip numbered {request.BudgetId} has been approved by your supervisor";
@@ -187,10 +210,15 @@ public class ApprovalController : ControllerBase
     [Route("/giveInfo")]
     public async Task<IActionResult> GiveInfo(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        var token = data["token"];
+        var allowed = _idCheckService.CheckTraveler(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         request.Status = "Seeking Supervisor Approval For Trip";
         var message = $"{request.Requester.EmpName} is seeking approval for a new trip";
         _notifier.InsertNotification(message, request.Requester.Id, request.Requester.SuperVisorId, request.Id, Events.SupervisorApprovalTrip);
-        var token = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
+        token = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
         _mailer.SeekSupervisorApprovalTrip(request, token);
         request.CurrentHandlerId = request.Requester.SuperVisorId;
         await _requestService.UpdateRequestForApproval(request);
@@ -204,12 +232,17 @@ public class ApprovalController : ControllerBase
     [Route("/departmentHeadPermanentlyReject")]
     public async Task<IActionResult> DepartmentHeadPermanentlyReject(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        var token = data["token"];
+        var allowed = _idCheckService.CheckDepartmentHead(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         request.PermanentlyRejected = true;
         request.Status = "Request Permanently Rejected By Department Head";
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been permanently rejected by your department head";
         _notifier.InsertNotification(message, request.Requester?.ZonalHeadId, request.RequesterId, request.Id, Events.DepartmentHeadPermanentlyReject);
-        var token = _jwtTokenConverter.GenerateToken(request.Requester!);
+         token = _jwtTokenConverter.GenerateToken(request.Requester!);
         _mailer.DepartmentHeadPermanentlyRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.ZonalHeadId, request.RequesterId, Events.DepartmentHeadPermanentlyReject);
         return Ok(request);
@@ -219,13 +252,18 @@ public class ApprovalController : ControllerBase
     [Route("/departmentHeadReject")]
     public async Task<IActionResult> DepartmentHeadReject(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+          var token = data["token"];
+        var allowed = _idCheckService.CheckDepartmentHead(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         request.Status = "Seeking Trip Details Rectification";
         request.CurrentHandlerId = request.RequesterId;
         request.SupervisorApproved = false;
         await _requestService.UpdateRequestForApproval(request);
         var message = $"The trip numbered {request.BudgetId} that you approved has been rejected by your department head";
         _notifier.InsertNotification(message, request.Requester.ZonalHeadId, request.Requester.SuperVisorId, request.Id, Events.DepartmentHeadReject);
-        var token = _jwtTokenConverter.GenerateToken(request.Requester);
+        token = _jwtTokenConverter.GenerateToken(request.Requester);
         _mailer.DepartmentHeadRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.ZonalHeadId, request.Requester.SuperVisorId, Events.DepartmentHeadReject);
         return Ok(request);
@@ -238,6 +276,11 @@ public class ApprovalController : ControllerBase
     [Route("/departmentHeadApprove")]
     public async Task<IActionResult> DepartmentHeadApprove(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
+          var token = data["token"];
+        var allowed = _idCheckService.CheckDepartmentHead(request, token);
+        if(allowed != true){
+            return Ok(false);
+        }
         request.Status = "Seeking Quotations";
         request.CurrentHandlerId = null;
         request.SupervisorApproved = true;
@@ -247,7 +290,7 @@ public class ApprovalController : ControllerBase
         var message = $"Your trip numbered {request.BudgetId} has been approved by your department head";
         _notifier.InsertNotification(message, request.Requester.ZonalHeadId, request.RequesterId, request.Id, Events.DepartmentHeadApprove);
         var message2 = $"The trip numbered {request.BudgetId} for the traveler {request.Requester.EmpName} has been approved by his/her department head";
-            var token = _jwtTokenConverter.GenerateToken(request.Requester);
+         token = _jwtTokenConverter.GenerateToken(request.Requester);
         _mailer.DepartmentHeadApproved(request, token);
         _logService.InsertLog(request.Id, request.Requester.ZonalHeadId, request.RequesterId, Events.DepartmentHeadPermanentlyReject);
         return Ok(request);

@@ -201,7 +201,10 @@ public bool? HotelInvoiceUploaded {get; set;} = false;
 public int? BudgetId {get; set;}
 
 [JsonPropertyName("budget")]
-public RequestBudget? Budget {get; set;} = new RequestBudget();
+public Budget? Budget {get; set;} = new Budget();
+
+[JsonPropertyName("requestBudget")]
+public RequestBudget? RequestBudget {get; set;} = new RequestBudget();
 
 
 [JsonPropertyName("expenseReportGiven")]

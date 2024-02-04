@@ -52,8 +52,8 @@ public class JwtTokenConverter:IJwtTokenConverter
         {
             ValidateIssuer = false,
             ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = false,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
 

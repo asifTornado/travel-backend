@@ -13,48 +13,47 @@ using backEnd.services;
 using Newtonsoft.Json;
 namespace backEnd.Models;
 
-[NotMapped]
+
 public class RequestBudget{
     
-
-  
     [JsonPropertyName("travelSupervisor")]
-    public string? TravelSupervisor {get; set;} = string.Empty; 
+    public string? TravelSupervisor {get; set;} 
 
-    [JsonProperty("totalDailyAllowance")]
-    public string? TotalDailyAllowance {get; set;} = string.Empty;
+    [JsonPropertyName("totalDailyAllowance")]
+    public string? TotalDailyAllowance {get; set;} 
 
-    [JsonProperty("totalBudget")]
-    public string? TotalBudget {get; set;} = string.Empty;
+    [JsonPropertyName("emergencyFund")]
+    public string? EmergencyFund {get; set;} 
 
-    [JsonProperty("approvalStatus")]
-    public string? ApprovalStatus {get; set;} = string.Empty;
+    [JsonPropertyName("totalBudget")]
+    public string? TotalBudget {get; set;} 
 
-    [JsonProperty("notes")]
-    public string? Notes {get; set;} = string.Empty;
+    [JsonPropertyName("approvalStatus")]
+    public string? ApprovalStatus {get; set;} 
+
+    [JsonPropertyName("notes")]
+    public string? Notes {get; set;} 
 
 
-    [NotMapped]
-    [JsonProperty("breakdown")]
+    [JsonPropertyName("breakdown")]
     public List<RequestBudgetBreakDown> Breakdown {get; set;} =  new List<RequestBudgetBreakDown>(){
         new RequestBudgetBreakDown()
     };
+
 }
 
-[NotMapped]
+
 public class RequestBudgetBreakDown {
 
-
-
     [JsonPropertyName("item")]
-    public string? Item {get; set;} = string.Empty;
+    public string? Item {get; set;} 
 
     [JsonPropertyName("quantity")]
-    public int? Quantity {get; set;} = 0;
+    public string? Quantity {get; set;} 
      
      [JsonPropertyName("cost")]
-     public int? Cost {get; set;} = 0;
+     public string? Cost {get; set;} 
      
      [JsonPropertyName("total")]
-     public int? Total {get; set;} = 0; 
+     public string? Total {get; set;} 
 }

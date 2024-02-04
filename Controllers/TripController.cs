@@ -62,10 +62,12 @@ public class TripController : ControllerBase
     private IUsersService _usersService;
     private IMailer _mailer;
     private ILogService _logService;
+    private IIDCheckService _idCheckService;
 
     
-    public TripController(IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
-    {
+    public TripController(IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
+    {    
+        _idCheckService = idCheckService;
         _budgetsService = budgetsService;
         _imapper = mapper;
         _tripService = tripService;
@@ -146,7 +148,11 @@ public class TripController : ControllerBase
 
     [HttpPost("TAddCustomQuote")]
     public async Task<IActionResult> TAddCustomQuote(IFormCollection data)
-    {
+    {         var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
               var quotation = data["quotation"];
               var quoteGiver = data["quoteGiver"];
               var tripId = int.Parse(data["tripId"]);
@@ -169,6 +175,7 @@ public class TripController : ControllerBase
                        newQuotation.Custom = true;
                        newQuotation.RequestIds = requestIds;
                        newQuotation.TotalCosts = travelerCosts;
+                      
                        quotations.Add(newQuotation);
              
                 }
@@ -209,10 +216,16 @@ public class TripController : ControllerBase
 
     [HttpPost("TAddHotelQuote")]
     public async Task<IActionResult> TAddHotelQuote(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
         var quote = data["quoteString"];
         var quoteGiver  = data["quoteGiver"];
         var tripId = data["tripId"];
         var requestIds = JsonSerializer.Deserialize<List<int>>(data["requestIds"]);
+        var travelerCosts = JsonSerializer.Deserialize<List<TravelerCost>>(data["travelerCosts"]);
         var userId = int.Parse(data["userId"]);
 
         var guid = Guid.NewGuid();
@@ -226,6 +239,7 @@ public class TripController : ControllerBase
             newHotelQuotation.QuoteGiver = quoteGiver;
             newHotelQuotation.RequestId = id;
             newHotelQuotation.RequestIds = requestIds;
+            newHotelQuotation.TotalCosts = travelerCosts;
             hotelQuotations.Add(newHotelQuotation);
            
             
@@ -235,14 +249,22 @@ public class TripController : ControllerBase
 
         await _tripService.AddQuotations<HotelQuotation>(hotelQuotations);
 
-        return Ok(true);
+   
+     
+
+
+          return Ok(hotelQuotations[0]);
 
     }
 
     [HttpPost("TTicketBook")]
     public async Task<IActionResult> TTicketBook(IFormCollection data)
     {
-      
+          var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
        var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
        var requestIds = quotation.RequestIds;
        var best = data["condition"];
@@ -283,7 +305,13 @@ public class TripController : ControllerBase
          await _logService.InsertLogs(requestIds, userId, userId, Events.SupervisorApprovalTicket);
        await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
         var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
-       return Ok(quotationToSend);
+         var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
+
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+       return Ok(result);
 
 }
 
@@ -291,7 +319,11 @@ public class TripController : ControllerBase
     [HttpPost("THotelBook")]
     public async Task<IActionResult> THotelBook(IFormCollection data){
 
-
+          var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
        var quotation = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
        var requests = await _tripService.GetRelatedRequestsFromHotelQuotation(quotation);
        var quotations = await _tripService.GetRelatedHotelQuotations(quotation);
@@ -331,8 +363,16 @@ public class TripController : ControllerBase
     await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationBooked);
     await _tripService.UpdateHotelQuotationsAndRequests(quotations, requests);
     var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
+     var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
 
- return Ok(quotationToSend);
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+
+
+ return Ok(result);
 
        
     }
@@ -340,6 +380,11 @@ public class TripController : ControllerBase
   
     [HttpPost("THotelUnBook")]
     public async Task<IActionResult> THotelUnBook(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
         var quotation = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
 
         var requests = await _tripService.GetRelatedRequestsFromHotelQuotation(quotation);
@@ -364,13 +409,25 @@ public class TripController : ControllerBase
           await _tripService.UpdateHotelQuotationsAndRequests(quotations, requests);
     var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
 
- return Ok(quotationToSend);
+     var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
+
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+ return Ok(result);
 
     }
 
 
     [HttpPost("THotelConfirm")]
     public async Task<IActionResult> THotelConfirm(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
         var quotation = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
            var userId = int.Parse(data["userId"]);
 
@@ -394,12 +451,24 @@ public class TripController : ControllerBase
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
 
-         return Ok(quotationToSend);
+             var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
+
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+         return Ok(result);
 
     }
 
     [HttpPost("THotelRevoke")]
     public async Task<IActionResult> THotelRevoke(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
 
           var quotation = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
              var userId = int.Parse(data["userId"]);
@@ -427,7 +496,14 @@ public class TripController : ControllerBase
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
 
-         return Ok(quotationToSend);
+             var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
+
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+         return Ok(result);
         
     }
 
@@ -435,10 +511,12 @@ public class TripController : ControllerBase
 
     [HttpPost("TUnBook")]
     public async Task<IActionResult> TUnBook(IFormCollection data)
-
-
     {
-      
+         var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
        var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
           var userId = int.Parse(data["userId"]);
        var requestIds = quotation.RequestIds;
@@ -464,13 +542,25 @@ public class TripController : ControllerBase
 
            var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
 
-     return Ok(quotationToSend);
+            var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
+
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+     return Ok(result);
 
 }
 
 
     [HttpPost("TTicketConfirm")]
     public async Task<IActionResult> TTicketConfirm(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
         var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
            var userId = int.Parse(data["userId"]);
         var requests =  await _tripService.GetRelatedRequestsFromQuotation(quotation);
@@ -493,8 +583,14 @@ public class TripController : ControllerBase
         
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
+            var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
 
-         return Ok(quotationToSend);
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+         return Ok(result);
 
 
 
@@ -503,6 +599,11 @@ public class TripController : ControllerBase
 
     [HttpPost("TTicketRevoke")]
     public async Task<IActionResult> TTicketRevoke(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
         var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
            var userId = int.Parse(data["userId"]);
         var requests =  await _tripService.GetRelatedRequestsFromQuotation(quotation);
@@ -524,14 +625,25 @@ public class TripController : ControllerBase
         await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationRevoked);
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
+             var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
 
-           return Ok(quotationToSend);
+            var result = new {
+              quotation=quotationToSend,
+              request = requestToSend
+            };
+
+           return Ok(result);
     }
 
 
 
     [HttpPost("TUploadTicketFile")]
     public async Task<IActionResult> TUploadTicketFiles(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
             
             var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
                var userId = int.Parse(data["userId"]);
@@ -585,6 +697,11 @@ public class TripController : ControllerBase
 
     [HttpPost("TUploadHotelFile")]
     public async Task<IActionResult> TUploadHotelFiles(IFormCollection data){
+           var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
             
              var quotation = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
                 var userId = int.Parse(data["userId"]);
@@ -645,6 +762,11 @@ public class TripController : ControllerBase
         [HttpPost]
         [Route("TEmailRequestsAccounts")]
         public async Task<IActionResult> TEmailRequestsAccounts(IFormCollection data){
+               var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
             var user = JsonSerializer.Deserialize<User>(data["user"]);
             var trip = JsonSerializer.Deserialize<TripDTO>(data["trip"]);
             var userId = int.Parse(data["userId"]);
@@ -682,6 +804,11 @@ public class TripController : ControllerBase
          [HttpPost]
          [Route("TEmailRequestsCustom")]
          public async Task<IActionResult> TEmailRequestsCustom(IFormCollection data){
+               var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
             var user = JsonSerializer.Deserialize<User>(data["user"]);
             var trip = JsonSerializer.Deserialize<TripDTO>(data["trip"]);
             var recipient = data["recipient"];
@@ -708,6 +835,11 @@ public class TripController : ControllerBase
          [HttpPost]
          [Route("TComplete")]
             public async Task<IActionResult> TEmailRequests(IFormCollection data){
+                   var token = data["token"];
+              var allowed = await _idCheckService.CheckAdmin(token);
+              if(allowed != true){
+                return Ok(false);
+              };
                 
                 var trip = JsonSerializer.Deserialize<TripDTO>(data["trip"]);
                 var userId = int.Parse(data["userId"]);

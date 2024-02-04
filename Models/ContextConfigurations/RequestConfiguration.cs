@@ -69,7 +69,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
     );
 
     
-     builder.Property(x => x.Budget)
+     builder.Property(x => x.RequestBudget)
      .HasColumnType("nvarchar(max)")
      .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),

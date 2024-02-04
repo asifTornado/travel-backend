@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backEnd.Models;
 
@@ -11,9 +12,11 @@ using backEnd.Models;
 namespace backEnd.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    partial class TravelContextModelSnapshot : ModelSnapshot
+    [Migration("20240129033552_addded emergency fund to the requestBudget entity")]
+    partial class adddedemergencyfundtotherequestBudgetentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,8 +225,6 @@ namespace backEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Budgets");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "budget");
                 });
 
             modelBuilder.Entity("backEnd.Models.Cost", b =>
@@ -785,6 +786,10 @@ namespace backEnd.Migrations
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "booked");
 
+                    b.Property<string>("Budget")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "budget");
+
                     b.Property<int?>("BudgetId")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "budgetId");
@@ -878,10 +883,6 @@ namespace backEnd.Migrations
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "purpose");
-
-                    b.Property<string>("RequestBudget")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "requestBudget");
 
                     b.Property<int?>("RequesterId")
                         .HasColumnType("int")
@@ -1295,7 +1296,7 @@ namespace backEnd.Migrations
 
             modelBuilder.Entity("backEnd.Models.Request", b =>
                 {
-                    b.HasOne("backEnd.Models.Budget", "Budget")
+                    b.HasOne("backEnd.Models.Budget", null)
                         .WithMany("Requests")
                         .HasForeignKey("BudgetId");
 
@@ -1308,8 +1309,6 @@ namespace backEnd.Migrations
                         .WithMany("Requests")
                         .HasForeignKey("RequesterId")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Budget");
 
                     b.Navigation("CurrentHandler");
 

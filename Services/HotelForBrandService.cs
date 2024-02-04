@@ -149,41 +149,63 @@ public class HotelForBrandService: IHotelForBrandService
 
 
 
-        var results = await _travelContext.HotelForBrands.AsNoTracking()
-        .Include(x => x.Locations)
-        .ThenInclude(x => x.Hotels)
-        .ToListAsync();
+        // var results = await _travelContext.HotelForBrands.AsNoTracking()
+        // .Include(x => x.Locations)
+        // .ThenInclude(x => x.Hotels)
+        // .ToListAsync();
         // var searchBrand = "%" + brand + "%";
         // var searchLocation = "%" + location + "%";
    
-        // IQueryable<HotelForBrands> query = _travelContext.HotelForBrands;
+        IQueryable<HotelForBrands> query = _travelContext.HotelForBrands;
          
-      
+         var searchBrand = brand.ToLower().Trim();
+         var searchLocation = location.ToLower().Trim();
          
-        //  if(brand != ""){
-        //     query = query.Where(x => x.Brand.ToLower().Trim().Contains(brand.ToLower().Trim()));
-        //  }
+         if(brand != ""){
+            query = query.Where(x => x.Brand.ToLower().Trim().Contains(searchBrand));
+         }
 
-        //  if(location != ""){
-        //     query = query.Where(x => x.Locations.Any((y)=>y.LocationName.ToLower().Trim().Contains(location.ToLower().Trim()) ));
-        //  }
-
-
-        //  var intermediateResults = await query.SelectMany(x=> x.Locations.Select(y => new {
-        //     Location = y.LocationName,
-        //     Hotels = y.Hotels, 
-        //     Brand = x.Brand
-        //  })).ToListAsync();
+         if(location != ""){
+            query = query.Where(x => x.Locations.Any((y)=>y.LocationName.ToLower().Trim().Contains(searchLocation) ));
+         }
 
 
-        //  var results = intermediateResults.SelectMany( x => x.Hotels.Select( y => y.Rooms.Select(z => new{
-        //     Brand = x.Brand,
-        //     Location = x.Location,
-        //     Hotel = y.HotelName,
-        //     Type = z.Type,
-        //     Average_rate = z.Average_rate,
-        //     Actual_rate = z.Actual_rate
-        //  }) )).ToList();
+         var intermediateResults = await query.SelectMany(x=> x.Locations.SelectMany(y => y.Hotels.Select( 
+            z => new{
+            Location = z.HotelAddress,
+            Hotel = z.HotelName, 
+            Brand = x.Brand,
+            Rooms = z.Rooms
+         }
+         ))).ToListAsync();
+        
+
+        var results = new List<SearchVM>();
+        
+        foreach(var result in intermediateResults){
+            if(result.Rooms != null){
+                foreach(var room in result.Rooms){
+                    var newSearchItem = new SearchVM(){
+                        Location=result.Location,
+                        Hotel=result.Hotel,
+                        Brand = result.Brand,
+                        Type = room.Type,
+                        Average_rate = room.Average_rate
+                    };
+
+                    results.Add(newSearchItem);
+                }
+            }else{
+                var newSearchItem = new SearchVM(){
+                    Location = result.Location,
+                    Hotel = result.Hotel,
+                    Brand = result.Brand,
+                    Type = string.Empty,
+                    Average_rate = string.Empty,
+                };
+                results.Add(newSearchItem);
+            }
+        }
 
 
         return new JsonResult(results);
