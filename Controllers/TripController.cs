@@ -63,9 +63,10 @@ public class TripController : ControllerBase
     private IMailer _mailer;
     private ILogService _logService;
     private IIDCheckService _idCheckService;
+    private readonly IJwtTokenConverter _jwtTokenConverter;
 
     
-    public TripController(IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
+    public TripController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -75,7 +76,9 @@ public class TripController : ControllerBase
         _usersService = usersService;
         _mailer = mailer;
         _logService = logService;
+        _jwtTokenConverter = jwtTokenConverter;
         
+
 
     }
 
@@ -260,11 +263,13 @@ public class TripController : ControllerBase
     [HttpPost("TTicketBook")]
     public async Task<IActionResult> TTicketBook(IFormCollection data)
     {
-          var token = data["token"];
+             var token = data["token"];
               var allowed = await _idCheckService.CheckAdmin(token);
               if(allowed != true){
                 return Ok(false);
               };
+
+
        var quotation = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
        var requestIds = quotation.RequestIds;
        var best = data["condition"];
@@ -293,8 +298,8 @@ public class TripController : ControllerBase
                       quotation2.Booked = true;
                       quotation2.Approved = false;
                  }
-
-                 
+                var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
+                _mailer.SeekSupervisorApproval(request, quotations[0].QuotationText, "air-ticket", token2);
               }
 
                
@@ -353,6 +358,8 @@ public class TripController : ControllerBase
 
                 request.Status = "Seeking Supervisor's Approval For Hotel";
                 request.CurrentHandlerId = request.Requester?.SuperVisor.Id;
+                var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
+                _mailer.SeekSupervisorApproval(request, quotations[0].QuotationText, "hotel", token2);
               }
 
              

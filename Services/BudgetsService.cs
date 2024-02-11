@@ -101,6 +101,22 @@ public class BudgetsService : IBudgetsService
         
     }
 
+
+    public async Task<int> CreateBudgetId(Budget budget){
+          _travelContext.Entry(budget).State = EntityState.Added;
+
+        budget.Travelers.ForEach((x)=>{
+            _travelContext.Entry(x).State = EntityState.Modified;            
+        });
+
+        await _travelContext.SaveChangesAsync();
+
+        return budget.Id;
+
+        
+        
+    }
+
     public async Task CreateBudget(Budget budget) {
 
 
@@ -203,7 +219,7 @@ if (!string.IsNullOrEmpty(searchObject["destination"]))
     query = query.Where(b => b.Destination == searchObject["destination"]);
 }
 
-var results = await query.ToListAsync();
+var results = await query.Where(b => b.Custom == false).ToListAsync();
 
 var filteredResults  = results.Where(b => DateTime.ParseExact(b.DepartureDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) < twoMonthsFromNow).ToList();
 

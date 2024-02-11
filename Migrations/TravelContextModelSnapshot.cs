@@ -169,6 +169,10 @@ namespace backEnd.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "creationDate");
 
+                    b.Property<bool?>("Custom")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "custom");
+
                     b.Property<string>("DepartureDate")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "departure_date");

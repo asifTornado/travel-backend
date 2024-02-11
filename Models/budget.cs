@@ -104,6 +104,9 @@ public class Budget
     [JsonPropertyName("requests")]
     public virtual List<Request>? Requests {get; set;}
 
+    [JsonPropertyName("custom")]
+    public bool? Custom {get; set;} = false;
+
 
     
 

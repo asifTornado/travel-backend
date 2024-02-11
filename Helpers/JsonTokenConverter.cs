@@ -28,7 +28,7 @@ public class JwtTokenConverter:IJwtTokenConverter
         var claims = new List<Claim>
         {
           
-            new Claim(ClaimTypes.Name, user.Id.ToString())
+            new (ClaimTypes.Name, user.Id.ToString())
             // Add additional claims as needed
         };
 

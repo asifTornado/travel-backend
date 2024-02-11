@@ -180,7 +180,7 @@ public class ApprovalController : ControllerBase
             return Ok(false);
         }
         if(request.Custom == true){
-        request.Status = "Seeking Departmenat Head's Approval";
+        request.Status = "Seeking Approval From Department Head";
         request.CurrentHandlerId = request.Requester.ZonalHeadId;
         }else{
             request.Status = "Seeking Ticket Quotations";
@@ -229,8 +229,8 @@ public class ApprovalController : ControllerBase
 
 
     [HttpPost]
-    [Route("/departmentHeadPermanentlyReject")]
-    public async Task<IActionResult> DepartmentHeadPermanentlyReject(IFormCollection data){
+    [Route("/departmentHeadPermanentlyRejectTrip")]
+    public async Task<IActionResult> DepartmentHeadPermanentlyRejectTrip(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var token = data["token"];
         var allowed = _idCheckService.CheckDepartmentHead(request, token);
@@ -249,8 +249,8 @@ public class ApprovalController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/departmentHeadReject")]
-    public async Task<IActionResult> DepartmentHeadReject(IFormCollection data){
+    [Route("/departmentHeadRejectTrip")]
+    public async Task<IActionResult> DepartmentHeadRejectTrip(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
           var token = data["token"];
         var allowed = _idCheckService.CheckDepartmentHead(request, token);
@@ -273,8 +273,8 @@ public class ApprovalController : ControllerBase
 
         
     [HttpPost]
-    [Route("/departmentHeadApprove")]
-    public async Task<IActionResult> DepartmentHeadApprove(IFormCollection data){
+    [Route("/departmentHeadApproveTrip")]
+    public async Task<IActionResult> DepartmentHeadApproveTrip(IFormCollection data){
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
           var token = data["token"];
         var allowed = _idCheckService.CheckDepartmentHead(request, token);

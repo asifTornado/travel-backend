@@ -9,11 +9,11 @@ using backEnd.Services.IServices;
 using backEnd.Helpers.IHelpers;
 using AutoMapper;
 
-namespace backEnd.Controllers
+namespace backEnd.Controllers.AgnetControllers
 {
     [ApiController]
     [Route("/")]
-    public class AgentController : Controller
+    public class AgentListsController : Controller
     {
 
         private readonly IUserApi _userApi;
@@ -24,7 +24,7 @@ namespace backEnd.Controllers
 
         private IMapper _mapper;
 
-        public AgentController(IMapper mapper, IAgentsService agentsService, IUserApi userApi, IUsersService usersService, IJwtTokenConverter jwtTokenConverter)
+        public AgentListsController(IMapper mapper, IAgentsService agentsService, IUserApi userApi, IUsersService usersService, IJwtTokenConverter jwtTokenConverter)
         {
             _userApi = userApi;
             _usersService = usersService;
@@ -56,42 +56,7 @@ namespace backEnd.Controllers
 
         }
 
-        [HttpPost]
-        [Route("/createAgent")]
-        public async Task<IActionResult> CreateAgent(IFormCollection data)
-        { 
-            var newAgent = JsonSerializer.Deserialize<Agent>(data["agent"]);
-            await _agentsService.CreateAgent(newAgent);
-            return Ok(newAgent);
-
-        }
-
-
-
-        [HttpPost]
-        [Route("/editAgent")]
-        public async Task<IActionResult> EditAgent(IFormCollection data)
-        { 
-            var newAgent = JsonSerializer.Deserialize<Agent>(data["agent"]);
-            await _agentsService.UpdateAsync(newAgent.Id, newAgent);
-            return Ok(newAgent);
-
-        }
-
-
-
-        
-        [HttpPost]
-        [Route("/deleteAgent")]
-        public async Task<IActionResult> DeleteAgent(IFormCollection data)
-        { 
-            var id = data["id"];
-            await _agentsService.RemoveAsync(int.Parse(id));
-            return Ok(true);
-
-        }
-
-
+      
      
 
 

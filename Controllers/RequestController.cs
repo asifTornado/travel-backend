@@ -104,23 +104,35 @@ public class RequestController : ControllerBase
 
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var user = JsonSerializer.Deserialize<User>(data["user"]);
-
+        
+   
         
       
 
-        var agents = await _agentsService.GetAllProfessionalAgents();
-
-        request.AgentNumbers = agents.Count;
         
 
         request.Requester = user;
     
       
-        request.Status = "Seeking Supervisor's Approval For Trip";
+        request.Status = "Seeking Supervisor Approval For Trip";
         request.CurrentHandlerId = request.Requester.SuperVisorId;
         request.Date = _helperClass.GetCurrentTime();
         request.Custom = true;
+
+
+        var budget = new Budget();
+
+        budget.Subject = request.Purpose;
+        budget.ArrivalDate = request.EndDate;
+        budget.DepartureDate = request.StartDate;
+        budget.Destination = request.Destination;
+        budget.Initiated = "Yes";
+        budget.Travelers = new List<User>();
+        budget.Travelers.Add(request.Requester);
+        budget.Requests = new List<Request>();
         
+
+        var BudgetId = await _budgetService.CreateBudgetId(budget);
       
             
         //     var agentEmails = new List<Agent>();
@@ -129,11 +141,9 @@ public class RequestController : ControllerBase
         //  }
 
    
-
+      request.BudgetId = BudgetId;
       
-
-
-      var requestId = await _requestService.CreateAsync(request);    
+      var requestId = await _requestService.CreateAsync(request); 
 
       var token = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor!);
             
@@ -259,7 +269,7 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
     var request = JsonSerializer.Deserialize<Request>(data["request"]);
      
     if(approval == "approved"){
-      request.Status = "Seeking MD's Approval";
+      request.Status = "Seeking Department Head's Approval";
       request.SupervisorApproved = true;
       request.CurrentHandlerId = request.Requester.ZonalHeadId;
       await _requestService.UpdateAsync(request);

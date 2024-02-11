@@ -9,7 +9,7 @@ using backEnd.Services.IServices;
 using backEnd.Models.DTOs;
 using AutoMapper;
 
-namespace backEnd.Controllers
+namespace backEnd.Controllers.AuthenticationControllers
 {
     [ApiController]
     [Route("/")]

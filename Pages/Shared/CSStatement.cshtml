@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container bg-primary justify-center items-center pt-5 pl-5 pb-5">
+  <div class="container-fluid   pt-5 pl-5 pb-5">
              <div class="row justify-center items-center">
-                     <div class="col-md-5 mr-2 justify-center items-center">
+                     <div class="col-lg-5 mr-2 justify-center items-center">
                         <div class="card" >
                            
                             <div class="card-body">
@@ -48,7 +48,7 @@
                                       </tr>
                                        <tr>
                                         <th scope="row">Current Handler</th>
-                                        <td>@Model.Request.CurrentHandler</td>
+                                        <td>@Model.Request.CurrentHandler.EmpName</td>
                                       </tr>
                                     </tbody>
                                   </table>`
@@ -57,7 +57,7 @@
                             </div>
                           </div>
                      </div>
-                     <div class="col-md-5 ml-2 justify-center items-center">
+                     <div class="col-lg-5 ml-2 mt-5 justify-center items-center">
                         <div class="card" >
                            
                             <div class="card-body">
@@ -110,71 +110,73 @@
 
 @if(Model.Request.Confirmed == true){
 
-<div v-if="trip" class="bg-warning border container  border-solid border-dark bg-yellow-lighten-2 mt-5 shadow-sm my-3 p-4">
+<div  class=" border container  border-solid border-dark  mt-5 shadow-sm my-3 p-4">
         <div class="row border border-solid bg-white border-dark p-4">
-            <div class="col-md-12 bg-white font-weight-bold text-dark text-center text-xl bg-white shadow-md">
+            <div class="col-lg-12 bg-white font-weight-bold text-dark text-center text-xl bg-white shadow-md">
                 Ticket Quotations
             </div>
         </div>
     
         <div class="row justify-content-center align-items-center">
             @foreach(var quotation in Model.Request.Quotations){
-                  <div  class="col-md-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
+                  <div  class="col-lg-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
                 <div class="row">
-                    <div class="col-md-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
+                    <div class="col-lg-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
                 </div>
     
                 <div class="row text-center">
-                    <div class="col-md-12 text-center">
-                        <div class="col-md-12 text-center ">
+                    <div class="col-lg-12 text-center">
+                        <div class="col-lg-12 text-center ">
                             <div class="text-caption font-weight-thin p-2 mr-2 bg-primary text-white border border-solid border-dark text-center">
-                                @quotation.QuotationText
+                               @Html.Raw(quotation.QuotationText)
                             </div>
                         </div>
                     </div>
                 </div>
     
                 <div class="row mb-2">
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         <div class="text-center">Confirmed</div>
                     </div>
                 </div>
     
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         <div class="d-flex w-100 justify-content-between">
-
-                            <div v-if="quotation.booked && quotation.confirmed" class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
+                          @if(quotation.Booked == true && quotation.Confirmed == true){
+                            <div  class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
+                        }
                         </div>
     
                    
                     </div>
                 </div>
     
-          
-                <div v-if="quotation.confirmed" class="row elevation-4 mb-2">
-                    <div class="col-md-12 text-sm font-weight-bold bg-info text-white p-2">
+             @if(quotation.Confirmed == true){
+                <div  class="row elevation-4 mb-2">
+                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
                         Ticket Invoices
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         @foreach(var invoice in quotation.Invoices){
-                        <div class="d-flex justify-content-start">
-                            <div  class="p-2 text-primary cursor-pointer">@invoice.Filename</div>
-                        </div>
+                            <span  class="p-2 bg-info m-4">
+                            @invoice.Filename
+                        </span>
                         }
                         
                     </div>
                 </div>
+                }
     
                 <div class="row elevation-4">
-                    <div class="col-md-12 text-sm font-weight-bold bg-info text-white p-2">
+                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
                         Ticket Approvals
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         @foreach(var ticketApproval in quotation.TicketApprovals){
-                         <div  class="p-2">
+                         <span  class="p-2 bg-info m-4">
                             @ticketApproval.EmpName
-                        </div>
+                        </span>
 
                         }
                       
@@ -186,7 +188,7 @@
         </div>
     
    
-    </div>
+</div>
 
 
 }
@@ -201,71 +203,75 @@
 
 
 
-<div v-if="trip" class="bg-warning border container  border-solid border-dark bg-yellow-lighten-2 mt-5 shadow-sm my-3 p-4">
+<div  class=" border container  border-solid border-dark  mt-5 shadow-sm my-3 p-4">
         <div class="row border border-solid bg-white border-dark p-4">
-            <div class="col-md-12 bg-white font-weight-bold text-dark text-center text-xl bg-white shadow-md">
+            <div class="col-lg-12 bg-white font-weight-bold text-dark text-center text-xl bg-white shadow-md">
                 Hotel Quotations
             </div>
         </div>
     
         <div class="row justify-content-center align-items-center">
             @foreach(var quotation in Model.Request.HotelQuotations){
-                  <div  class="col-md-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
+                  <div  class="col-lg-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
                 <div class="row">
-                    <div class="col-md-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
+                    <div class="col-lg-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
                 </div>
     
                 <div class="row text-center">
-                    <div class="col-md-12 text-center">
-                        <div class="col-md-12 text-center ">
+                    <div class="col-lg-12 text-center">
+                        <div class="col-lg-12 text-center ">
                             <div class="text-caption font-weight-thin p-2 mr-2 bg-primary text-white border border-solid border-dark text-center">
-                                @quotation.QuotationText
+                               @Html.Raw(quotation.QuotationText)
                             </div>
                         </div>
                     </div>
                 </div>
     
                 <div class="row mb-2">
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         <div class="text-center">Confirmed</div>
                     </div>
                 </div>
     
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         <div class="d-flex w-100 justify-content-between">
+                         @if(quotation.Booked == true && quotation.Confirmed == true){
 
-                            <div v-if="quotation.booked && quotation.confirmed" class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
+                            <div class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
+                         }
                         </div>
     
                    
                     </div>
                 </div>
     
-          
-                <div v-if="quotation.confirmed" class="row elevation-4 mb-2">
-                    <div class="col-md-12 text-sm font-weight-bold bg-info text-white p-2">
+                @if(quotation.Confirmed == true){
+                <div  class="row elevation-4 mb-2">
+                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
                         Hotel Invoices
                     </div>
-                    <div class="col-md-12">
-                        @foreach(var invoice in quotation.Invoices){
-                        <div class="d-flex justify-content-start">
-                            <div  class="p-2 text-primary cursor-pointer">@invoice.Filename</div>
-                        </div>
+                    <div class="col-lg-12">
+                              @foreach(var invoice in quotation.Invoices){
+                            <span  class="p-2 bg-info m-4">
+                            @invoice.Filename
+                        </span>
                         }
+                        
                         
                     </div>
                 </div>
+                }
     
                 <div class="row elevation-4">
-                    <div class="col-md-12 text-sm font-weight-bold bg-info text-white p-2">
+                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
                         Hotel Approvals
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-lg-12">
                         @foreach(var ticketApproval in quotation.HotelApprovals){
-                         <div  class="p-2">
+                         <span  class="p-2 bg-info m-4">
                             @ticketApproval.EmpName
-                        </div>
+                        </span>
 
                         }
                       
@@ -277,146 +283,204 @@
         </div>
     
    
-    </div>
+</div>
 
 
 }
 
-
-    <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-primary text-white font-weight-bold">
-          <div class="col-md-12">Activities</div>
-        </div>
-    
-        <div class="row font-weight-bold text-black">
-          <div class="col-md-2">Date</div>
-          <div class="col-md-10">Activity</div>
-        </div>
-    
-    @foreach(var activity in @Model.Request.Activities){
-        <div class="row">
-          <div class="col-md-2">@activity.Date</div>
-          <div class="col-md-10">@activity.Description</div>
-        </div>
-    }
-   
+<!-- activitiews -->
 
 
-      </div>
+ <div class="container-fluid mb-2 shadow p-3 mb-5 bg-white rounded">
+    <div class="row bg-primary text-white font-weight-bold">
+        <div class="col-lg-12">Activities</div>
+    </div>
+
+    <!-- Bootstrap table version -->
+    <table class="table table-bordered mt-3">
+        <thead class="font-weight-bold text-black">
+            <tr>
+                <th class="col-lg-2 col-sm-2 col-xs-2">Date</th>
+                <th class="col-lg-5 col-sm-5 col-xs-5">Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var activity in @Model.Request.Activities)
+            {
+                <tr>
+                    <td>@activity.Date</td>
+                    <td>@activity.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
     
       <!-- meetings -->
-      <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-dark text-white font-weight-bold justify-content-center">
-          <div class="col-md-12">Meetings</div>
-        </div>
-    
-        <div class="row font-weight-bold">
-          <div class="col-md-2">Subject</div>
-          <div class="col-md-5">Attendees</div>
-          <div class="col-md-5">Agenda</div>
-        </div>
-    @foreach(var meeting in @Model.Request.Meetings){
-         <div  class="row justify-content-center align-items-center">
-          <div class="col-md-2">@meeting.Subject</div>
-          <div class="col-md-5">
-            @foreach(var attendee in meeting.Attendees){
-            <span class="badge badge-info mr-1">@attendee</span>
-            }
-          </div>
-          <div class="col-md-5">@meeting.Agenda</div>
-        </div>
+       <div class=" bg-dark text-white font-weight-bold justify-content-center">
+        <div class="">Meetings</div>
+    </div>
+     <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Attendees</th>
+                    <th scope="col">Agenda</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var meeting in @Model.Request.Meetings)
+                {
+                    <tr>
+                        <td>@meeting.Subject</td>
+                        <td>
+                            @foreach(var attendee in meeting.Attendees)
+                            {
+                                <span class="badge badge-info mr-1">@attendee</span>
+                            }
+                        </td>
+                        <td>@meeting.Agenda</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-
-
-    }
-        
-      </div>
     
       <!-- Objectives -->
       <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-dark text-white p-2">
-          <div class="col-md-12">Objectives</div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            @foreach(var objective in Model.Request.Objectives){
-            <span  class="badge badge-primary mr-1">@objective</span>
-            }
-          </div>
-        </div>
-      </div>
+    <div class="row bg-dark text-white p-2">
+        <div class="col-lg-12">Objectives</div>
+    </div>
+       <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col">Objective</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach(var objective in Model.Request.Objectives)
+                        {
+                            <span class="badge badge-primary mr-1">@objective</span>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
     
       <!-- Items Needed To Take -->
       <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-dark text-white p-2">
-          <div class="col-md-12">Items Needed To Take</div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            @foreach(var item in Model.Request.Items){
-            <span class="badge badge-success mr-1">@item</span>
-            }
-          </div>
-        </div>
-      </div>
+    <div class="row bg-dark text-white p-2">
+        <div class="col-lg-12">Items Needed To Take</div>
+    </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col">Item</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach(var item in Model.Request.Items)
+                        {
+                            <span class="badge badge-success mr-1">@item</span>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
     
       <!-- Help Required From -->
-      <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-dark text-white p-2">
-          <div class="col-md-12">Help Required From</div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            @foreach(var person in @Model.Request.Personnel){
+     <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
+    <div class="row bg-dark text-white p-2">
+        <div class="col-lg-12">Help Required From</div>
+    </div>
 
-            <span class="badge badge-warning mr-1">@person</span>
-            }
-          </div>
-        </div>
-      </div>
+    <!-- Bootstrap table version -->
+    <div class="table-responsive">
+        <table class="table table-bordered mt-3">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col">Person</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @foreach(var person in @Model.Request.Personnel)
+                        {
+                            <span class="badge badge-warning mr-1">@person</span>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
     
       <!-- Allocated Budget -->
-      <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
-        <div class="row bg-dark text-white p-2">
-          <div class="col-md-12">Allocated Budget</div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">Total Daily Allowance</div>
-          <div class="col-md-10">@Model.Request.RequestBudget.TotalDailyAllowance</div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">Total Budget</div>
-          <div class="col-md-10">@Model.Request.RequestBudget.TotalBudget</div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">Notes</div>
-          <div class="col-md-10">@Model.Request.RequestBudget.Notes</div>
-        </div>
-        <div class="row border">
-          <div class="col-md-12 text-center font-weight-bold h6">Budget Breakdown</div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">Item</div>
-          <div class="col-md-3">Quantity</div>
-          <div class="col">Cost</div>
-          <div class="col">Total</div>
-        </div>
-        @foreach(var breakdown in Model.Request.RequestBudget.Breakdown){
-            <div class="row">
-          <div class="col-md-3">@breakdown.Item</div>
-          <div class="col-md-3">@breakdown.Quantity</div>
-          <div class="col">@breakdown.Cost</div>
-          <div class="col">@breakdown.Total</div>
-        </div>
+     <div class="container mb-2 shadow p-3 mb-5 bg-white rounded">
+    <div class="row bg-dark text-white p-2">
+        <div class="col-lg-12">Allocated Budget</div>
+    </div>
 
+    <table class="table table-bordered mt-3">
+        <!-- Total Daily Allowance -->
+        <tr>
+            <th scope="row" class="col-lg-2">Total Daily Allowance</th>
+            <td class="col-lg-10">@Model.Request.RequestBudget.TotalDailyAllowance</td>
+        </tr>
+
+        <!-- Total Budget -->
+        <tr>
+            <th scope="row" class="col-lg-2">Total Budget</th>
+            <td class="col-lg-10">@Model.Request.RequestBudget.TotalBudget</td>
+        </tr>
+
+        <!-- Notes -->
+        <tr>
+            <th scope="row" class="col-lg-2">Notes</th>
+            <td class="col-lg-10">@Model.Request.RequestBudget.Notes</td>
+        </tr>
+
+        <!-- Budget Breakdown -->
+        <tr class="border">
+            <th colspan="4" class="col-lg-12 text-center font-weight-bold h6">Budget Breakdown</th>
+        </tr>
+        <tr>
+            <th class="col-lg-3">Item</th>
+            <th class="col-lg-3">Quantity</th>
+            <th class="col">Cost</th>
+            <th class="col">Total</th>
+        </tr>
+
+        @foreach(var breakdown in Model.Request.RequestBudget.Breakdown)
+        {
+            <tr>
+                <td class="col-lg-3">@breakdown.Item</td>
+                <td class="col-lg-3">@breakdown.Quantity</td>
+                <td class="col">@breakdown.Cost</td>
+                <td class="col">@breakdown.Total</td>
+            </tr>
         }
-        
-      </div>
+    </table>
+</div>
    
 </body>
 
     <!-- Include Bootstrap JavaScript (optional) -->
-   
-    <script src="~/bootstrap/js/bootstrap.min.js"></script>
-
+    <script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>

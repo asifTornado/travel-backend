@@ -10,7 +10,7 @@ using backEnd.Services.IServices;
 using backEnd.Helpers.IHelpers;
 using AutoMapper;
 
-namespace backEnd.Controllers
+namespace backEnd.Controllers.HotelForBrandControllers
 {
     [ApiController]
     [Route("/")]
@@ -38,20 +38,7 @@ namespace backEnd.Controllers
 
 
 
-        
-        [HttpPost]
-        [Route("/getHotelsForBrandsAll")]
-        public async Task<IActionResult> GetHotelsForBrandsAll(IFormCollection data)
-        {
-            
-
-            var result = await _hotelForBrandService.GetHotelsForBrandsAll();
-            return Ok(result);
-
-           
-
-        }
-
+    
 
 
         [HttpPost]
@@ -105,39 +92,7 @@ namespace backEnd.Controllers
               return Ok();
 
         }
-        
-
-        [HttpPost]
-        [Route("/searchHotelsForBrands")]
-        public async Task<IActionResult> SearchHotelsForBrands(IFormCollection data){
-            var results = await _hotelForBrandService.SearchHotesForBrands(data["brand"], data["location"]);
-            return Ok(results);
-        }
-
-
-        [HttpPost]
-        [Route("/deleteHotel")]
-        public async Task<IActionResult> DeleteHotel(IFormCollection data){
-            var hotel = JsonSerializer.Deserialize<Hotels>(data["hotel"]);
-            await _hotelForBrandService.DeleteHotel(hotel);
-            return Ok();
-
-
-       
-
-            
-        }
-
-
-
-        [HttpPost]
-        [Route("/deleteLocation")]
-        public async Task<IActionResult> DeleteHotelLocations(IFormCollection data){
-            var hotelLocations = JsonSerializer.Deserialize<HotelLocations>(data["location"]);
-            await _hotelForBrandService.DeleteHotelLocations(hotelLocations);
-            return Ok();
-        }
-
+    
 
 
     

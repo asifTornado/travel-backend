@@ -41,6 +41,15 @@ public class UsersService:IUsersService
                
             }
 
+    public async Task<List<User>> GetUsersForSupervisor(int id){
+        var results = await _travelContext.Users.AsNoTracking()
+                      .Where(x => x.SuperVisorId == id)
+                      .ToListAsync();
+
+        return results;
+        
+    }
+
     
     public async Task<User> GetAuditor(){
 

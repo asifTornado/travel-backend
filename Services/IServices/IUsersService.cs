@@ -8,6 +8,7 @@ namespace backEnd.Services.IServices
     public interface IUsersService
     {
         Task<List<User>> GetAsync();
+        Task<List<User>> GetUsersForSupervisor(int id);
         Task<User> GetAuditor();
         Task<User> GetUserByMail(string mail);
         Task<User> GetUserByName(string name);

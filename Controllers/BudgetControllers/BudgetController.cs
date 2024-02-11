@@ -8,7 +8,7 @@ using System.Text.Json;
 using backEnd.Mappings;
 using System.Diagnostics;
 
-namespace backEnd.Controllers;
+namespace backEnd.Controllers.BudgetControllers;
 
 
 
@@ -88,13 +88,7 @@ public class BudgetController : ControllerBase
     }
 
 
-    [HttpPost]
-    [Route("getBudgets")]
-    public async Task<IActionResult> GetBudgets(IFormCollection data){
-            var result = await _budgetsService.GetAllBudgets();
-            return Ok(result);
-    }
-
+  
 
 
     
@@ -120,26 +114,7 @@ public class BudgetController : ControllerBase
 
 
 
-    
-    [HttpPost]
-    [Route("searchBudget")]
-    public async Task<IActionResult> SearchBudget(IFormCollection data){
-        Console.WriteLine("this is the data");
-        Console.WriteLine(data["search"]);
-        
 
-
-        Dictionary<string, string> budget = JsonSerializer.Deserialize<Dictionary<string, string>>(data["search"]);
-
-        var result = await _budgetsService.SearchBudget(budget);
-       
-        return Ok(result);
-        
-    }
-
-
-
-       
     [HttpPost]
     [Route("initiate")]
     public async Task<IActionResult> Initiate(IFormCollection data){

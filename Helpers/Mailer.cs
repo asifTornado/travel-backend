@@ -1023,7 +1023,6 @@ public void SeekSupervisorApproval(Request request, string quotation, string typ
     Console.WriteLine("Supervisor Approval Called");
     var message = new MimeMessage();
     message.From.Add(new MailboxAddress("", senderEmail));
-    message.From.Add(new MailboxAddress("", senderPassword));
     message.To.Add(new MailboxAddress("", request.Requester.SuperVisor.MailAddress));
     message.Subject = $"{request.Requester.EmpName} is seeking your approval for a {type} quotation";
 
@@ -1038,10 +1037,9 @@ public void SeekSupervisorApproval(Request request, string quotation, string typ
       <h3>{request.Requester.EmpName} is seeking your approval for a {type} quotation <h3>
 
       <p>Here is  the quotation:</p>
-      <h3>Quotation:</h3>
       <h4>{ quotation }</h4>
        
-       <p><a href='{frontEnd}/email/request/{token}/{request.Id}'> Click Here To Give Your Approval</a></p>
+       <p><a href='{frontEnd}{request.Id}/{token}'> Click Here To Give Your Approval</a></p>
     
     ";
     
@@ -1122,13 +1120,13 @@ public async Task SendMailSeekInformation(Request request, string token){
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Your Email Subject</title>
+             
             </head>
         
             <body>
                 <h4>Information is required regarding your trip number {request.BudgetId}. Please click on the link below to give your info</h1>
                 <div>
-                    <p><a href='{frontEnd}unapproved-request/{token}/{request.Id}'> Click Here To Give Your Approval</a></p>
+                    <p><a href='{frontEnd}unapproved-request/{token}/{request.Id}'> Click Here To Give Your Information</a></p>
                 </div>
             </body>
             </html>

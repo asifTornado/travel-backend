@@ -28,6 +28,7 @@ public class RequestBudget{
     [JsonPropertyName("totalBudget")]
     public string? TotalBudget {get; set;} 
 
+
     [JsonPropertyName("approvalStatus")]
     public string? ApprovalStatus {get; set;} 
 

@@ -88,6 +88,21 @@ public class UserController : ControllerBase
    }
 
 
+
+   
+   [HttpPost("getUsersForSupervisor")]
+   public async Task<IActionResult> getUsersForSupervisor(IFormCollection data){
+         var id = int.Parse(data["id"]);
+         var users = await _userService.GetUsersForSupervisor(id);
+         return Ok(users);
+             
+
+   }
+
+
+
+
+
    [HttpGet("getUserEmails")]
    public async Task<IActionResult> GetUserEmails(){
     var emails = await _userService.GetUserEmails();

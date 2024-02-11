@@ -49,12 +49,12 @@ namespace backEnd.Controllers;
 [Route("/")]
 [ApiController]
 
-public class LogController : ControllerBase
+public class LogsListController : ControllerBase
 {
 
     private ILogService _logService;
 
-    public LogController( ILogService logService)
+    public LogsListController( ILogService logService)
     {
         _logService = logService;
     }
