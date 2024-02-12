@@ -31,6 +31,7 @@ public class  TravelContext: DbContext
     public DbSet<Log> Logs {get; set;}
     public DbSet<ExpenseReport> ExpenseReports {get; set;}
     public DbSet<Expenses> Expenses {get; set;}
+    public DbSet<MoneyReceipt> MoneyReceipts {get; set;}
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -70,6 +71,7 @@ public class  TravelContext: DbContext
    modelBuilder.ApplyConfiguration(new ExpenseReportConfiguration());
    modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
    modelBuilder.ApplyConfiguration(new HotelConfiguration());
+   modelBuilder.ApplyConfiguration(new MoneyReceiptConfiguration());
   
 
 

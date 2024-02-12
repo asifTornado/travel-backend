@@ -35,6 +35,8 @@ builder.Services.AddScoped<IAgentsService, AgentsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IReportGenerator, ReportGenerator>();
 builder.Services.AddScoped<IIDCheckService, IDCheckService>();
+builder.Services.AddScoped<MoneyReceiptService>();
+builder.Services.AddScoped<RoleService>();
 
 builder.Services.AddScoped<BudgetsService>();
 builder.Services.AddScoped<ICounterService, CounterService>();

@@ -26,7 +26,7 @@ using Org.BouncyCastle.Asn1.X509;
 using MimeKit.Encodings;
 using Microsoft.VisualBasic;
 
-namespace backEnd.Controllers;
+namespace backEnd.Controllers.ShareControllers;
 
 
 [Route("/")]

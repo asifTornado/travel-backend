@@ -13,6 +13,11 @@ using backEnd.Services.IServices;
 using backEnd.Factories.IFactories;
 using Dapper;
 using System.Globalization;
+using AutoMapper.QueryableExtensions;
+using backEnd.Models.DTOs;
+using backEnd.Mappings;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 
 
@@ -25,6 +30,9 @@ public class BudgetsService : IBudgetsService
     private TravelContext _travelContext;
 
     private IConnection _connection;
+
+
+    private IMapper _mapper;
 
     public BudgetsService(TravelContext travelContext, IConnection connection)
     {
@@ -144,9 +152,11 @@ public class BudgetsService : IBudgetsService
     }
 
 
-    public async Task<List<Budget>> GetAllBudgets(){
+    public async Task<List<BudgetDTO>> GetAllBudgets(){
 
-      var results = await _travelContext.Budgets.AsNoTracking().ToListAsync();
+      var results = await _travelContext.Budgets.AsNoTracking()
+      .ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider)
+      .ToListAsync();
       return results;
 
     }
@@ -231,9 +241,11 @@ return new JsonResult(filteredResults);
     }
 
     public async Task<List<Budget>> GetAllInitiatedTrips()
-    {   _travelContext.ChangeTracker.Clear();
+    {   
         var result = await _travelContext.Budgets.AsNoTracking()
-        .Where(b => b.Initiated == "Yes").ToListAsync();
+        .Where(b => b.Initiated == "Yes")
+        
+        .ToListAsync();
         return result;
     }
 

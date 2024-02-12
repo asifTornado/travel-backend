@@ -42,7 +42,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using ZstdSharp.Unsafe;
 
-namespace backEnd.Controllers;
+namespace backEnd.Controllers.ChartControllers;
 
 
 

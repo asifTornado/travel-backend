@@ -14,6 +14,9 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
     {
         // Fluent API configuration for the "Product" entity
         // Add other configurations as needed
+
+   
+
       builder
       .Property( e => e.Number)
       .HasComputedColumnSql("REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))");  

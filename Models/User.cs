@@ -92,8 +92,8 @@ public class User
     public string? Department { get; set; } = string.Empty;
 
 
-     [JsonPropertyName("teamType")]
-    public string? TeamType { get; set; } = string.Empty;
+     [JsonPropertyName("roles")]
+    public List<string> Roles { get; set; } = new List<string>();
 
 
       [JsonPropertyName("password")]
@@ -230,6 +230,10 @@ public class User
     [NotMapped]
     [JsonPropertyName("hotelApproved")]
     public virtual List<HotelQuotation>? HotelApproved {get; set;} = new List<HotelQuotation>();
+
+
+    [JsonPropertyName("CurrentReceiptsHandled")]
+    public virtual List<MoneyReceipt>? CurrentReceiptsHandled {get; set;} = new List<MoneyReceipt>();
 
 
 }

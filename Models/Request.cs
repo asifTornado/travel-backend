@@ -15,28 +15,6 @@ using Newtonsoft.Json;
 namespace backEnd.Models;
 
 
-public class Message{
-    
-[Key]
-[JsonPropertyName("_id")]
-public int Id { get; set; }
-
-[JsonPropertyName("status")]
-public string? Status {get; set;} = string.Empty;
-
-[JsonPropertyName("content")]
-public string? Content {get; set;} = string.Empty;
-
-[JsonPropertyName("requestId")]
-public int? RequestId {get; set;}
-
-[JsonPropertyName("request")]
-public virtual Request? Request {get; set;} = null; 
-
-
-}
-
-
 public class Request{
 
 [JsonPropertyName("_id")]
@@ -249,65 +227,21 @@ public virtual List<Activity>? Activities {get; set;} = new List<Activity>(){
      }
 };
 
+
+[JsonPropertyName("moneyReceipt")]
+public virtual MoneyReceipt MoneyReceipt {get; set;} 
+
+
+[JsonPropertyName("moneyReceiptId")]
+public int MoneyReceiptId {get; set;}
+
+[JsonPropertyName("moneyReceiptSubmitted")]
+public bool MoneyReceiptSubmitted {get; set;} = false;
+
   
 
 }
 
-
-
-
-
-
-public class TicketInvoice {
-
-
-     [JsonPropertyName("_id")]
-     [Key]
-
-    public int Id {get; set;}
-    
-
-     [JsonPropertyName("type")]
-    public string? Type {get; set;}  = string.Empty;
-
-     
-     [JsonPropertyName("filename")]
-     public string? Filename {get; set;} = string.Empty;
-
-
-     [JsonPropertyName("filePath")]
-     public string? FilePath {get; set;} = string.Empty;
-
-
-     public virtual List<Quotation> Quotations {get; set;} = new List<Quotation>();
-
-}
-
-
-public class HotelInvoice {
-
-
-     [JsonPropertyName("_id")]
-     [Key]
-
-    public int Id {get; set;}
-    
-
-     [JsonPropertyName("type")]
-    public string? Type {get; set;}  = string.Empty;
-
-     
-     [JsonPropertyName("filename")]
-     public string? Filename {get; set;} = string.Empty;
-
-
-     [JsonPropertyName("filePath")]
-     public string? FilePath {get; set;} = string.Empty;
-
-
-     public virtual List<HotelQuotation> Quotations {get; set;} = new List<HotelQuotation>();
-
-}
 
 
 

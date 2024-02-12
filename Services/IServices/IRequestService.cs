@@ -8,12 +8,12 @@ namespace backEnd.Services.IServices
 {
     public interface IRequestService
     {
-        Task<List<Request>> GetRequestssRaisedByUser(User user);
-        Task<List<Request>> GetRequestsForMe(User user);
-        Task<List<Request>> GetRequestsProcessedByMe(User user);
-        Task<Request?> GetAsync(int id);
+        Task<List<RequestDTO>> GetRequestssRaisedByUser(User user);
+        Task<List<RequestDTO>> GetRequestsForMe(User user);
+        Task<List<RequestDTO>> GetRequestsProcessedByMe(User user);
+        Task<Request?> GetAsync(int? id);
         Task<int> CreateAsync(Request newRequest);
-        Task<List<Request>> GetAllRequests();
+        Task<List<RequestDTO>> GetAllRequests();
 
         Task GiveInvoiceProfessional(Request request, TicketInvoice invoice);
         Task UpdateAsync(Request? updatedRequest);
@@ -34,12 +34,12 @@ namespace backEnd.Services.IServices
 
         Task<Request> GetCustomRequest(int id);
 
-        Task<List<Request>> GetCustomRequests();
+        Task<List<RequestDTO>> GetCustomRequests();
         Task<Request> GetRequestForApproval(int id);
 
         Task UpdateRequestForApproval(Request request);
         
-         Task<List<Request>> GetUnapprovedRequests(int id);
+         Task<List<RequestDTO>> GetUnapprovedRequests(int id);
     
 
 

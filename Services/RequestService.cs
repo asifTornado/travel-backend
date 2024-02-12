@@ -1,4 +1,5 @@
 using backEnd.Models;
+using backEnd.Models.DTOs;
 using backEnd.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,6 +18,7 @@ using AutoMapper;
 using System.Text.Json;
 using ZstdSharp.Unsafe;
 using Newtonsoft.Json.Converters;
+using AutoMapper.QueryableExtensions;
 
 namespace backEnd.services;
 
@@ -54,38 +56,43 @@ public class RequestService: IRequestService
 
 
 
-    public async Task<List<Request>> GetRequestssRaisedByUser(User user)
+    public async Task<List<RequestDTO>> GetRequestssRaisedByUser(User user)
     {   
        
         var results =  await _travelContext.Requests.Include(r => r.Requester)
         .AsNoTracking()
-        .Where( r => r.Requester.EmpName==  user.EmpName || user.UserType == "admin").ToListAsync();
+        .Where( r => r.Requester.EmpName==  user.EmpName || user.UserType == "admin")
+        .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
+        .ToListAsync();
         return results;
     }
 
 
 
-        public async Task<List<Request>> GetRequestsForMe(User user)
+        public async Task<List<RequestDTO>> GetRequestsForMe(User user)
    {    
       
     
         var results = await _travelContext.Requests.Include(r => r.CurrentHandler)
         .AsNoTracking()
         .Include(r => r.Requester.SuperVisor)
-        .Where(r => r.CurrentHandler.MailAddress == user.MailAddress).ToListAsync();
-    
+        .Where(r => r.CurrentHandler.MailAddress == user.MailAddress)
+        .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
+        .ToListAsync();
         return results;
     }
 
 
 
-        public async Task<List<Request>> GetRequestsProcessedByMe(User user)
+        public async Task<List<RequestDTO>> GetRequestsProcessedByMe(User user)
    {     
 
  
         var results = await _travelContext.Requests.Include(r => r.Requester)
                          .AsNoTracking()
-                        .Where(r => r.Requester.EmpName == user.EmpName).ToListAsync(); 
+                        .Where(r => r.Requester.EmpName == user.EmpName)
+                        .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
+                        .ToListAsync(); 
         return results;
     }
 
@@ -94,7 +101,7 @@ public class RequestService: IRequestService
 
     
 
-    public async Task<Request?> GetAsync(int id){
+    public async Task<Request?> GetAsync(int? id){
       
        
 
@@ -137,105 +144,24 @@ public class RequestService: IRequestService
 
            _travelContext.Entry(newRequest).State = EntityState.Added;
 
-       
-
-        //    _travelContext.Entry(newRequest.Requester).State = EntityState.Modified;
-
-        //    _travelContext.Entry(newRequest.CurrentHandler).State = EntityState.Modified;
+    
 
           
            await _travelContext.SaveChangesAsync();
 
            return newRequest.Id;
 
-
- 
-    //     await using var connection = _connection.GetConnection();
-    //     await connection.OpenAsync();
-
-    //     var sql = "dbo.CreateRequest";
-
-    //     // var newRequestDTO = _imapper.Map<RequestDTO>(newRequest);
-
-    //     // var parameters = new DynamicParameters(newRequestDTO);
-    
-
-    //     // parameters.Add("@RequestId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-    //     // // parameters.Add("@CurrentHandlerId", newRequestDTO.CurrentHandlerId);
-
-
-    //     var parameters = new {
-    //         Id = newRequest.Id, //
-    //         Destination = newRequest.Destination, //
-    //         Purpose = newRequest.Purpose, //
-    //         Mode = newRequest.Mode, //
-    //         AccomodationRequired = newRequest.AccomodationRequired, // 
-    //         NumberOfNights = newRequest.NumberOfNights, //
-    //         TotalCost = newRequest.TotalCost, //
-    //         RequesterId = newRequest.Requester.Id, //
-    //         Number = newRequest.Number, //
-    //         Status = newRequest.Status, //
-    //         AgentNumbers = newRequest.AgentNumbers, //
-    //         CurrentHandlerId = newRequest.CurrentHandler.Id, //
-    //         Date = newRequest.Date, //
-    //         StartDate  = newRequest.StartDate, //
-    //         EndDate = newRequest.EndDate, //
-    //         Selected = newRequest.Selected, //
-    //         Confirmed = newRequest.Confirmed, //
-    //         SeekingInvoices = newRequest.SeekingInvoices, //
-    //         Processed = newRequest.Processed, //
-    //         SeekingHotelInvoices = newRequest.SeekingHotelInvoices, //
-    //         Best = newRequest.Best, //
-    //         Booked = newRequest.Booked, //
-    //         TicketInvoiceUploaded = newRequest.TicketInvoiceUploaded, //
-    //         HotelInvoiceUploaded = newRequest.HotelInvoiceUploaded, //
-    //         HotelBooked = newRequest.HotelBooked,
-    //         HotelConfirmed = newRequest.HotelConfirmed,
-    //         BestHotel = newRequest.BestHotel,
-    //         InTrip = newRequest.InTrip,
-      
-                
-
-    //     };
-
-
-    //     var parameters2  = new DynamicParameters(parameters);
-    //     parameters2.Add("@RequestId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-
-    //     await connection.ExecuteAsync(sql, parameters2, commandType: CommandType.StoredProcedure);
-
-    //     int requestId = parameters2.Get<int>("@RequestId");
-
-    // //    var agents = await _travelContext.Agents.ToListAsync();
-      
-
-    // //   if(agents != null){
-
-    // //      newRequest.Agents = agents;
-
-    // //   }
-    
-
-    // //    _travelContext.Requests.Add(newRequest);
-
-    // //    await _travelContext.SaveChangesAsync();
-
-    // //    return newRequest.Id;
-
-    //     return requestId;
-
-
        
     }
 
 
-    public async Task<List<Request>> GetAllRequests(){
+    public async Task<List<RequestDTO>> GetAllRequests(){
         
 
    var result = await _travelContext.Requests.Include( r => r.CurrentHandler)
    .AsNoTracking()
    .Where(x => x.Custom == false)
+   .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
    .ToListAsync();
          return result;
     }
@@ -243,33 +169,6 @@ public class RequestService: IRequestService
     
 
     public async Task UpdateAsync(Request? updatedRequest){
-        
-
-          
-        //    if(updatedRequest.Costs != null && updatedRequest.Costs.Count > 0){
-             
-        //          foreach(var cost in updatedRequest.Costs){
-        //              _travelContext.Entry(cost).State = EntityState.Detached;
-        //          }
-        //    }else{
-        //       _travelContext.Entry(updatedRequest.Costs).State = EntityState.Detached;
-        //    }
-
-        //    _travelContext.Entry(updatedRequest.Requester).State = EntityState.Detached;
-        //    _travelContext.Entry(updatedRequest.CurrentHandler).State = EntityState.Detached;
-          
-           
-
-        
-          
-
-
-
-        
-        //    _travelContext.Requests.Update(updatedRequest);
-        //     await _travelContext.SaveChangesAsync();
-
-           
 
            _travelContext.ChangeTracker.Clear();
 
@@ -301,15 +200,6 @@ public class RequestService: IRequestService
                     _travelContext.Entry(message).State = EntityState.Modified;
                 }
             }
-
-
-            // foreach(var invoice in updatedRequest.TicketInvoices){
-            //     if(invoice?.Id == null || invoice?.Id == 0){
-            //         _travelContext.Entry(invoice).State = EntityState.Added;
-            //     }else{
-            //         _travelContext.Entry(invoice).State = EntityState.Modified;
-            //     }
-            // }
 
 
         await _travelContext.SaveChangesAsync();
@@ -522,8 +412,10 @@ public class RequestService: IRequestService
 
  
 
-   public async Task<List<Request>> GetCustomRequests(){
-    var result = await _travelContext.Requests.AsNoTracking().Where(x => x.Custom == true).ToListAsync();
+   public async Task<List<RequestDTO>> GetCustomRequests(){
+    var result = await _travelContext.Requests.AsNoTracking().Where(x => x.Custom == true)
+    .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
+    .ToListAsync();
     return result;
    }
 
@@ -548,12 +440,13 @@ public class RequestService: IRequestService
    }
 
 
-   public async Task<List<Request>> GetUnapprovedRequests(int id){
+   public async Task<List<RequestDTO>> GetUnapprovedRequests(int id){
     var result = await _travelContext.Requests.AsNoTracking()
                     .Include(x => x.Requester)
                     .Where(x => (x.SupervisorApproved == false || x.DepartmentHeadApproved  == false) && x.PermanentlyRejected != true
                     && (x.RequesterId == id || x.Requester!.SuperVisorId == id || x.Requester!.ZonalHeadId == id)
                     )
+                    .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
                     .ToListAsync();
     return result;
    }

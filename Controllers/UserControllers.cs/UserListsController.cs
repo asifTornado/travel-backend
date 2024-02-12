@@ -23,7 +23,7 @@ using backEnd.Services;
 using backEnd.Helpers.IHelpers;
 
 
-namespace backEnd.Controllers;
+namespace backEnd.Controllers.UserControllers;
 
 
 
@@ -31,7 +31,7 @@ namespace backEnd.Controllers;
 [Route("/")]
 [ApiController]
 
-public class UserController : ControllerBase
+public class UserListsController : ControllerBase
 {
 
 
@@ -51,7 +51,7 @@ public class UserController : ControllerBase
    
 
 
-    public UserController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService)
+    public UserListsController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -65,14 +65,7 @@ public class UserController : ControllerBase
 
 
 
-    [HttpPost("getUser")]
-   public async Task<IActionResult> GetUsers(IFormCollection data){
-         
-         var user = await _userService.GetOneUser(int.Parse(data["id"]));
-         return Ok(user);
-             
-
-   }
+ 
 
 
 
@@ -110,63 +103,6 @@ public class UserController : ControllerBase
    }
 
 
-
-   
-   [HttpPost("deleteUser")]
-   public async Task<IActionResult> DeleteUser(IFormCollection data){
-         Console.WriteLine("this is teh id");
-         Console.WriteLine(data["id"]);
-         Console.WriteLine("This is the id after parsing");
-         var id = int.Parse(data["id"]);
-         Console.WriteLine(id);
-         await _userService.RemoveAsync(int.Parse(data["id"]));
-
-         return Ok();
-             
-
-   }
-
-
-[HttpPost]
-[Route("updateUserNormal")]
-public async Task<IActionResult> UpdateUserNormal(IFormCollection data)
-{
-    var user = JsonSerializer.Deserialize<User>(data["user"]);
-    user.SuperVisorId = user.SuperVisor?.Id;
-    user.TravelHandlerId = user.TravelHandler?.Id;
-    user.ZonalHeadId = user.ZonalHead?.Id;
-    // user.SuperVisor.SuperVised = new List<User>();
-    // user.TravelHandler.TravelHandled = new List<User>();
-    // user.ZonalHead.Head = new List<User>();
-    // var userDTO = _imapper.Map<UserDTO>(user);
-    await _userService.UpdateAsync(user.Id, user);
-    return Ok(true);
-}
-
-
-
-[HttpPost]
-[Route("insertUser")]
-public async Task<IActionResult> InsertUser(IFormCollection data)
-{
-    var user = JsonSerializer.Deserialize<User>(data["user"]);
-    // var userDTO = _imapper.Map<UserDTO>(user);
-    var userString = JsonSerializer.Serialize(user);
-    await _userService.CreateAsync(user);
-    return Ok(true);
-}
-
-
-
-
-[HttpPost]
-[Route("getUserEmails")]
-public async Task<IActionResult> GetUserEmails(IFormCollection data)
-{
-    
-    var results = await _userService.GetUserEmails();
-    return Ok(results);
-}
 
 
 

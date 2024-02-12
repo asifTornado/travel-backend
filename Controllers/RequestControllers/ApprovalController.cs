@@ -42,7 +42,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using ZstdSharp.Unsafe;
 
-namespace backEnd.Controllers;
+namespace backEnd.Controllers.RequestControllers;
 
 
 
@@ -102,25 +102,6 @@ public class ApprovalController : ControllerBase
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
         _idCheckService = iDCheckService;
-    }
-
-
-    [HttpPost]
-    [Route("/getUnapprovedRequests")]
-    public async Task<IActionResult> GetUnapprovedRequests(IFormCollection data){
-        var id = int.Parse(data["id"]);
-        var result = await _requestService.GetUnapprovedRequests(id);
-        return Ok(result);
-    }
-
-
-
-
-    [HttpPost]
-    [Route("/getRequestForApproval")]
-    public async Task<IActionResult> GetRequestForApproval(IFormCollection data){
-              var result = await _requestService.GetRequestForApproval(int.Parse(data["id"]));
-              return Ok(result);
     }
 
 

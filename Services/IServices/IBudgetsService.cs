@@ -3,6 +3,7 @@ using backEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using backEnd.Models.DTOs;
 
 namespace backEnd.Services.IServices
 {
@@ -10,7 +11,7 @@ namespace backEnd.Services.IServices
     {
         Task<Budget?> GetAsync(int id);
         Task CreateBudget(Budget budget);
-        Task<List<Budget>> GetAllBudgets();
+        Task<List<BudgetDTO>> GetAllBudgets();
         Task UpdateAsync(int id, Budget budget);
         Task RemoveAsync(int id);
         Task<JsonResult> SearchBudget(Dictionary<string, string> searchObject);

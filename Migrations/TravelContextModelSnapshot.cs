@@ -636,6 +636,100 @@ namespace backEnd.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "messages");
                 });
 
+            modelBuilder.Entity("backEnd.Models.MoneyReceipt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdvanceMoneyInHand")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "advanceMoneyInHand");
+
+                    b.Property<string>("Approvals")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "approvals");
+
+                    b.Property<string>("AsAdvanceAgainst")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "asAdvanceAgainst");
+
+                    b.Property<int?>("CurrentHandlerId")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "currentHandlerId");
+
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "date");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "designation");
+
+                    b.Property<string>("I")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "i");
+
+                    b.Property<int?>("PrevHandlerId")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "prevHandlerId");
+
+                    b.Property<bool?>("Processed")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "processed");
+
+                    b.Property<int?>("RequestId")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "requestId");
+
+                    b.Property<string>("RequiredTK")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "requiredTK");
+
+                    b.Property<string>("Section")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "section");
+
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "serialNo");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "status");
+
+                    b.Property<bool?>("Submitted")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "submitted");
+
+                    b.Property<bool?>("SupervisorApproved")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "supervisorApproved");
+
+                    b.Property<string>("Taka")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "taka");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "unit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentHandlerId");
+
+                    b.HasIndex("RequestId")
+                        .IsUnique()
+                        .HasFilter("[RequestId] IS NOT NULL");
+
+                    b.ToTable("MoneyReceipts");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "CurrentReceiptsHandled");
+                });
+
             modelBuilder.Entity("backEnd.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -853,6 +947,14 @@ namespace backEnd.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "mode");
 
+                    b.Property<int>("MoneyReceiptId")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "MoneyReceiptId");
+
+                    b.Property<bool>("MoneyReceiptSubmitted")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "MoneyReceiptSubmitted");
+
                     b.Property<string>("Number")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("nvarchar(max)")
@@ -1041,6 +1143,11 @@ namespace backEnd.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "rating");
 
+                    b.Property<string>("Roles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "roles");
+
                     b.Property<string>("Section")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "section");
@@ -1052,10 +1159,6 @@ namespace backEnd.Migrations
                     b.Property<string>("Team")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "team");
-
-                    b.Property<string>("TeamType")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "teamType");
 
                     b.Property<int?>("TravelHandlerId")
                         .HasColumnType("int")
@@ -1087,7 +1190,7 @@ namespace backEnd.Migrations
 
                     b.ToTable("Users");
 
-                    b.HasAnnotation("Relational:JsonPropertyName", "hotelApprovals");
+                    b.HasAnnotation("Relational:JsonPropertyName", "currentHandler");
                 });
 
             modelBuilder.Entity("AgentRequest", b =>
@@ -1274,6 +1377,23 @@ namespace backEnd.Migrations
                     b.Navigation("Request");
                 });
 
+            modelBuilder.Entity("backEnd.Models.MoneyReceipt", b =>
+                {
+                    b.HasOne("backEnd.Models.User", "CurrentHandler")
+                        .WithMany("CurrentReceiptsHandled")
+                        .HasForeignKey("CurrentHandlerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("backEnd.Models.Request", "Request")
+                        .WithOne("MoneyReceipt")
+                        .HasForeignKey("backEnd.Models.MoneyReceipt", "RequestId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CurrentHandler");
+
+                    b.Navigation("Request");
+                });
+
             modelBuilder.Entity("backEnd.Models.Notification", b =>
                 {
                     b.HasOne("backEnd.Models.Request", "Ticket")
@@ -1383,12 +1503,17 @@ namespace backEnd.Migrations
 
                     b.Navigation("Messages");
 
+                    b.Navigation("MoneyReceipt")
+                        .IsRequired();
+
                     b.Navigation("Quotations");
                 });
 
             modelBuilder.Entity("backEnd.Models.User", b =>
                 {
                     b.Navigation("CurrentHandled");
+
+                    b.Navigation("CurrentReceiptsHandled");
 
                     b.Navigation("FlyerNos");
 
