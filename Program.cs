@@ -3,11 +3,11 @@ using Rotativa.AspNetCore;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using backEnd.Models;
 using backEnd.Services;
-using backEnd.services;
 using backEnd.Helpers;
 using backEnd.Helpers.IHelpers;
 using backEnd.Services.IServices;
 using backEnd.Helpers;
+using backEnd.Helpers.Mails;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using backEnd.Factories;
@@ -37,8 +37,9 @@ builder.Services.AddScoped<IReportGenerator, ReportGenerator>();
 builder.Services.AddScoped<IIDCheckService, IDCheckService>();
 builder.Services.AddScoped<MoneyReceiptService>();
 builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<MailerWorkFlow>();
 
-builder.Services.AddScoped<BudgetsService>();
+
 builder.Services.AddScoped<ICounterService, CounterService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();

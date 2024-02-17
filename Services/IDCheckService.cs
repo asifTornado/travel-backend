@@ -15,7 +15,7 @@ using Dapper;
 using System.Globalization;
 using backEnd.Helpers.IHelpers;
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class IDCheckService : IIDCheckService
 {

@@ -97,6 +97,21 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
     .HasConversion(
     v => string.Join(',', v),
     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
+   
+
+    builder.Property(x => x.PrevHandlerIds)
+    .HasColumnType("nvarchar(max)")
+    .HasConversion(
+      v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+      v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
+    );
+
+
+    builder.Property(x => x.Approvals)
+    .HasConversion(
+       x => JsonSerializer.Serialize(x, JsonSerializerOptions.Default),
+       x => JsonSerializer.Deserialize<List<User>>(x, JsonSerializerOptions.Default)
+      );
 
 
     

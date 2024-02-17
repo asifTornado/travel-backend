@@ -48,10 +48,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 
 
-     builder.Property(x => x.Roles)
-    .HasConversion(
-     v => string.Join(',', v),
-     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
 
 
      

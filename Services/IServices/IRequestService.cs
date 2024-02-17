@@ -39,7 +39,7 @@ namespace backEnd.Services.IServices
 
         Task UpdateRequestForApproval(Request request);
         
-         Task<List<RequestDTO>> GetUnapprovedRequests(int id);
+         Task<List<Request>> GetUnapprovedRequests(int id);
     
 
 

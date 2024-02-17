@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Authorization;
 
 using MailKit;
 using AutoMapper;
-using backEnd.services;
 using backEnd.Helpers;
 using System.Security.AccessControl;
 using backEnd.Services;
@@ -65,7 +64,7 @@ public class RequestListsController : ControllerBase
     private TravelContext _travelContext;
     private IQuotationService _quotationService;
 
-    private BudgetsService _budgetService;
+    private IBudgetsService _budgetService;
     
     private ILogService _logService;
 
@@ -79,7 +78,7 @@ public class RequestListsController : ControllerBase
    
 
 
-    public RequestListsController(IJwtTokenConverter jwtTokenConverter, TripService tripService, BudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestListsController(IJwtTokenConverter jwtTokenConverter, TripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -198,13 +197,6 @@ public async Task<IActionResult> GetRequestsProcessedByMe(IFormCollection data){
 
 
 
-
-    [HttpPost]
-    [Route("/getRequestForApproval")]
-    public async Task<IActionResult> GetRequestForApproval(IFormCollection data){
-              var result = await _requestService.GetRequestForApproval(int.Parse(data["id"]));
-              return Ok(result);
-    }
 
 
 

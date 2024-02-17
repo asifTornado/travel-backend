@@ -13,7 +13,7 @@ using backEnd.Factories.IFactories;
 using System.Runtime.CompilerServices;
 using Dapper;
 
-namespace backEnd.services
+namespace backEnd.Services
 {
     public class QuotationService : IQuotationService
     {

@@ -19,8 +19,10 @@ using System.Text.Json;
 using ZstdSharp.Unsafe;
 using Newtonsoft.Json.Converters;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.Identity.Client;
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class RoleService
 {
@@ -44,9 +46,50 @@ public class RoleService
 
 
     public async Task<User> GetAccountsReceiverForMoneyReceipt(){
-        var result = await _travelContext.Users.Where(x => x.Roles.Contains("Accounts Money Receipt")).FirstOrDefaultAsync();
+        var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Accounts Money Receipt")).FirstOrDefaultAsync();
         return result;
     }
+
+
+    public async Task<User> GetAccountsReceiverForExpenseReport(){
+        var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Accounts Expense Report")).FirstOrDefaultAsync();
+        return result;
+    }
+
+    public async Task<User> GetTravelManager(){
+        var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Travel Manager")).FirstOrDefaultAsync();
+        return result;
+    }
+
+    public async Task<User> GetAuditor(){
+        var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Auditor")).FirstOrDefaultAsync();
+        return result;
+    }
+
+    public async Task InsertRole(Role role){
+          _travelContext.Entry(role).State = EntityState.Added;
+          await _travelContext.SaveChangesAsync();
+    }
+
+
+     public async Task RemoveRole(Role role){
+          _travelContext.Entry(role).State = EntityState.Deleted;
+          await _travelContext.SaveChangesAsync();
+    }
+
+
+   
+     public async Task UpdateRole(Role role){
+          _travelContext.Entry(role).State = EntityState.Modified;
+          await _travelContext.SaveChangesAsync();
+    }
+
+
+    public async Task<List<Role>> GetRoles(){
+        var result = await _travelContext.Roles.ToListAsync();
+        return result;
+    }
+
 
 
 

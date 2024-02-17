@@ -68,14 +68,14 @@ public class MoneyReceipt{
     
 
      [JsonPropertyName("approvals")]
-    public List<User>? Approvals {get; set;}
+public List<User>? Approvals {get; set;} = new List<User>();
 
 
     [JsonPropertyName("currentHandlerId")]
     public int? CurrentHandlerId {get; set;} 
 
-    [JsonPropertyName("prevHandlerId")]
-    public int? PrevHandlerId {get; set;}
+    [JsonPropertyName("prevHandlerIds")]
+    public List<int>? PrevHandlerIds {get; set;} = new List<int>();
 
     [NotMapped]
     [JsonPropertyName("currentHandler")]
@@ -86,6 +86,10 @@ public class MoneyReceipt{
 
     [JsonPropertyName("requestId")]
     public int? RequestId {get; set;}
+
+
+    [JsonPropertyName("rejected")]
+    public bool? Rejected {get; set;} = true;
     
 }
 

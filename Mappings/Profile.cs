@@ -16,6 +16,7 @@ public class ApplicationProfile : Profile
         CreateMap<HotelLocations, HotelLocationsDTO>().ReverseMap();
         CreateMap<HotelForBrands, HotelForBrandsDTO>().ReverseMap();
         CreateMap<Budget, TripDTO>().ReverseMap();
+        CreateMap<Budget, BudgetDTO>().ReverseMap();
        
         // Add more mappings as needed
     }

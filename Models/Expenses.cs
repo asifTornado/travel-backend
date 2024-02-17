@@ -36,5 +36,14 @@ public class Expenses{
 
     [JsonPropertyName("expenseReport")]
     public virtual ExpenseReport? ExpenseReport {get; set;}
+
+    [JsonPropertyName("invoice")]
+    public string? Voucher {get; set;}
+
+    [JsonPropertyName("voucherGiven")]
+    public bool? VoucherGiven {get; set;} = false;
+
+    [JsonPropertyName("source")]
+    public string? Source {get; set;} = "traveler";
     
 }

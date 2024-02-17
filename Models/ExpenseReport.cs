@@ -37,11 +37,44 @@ public class ExpenseReport {
    [JsonPropertyName("expenses")]
    public virtual List<Expenses>? Expenses {get; set;}
 
-   [JsonPropertyName("RequestId")]
+   [JsonPropertyName("requestId")]
    public int? RequestId {get; set;} 
 
    [JsonPropertyName("request")]
    public virtual Request? Request {get; set;}
+
+    [JsonPropertyName("status")]
+    public string? Status {get; set;} 
+
+      [JsonPropertyName("processed")]
+    public bool? Processed {get; set;} = false; 
+
+    [JsonPropertyName("supervisorApproved")]
+    public bool? SupervisorApproved {get; set;} = false;
+
+
+    [JsonPropertyName("submitted")]
+    public bool? Submitted {get; set;} = false;
+
+    [JsonPropertyName("approvals")]
+    public List<User>? Approvals {get; set;} = new List<User>();
+
+
+    [JsonPropertyName("currentHandlerId")]
+    public int? CurrentHandlerId {get; set;} 
+
+    [JsonPropertyName("prevHandlerIds")]
+    public List<int>? PrevHandlerIds {get; set;} = new List<int>();
+
+     [NotMapped]
+    [JsonPropertyName("currentHandler")]
+    public virtual User? CurrentHandler {get; set;} 
+
+    [JsonPropertyName("rejected")]
+    public bool? Rejected {get; set;} = true;
+
+    [JsonPropertyName("travelManagerSubmitted")]
+    public bool?  TravelManagerSubmitted {get; set;} = false;
 
 }
 

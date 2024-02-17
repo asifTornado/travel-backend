@@ -151,7 +151,7 @@ public class BudgetController : ControllerBase
             
        
        _mailer.SendMailSeekInformation(request, token);
-       await _notifier.InsertNotification("A new request requires your information", request.Requester.Id, request.Requester.Id, request.Id, Events.RequestRaised );
+       await _notifier.InsertNotification("A new request requires your information", request.Requester.Id, request.Requester.Id, request.Id, Events.RequestRaised, "unapproved");
        await _logService.InsertLog(request.Id, request.Requester.Id, request.CurrentHandlerId, Events.RequestRaised);
         
         }

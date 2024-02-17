@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Authorization;
 
 using MailKit;
 using AutoMapper;
-using backEnd.services;
 using backEnd.Helpers;
 using System.Security.AccessControl;
 using backEnd.Services;
@@ -64,7 +63,7 @@ public class ApprovalController : ControllerBase
     private IHelperClass _helperClass;
     private TravelContext _travelContext;
     private IQuotationService _quotationService;
-    private BudgetsService _budgetService;
+    private IBudgetsService _budgetService;
     private ILogService _logService;
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
@@ -79,7 +78,7 @@ public class ApprovalController : ControllerBase
 
     public ApprovalController(
     IIDCheckService iDCheckService,
-    TripService tripService,   BudgetsService budgetsService, 
+    TripService tripService,   IBudgetsService budgetsService, 
     ILogService logService, IQuotationService quotationService, 
     TravelContext travelContext, IHelperClass helperClass, 
     IFileHandler fileHandler, IUsersService usersService, 
@@ -103,6 +102,16 @@ public class ApprovalController : ControllerBase
         _jwtTokenConverter = jwtTokenConverter;
         _idCheckService = iDCheckService;
     }
+    
+
+
+    
+    [HttpPost]
+    [Route("/getRequestForApproval")]
+    public async Task<IActionResult> GetRequestForApproval(IFormCollection data){
+              var result = await _requestService.GetRequestForApproval(int.Parse(data["id"]));
+              return Ok(result);
+    }
 
 
     
@@ -123,7 +132,7 @@ public class ApprovalController : ControllerBase
         request.Status = "Request Permanently Rejected By Supervisor";
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been permanently rejected by your supervisor";
-        _notifier.InsertNotification(message, request.Requester?.SuperVisorId, request.RequesterId, request.Id, Events.PermanentlyRejected);
+        _notifier.InsertNotification(message, request.Requester?.SuperVisorId, request.RequesterId, request.Id, Events.PermanentlyRejected, "unapproved");
         token = _jwtTokenConverter.GenerateToken(request.Requester!);
         _mailer.PermanentlyRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.RequesterId, Events.PermanentlyRejected);
@@ -143,7 +152,7 @@ public class ApprovalController : ControllerBase
         request.CurrentHandlerId = request.RequesterId;
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been rejected";
-        _notifier.InsertNotification(message, request.Requester.SuperVisorId, request.RequesterId, request.Id, Events.TripRejected);
+        _notifier.InsertNotification(message, request.Requester.SuperVisorId, request.RequesterId, request.Id, Events.TripRejected, "unapproved");
         token = _jwtTokenConverter.GenerateToken(request.Requester);
         _mailer.SeekRectification(request, token);
         _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.RequesterId, Events.TripRejected);
@@ -180,7 +189,9 @@ public class ApprovalController : ControllerBase
         _mailer.RequestApproved(request, token);
         _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.RequesterId, Events.SupervisorApprovalTrip);
         }else{
-            
+            var message = $"The unplanned trip numbered {request.BudgetId} requires your approval";
+             _notifier.InsertNotification(message, request.Requester.SuperVisorId, request.Requester.ZonalHeadId, request.Id, Events.ZonalHeadApproval, "unapproved");
+             _logService.InsertLog(request.Id, request.Requester.SuperVisorId, request.Requester.ZonalHeadId, Events.ZonalHeadApproved);
         }
         return Ok(request);
     }
@@ -198,7 +209,7 @@ public class ApprovalController : ControllerBase
         }
         request.Status = "Seeking Supervisor Approval For Trip";
         var message = $"{request.Requester.EmpName} is seeking approval for a new trip";
-        _notifier.InsertNotification(message, request.Requester.Id, request.Requester.SuperVisorId, request.Id, Events.SupervisorApprovalTrip);
+        _notifier.InsertNotification(message, request.Requester.Id, request.Requester.SuperVisorId, request.Id, Events.SupervisorApprovalTrip, "unapproved");
         token = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
         _mailer.SeekSupervisorApprovalTrip(request, token);
         request.CurrentHandlerId = request.Requester.SuperVisorId;
@@ -222,7 +233,7 @@ public class ApprovalController : ControllerBase
         request.Status = "Request Permanently Rejected By Department Head";
         await _requestService.UpdateRequestForApproval(request);
         var message = $"Your trip numbered {request.BudgetId} has been permanently rejected by your department head";
-        _notifier.InsertNotification(message, request.Requester?.ZonalHeadId, request.RequesterId, request.Id, Events.DepartmentHeadPermanentlyReject);
+        _notifier.InsertNotification(message, request.Requester?.ZonalHeadId, request.RequesterId, request.Id, Events.DepartmentHeadPermanentlyReject, "unapproved");
          token = _jwtTokenConverter.GenerateToken(request.Requester!);
         _mailer.DepartmentHeadPermanentlyRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.ZonalHeadId, request.RequesterId, Events.DepartmentHeadPermanentlyReject);
@@ -243,7 +254,7 @@ public class ApprovalController : ControllerBase
         request.SupervisorApproved = false;
         await _requestService.UpdateRequestForApproval(request);
         var message = $"The trip numbered {request.BudgetId} that you approved has been rejected by your department head";
-        _notifier.InsertNotification(message, request.Requester.ZonalHeadId, request.Requester.SuperVisorId, request.Id, Events.DepartmentHeadReject);
+        _notifier.InsertNotification(message, request.Requester.ZonalHeadId, request.Requester.SuperVisorId, request.Id, Events.DepartmentHeadReject, "unapproved");
         token = _jwtTokenConverter.GenerateToken(request.Requester);
         _mailer.DepartmentHeadRejected(request, token);
         _logService.InsertLog(request.Id, request.Requester.ZonalHeadId, request.Requester.SuperVisorId, Events.DepartmentHeadReject);

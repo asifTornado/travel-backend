@@ -57,6 +57,38 @@ public static class Events {
 
     public static string DepartmentHeadPermanentlyReject {get;} = "Trip permanently rejected by department head";
 
+    public static string AdvancePaymentFormSubmitted  {get;} = "Advance Payment Form Submitted";
+
+    public static string AdvancePaymentFormApprovedSupervisor {get;} = "Advance Payment Form Submitted By Supervisor";
+
+    public static string AdvancePaymentFormRejected {get;} = "Advance Payment Form Rejected";
+
+    public static string AdvancePaymentFormResubmitted {get;} = "Advance Payment Form Resubmitted By Traveller";
+
+    public static string AdvancePaymentFormForward {get;} = "Advance Payment Form Forwarded";
+
+    public static string AdvancePaymentFormProcessed {get;} = "Advance Payment Form Processing Complete";
+
+
+
+
+     public static string ExpenseReportSubmitted  {get;} = "ExpenseReport Submitted";
+
+    public static string ExpenseReportApprovedSupervisor {get;} = "ExpenseReport Submitted By Supervisor";
+    
+    public static string ExpenseReportRejected {get;} = "ExpenseReport Rejected";
+
+    public static string ExpenseReportResubmitted {get;} = "ExpenseReport Resubmitted By Traveller";
+
+    public static string ExpenseReportForward {get;} = "ExpenseReport Forwarded";
+
+    public static string ExpenseReportProcessed {get;} = "ExpenseReport Processing Complete";
+
+    public static string ExpenseReportTravelManagerSubmitted {get;} = "Expense Report Information Added By Travel Manager";
+    
+
+
+
 
 
 

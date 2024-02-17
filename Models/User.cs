@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using backEnd.services;
 
 
 namespace backEnd.Models;
@@ -93,7 +92,7 @@ public class User
 
 
      [JsonPropertyName("roles")]
-    public List<string> Roles { get; set; } = new List<string>();
+     public List<Role> Roles { get; set; }
 
 
       [JsonPropertyName("password")]
@@ -232,8 +231,11 @@ public class User
     public virtual List<HotelQuotation>? HotelApproved {get; set;} = new List<HotelQuotation>();
 
 
-    [JsonPropertyName("CurrentReceiptsHandled")]
+    [JsonPropertyName("currentReceiptsHandled")]
     public virtual List<MoneyReceipt>? CurrentReceiptsHandled {get; set;} = new List<MoneyReceipt>();
+
+        [JsonPropertyName("currentExpenseReportsHandled")]
+    public virtual List<ExpenseReport>? CurrentExpenseReportsHandled {get; set;} = new List<ExpenseReport>();
 
 
 }

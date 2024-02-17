@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Authorization;
 
 using MailKit;
 using AutoMapper;
-using backEnd.services;
 using backEnd.Helpers;
 using System.Security.AccessControl;
 using backEnd.Services;
@@ -118,7 +117,7 @@ public class TripTicketQuoteController : ControllerBase
 
              if(best == "Yes"){
                 request.Status = "Seeking Confirmation";
-                request.CurrentHandlerId  = request.Requester?.TravelHandler.Id;
+                request.CurrentHandlerId  = null;
 
                   foreach(var quotation2 in quotations){
                       quotation2.Booked = true;

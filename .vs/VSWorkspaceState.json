@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Services"
   ],
+  "SelectedNode": "\\Services\\ExpenseReportService.cs",
   "PreviewInSolutionExplorer": false
 }

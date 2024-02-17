@@ -14,23 +14,12 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Text;
 using backEnd.Services.IServices;
 using backEnd.Helpers.IHelpers;
-
 using Microsoft.AspNetCore.Authorization;
-
-
-
-
-
-
-
-
 using MailKit;
 using AutoMapper;
-using backEnd.services;
 using backEnd.Helpers;
 using System.Security.AccessControl;
 using backEnd.Services;
-using backEnd.Helpers;
 using Org.BouncyCastle.Asn1.X509;
 using MimeKit.Encodings;
 using Microsoft.VisualBasic;
@@ -49,7 +38,6 @@ namespace backEnd.Controllers.RequestControllers;
 
 [Route("/")]
 [ApiController]
-
 public class RequestController : ControllerBase
 {
 
@@ -64,14 +52,12 @@ public class RequestController : ControllerBase
     private IHelperClass _helperClass;
     private TravelContext _travelContext;
     private IQuotationService _quotationService;
-
-    private BudgetsService _budgetService;
-    
+    private IBudgetsService _budgetService;
     private ILogService _logService;
-
-
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
+
+    private IIDCheckService _idCheckService;
 
 
 
@@ -79,7 +65,15 @@ public class RequestController : ControllerBase
    
 
 
-    public RequestController(IJwtTokenConverter jwtTokenConverter, TripService tripService, BudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestController(
+        IIDCheckService idCheckService,
+        IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+        IBudgetsService budgetsService, ILogService logService, 
+        IQuotationService quotationService, TravelContext travelContext, 
+        IHelperClass helperClass, IFileHandler fileHandler, 
+        IUsersService usersService, IAgentsService agentsService, 
+        IMapper mapper, IRequestService requestService, 
+        IMailer mailer, INotifier notifier)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -95,6 +89,7 @@ public class RequestController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
     }
 
 
@@ -104,6 +99,14 @@ public class RequestController : ControllerBase
 
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var user = JsonSerializer.Deserialize<User>(data["user"]);
+        var token = data["token"];
+
+
+        var allowed = _idCheckService.CheckSupervisor(request, token);
+
+        if(allowed == false){
+            return Ok(false);
+        }
         
    
         
@@ -145,7 +148,7 @@ public class RequestController : ControllerBase
       
       var requestId = await _requestService.CreateAsync(request); 
 
-      var token = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor!);
+      var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor!);
             
             
             // foreach(var agent in agents){
@@ -158,11 +161,11 @@ public class RequestController : ControllerBase
       string message = $"A travel request from {request.Requester.EmpName} requires your approval for a new trip";
 
 
-      await _notifier.InsertNotification(message, request.Requester.Id, request.Requester.SuperVisorId, request.Id, Events.SupervisorApprovalTrip);
+      await _notifier.InsertNotification(message, request.Requester.Id, request.Requester.SuperVisorId, request.Id, Events.SupervisorApprovalTrip,   "unapproved");
       
       await _logService.InsertLog(requestId, request.Requester.Id, request.CurrentHandlerId, Events.SupervisorApprovalTrip);
 
-      _mailer.SeekSupervisorApprovalTrip(request, token);
+      _mailer.SeekSupervisorApprovalTrip(request, token2);
 
 
         return Ok(true);
@@ -184,7 +187,7 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
   
 
     await _notifier.DeleteNotification(int.Parse(id), result.Requester.ZonalHead.Id, Events.ZonalHeadApproval);
-    await _notifier.DeleteNotification(int.Parse(id), result.Requester.TravelHandler.Id, Events.RequestRaised);
+  
 
     return Ok(result);
 }
@@ -288,12 +291,12 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
 
              string msg = $"Your travel request with the number {request.Id} has been processed.";
 
-            await _notifier.InsertNotification(msg, request.Requester.TravelHandler.Id, request.Requester.Id, request.Id, Events.Processed);
+            // await _notifier.InsertNotification(msg, request.Requester.TravelHandler.Id, request.Requester.Id, request.Id, Events.Processed);
 
-            await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.AirTicketInvoiceSent);
-            await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.HotelInvoiceSent);
+            // await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.AirTicketInvoiceSent);
+            // await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.HotelInvoiceSent);
 
-            await _logService.InsertLog(request.Id, request.Requester.TravelHandler.Id, request.Requester.Id, Events.Processed);
+            // await _logService.InsertLog(request.Id, request.Requester.TravelHandler.Id, request.Requester.Id, Events.Processed);
 
 
 

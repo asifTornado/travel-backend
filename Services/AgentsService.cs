@@ -9,7 +9,7 @@ using backEnd.Services.IServices;
 using backEnd.Factories.IFactories;
 using Dapper;
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class AgentsService : IAgentsService
 {

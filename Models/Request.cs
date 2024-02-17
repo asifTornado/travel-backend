@@ -9,7 +9,7 @@ using Org.BouncyCastle.Asn1.Mozilla;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http.Features;
-using backEnd.services;
+using backEnd.Services;
 using Newtonsoft.Json;
 
 namespace backEnd.Models;
@@ -101,6 +101,9 @@ public virtual List<HotelQuotation>? HotelQuotations {get; set;}  = new List<Hot
     
 [JsonPropertyName("agentNumbers")]
 public int? AgentNumbers {get; set;} = 0;
+
+[JsonPropertyName("prevHandlerIds")]
+public List<int>? PrevHandlerIds {get; set;} = new List<int>();
 
 [JsonPropertyName("currentHandlerId")]
 public int? CurrentHandlerId {get; set;} 
@@ -237,6 +240,9 @@ public int MoneyReceiptId {get; set;}
 
 [JsonPropertyName("moneyReceiptSubmitted")]
 public bool MoneyReceiptSubmitted {get; set;} = false;
+
+[JsonPropertyName("approvals")]
+public List<User>? Approvals {get; set;} = new List<User>();
 
   
 

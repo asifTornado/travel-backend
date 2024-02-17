@@ -19,6 +19,14 @@ public class MoneyReceiptConfiguration : IEntityTypeConfiguration<MoneyReceipt>
         x => JsonSerializer.Deserialize<List<User>>(x, JsonSerializerOptions.Default)
       );
 
+
+      builder.Property(x => x.PrevHandlerIds)
+    .HasColumnType("nvarchar(max)")
+    .HasConversion(
+      v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+      v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
+    );
+
       builder
       .HasOne(r => r.CurrentHandler)
       .WithMany(u => u.CurrentReceiptsHandled)

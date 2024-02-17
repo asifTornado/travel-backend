@@ -35,7 +35,9 @@ public class UsersService:IUsersService
 
 
             
-           var results = await _travelContext.Users.AsNoTracking().ToListAsync();
+           var results = await _travelContext.Users.AsNoTracking()
+           .Include(x => x.Roles)
+           .ToListAsync();
            
            return results;
                
@@ -136,6 +138,7 @@ public class UsersService:IUsersService
         .Include(user => user.TravelHandler)
         .Include(user => user.ZonalHead)
         .Include(user => user.FlyerNos)
+        .Include(user => user.Roles)
      
         .Where(user => user.Id == id)
        
@@ -149,37 +152,11 @@ public class UsersService:IUsersService
     }
 
 
-    
-
-
-    // public async Task<List<User>> GetUsers(List<User> leaders){
-    //     var result = await _user.Find(x => leaders.Any(y => y.MailAddress == x.MailAddress)).ToListAsync();
-    //     return result;
-    // }
 
     public async Task CreateAsync(User newUser){
 
 
-        // var number = await _counterService.GetOrCreateCounterUserAsync();
-//         await using SqlConnection connection = _connection.GetConnection();
-//         connection.Open();
-
-//         string sql = @"
-//        INSERT INTO [dbo].[Users] 
-// ([EmpName], [EmpCode], [Designation], [MailAddress], 
-// [Unit], [Section], [Wing], [Team], [Department], [TeamType],
-// [Password], [UserType], [Available], [Rating], [Raters], 
-// [Extension], [MobileNo], [Location], [Numbers], [SuperVisorId], 
-// [ZonalHeadId], [TravelHandlerId], [PassportNo], [Preferences], [HasFrequentFlyerNo])
-
-// VALUES(@EmpName, @EmpCode, @Designation, @MailAddress, @Unit, @Section, @Wing, 
-// @Team, @Department, @TeamType, @Password, @UserType, @Available, @Rating,
-// @Raters, @Extension, @MobileNo, @Location, @Numbers, @SuperVisorId, @ZonalHeadId, 
-// @TravelHandlerId, @PassportNo, @Preferences, @HasFrequentFlyerNo);
-            
-// ";
-
-//         await connection.ExecuteAsync(sql, newUser);
+   
 
           _travelContext.Entry(newUser.SuperVisor).State = EntityState.Modified;
           _travelContext.Entry(newUser.TravelHandler).State = EntityState.Modified;
@@ -197,31 +174,62 @@ public class UsersService:IUsersService
 
     public async Task UpdateAsync(int id, User user){
 
-        _travelContext.ChangeTracker.Clear();
+     _travelContext.ChangeTracker.Clear();
 
-            var original = await _travelContext.Users
-             .AsNoTracking()
-             .Include(user => user.FlyerNos)
-             .FirstOrDefaultAsync(u => u.Id == id);
+var original = await _travelContext.Users
+    .AsNoTracking()
+    .Include(user => user.FlyerNos)
+    .Include(user => user.Roles)
+    .FirstOrDefaultAsync(u => u.Id == id);
 
-            _travelContext.Entry(user).State = EntityState.Modified;
 
-        
-            user.FlyerNos.ForEach(x => {
-                if(x.Id == 0 || x.Id == null){
-                    _travelContext.Entry(x).State = EntityState.Added;
-                }else{
-                    original.FlyerNos.ForEach(y => {
-                        if(!user.FlyerNos.Any(e => e.Id == y.Id)){
-                            _travelContext.Entry(y).State = EntityState.Deleted;
-                        }else{
-                            _travelContext.Entry(y).State = EntityState.Modified;
-                        }
-                    });
-                }
-            });
+user.Roles.ForEach(x => {
 
-            await _travelContext.SaveChangesAsync();
+     var originalRoleNo = original.Roles.FirstOrDefault(y => y.Id == x.Id);
+        if (originalRoleNo == null)
+        {
+            var newUserRole = new UserRoles(){UserId = user.Id, RoleId = x.Id};
+            _travelContext.Entry(newUserRole).State = EntityState.Added;
+        }
+
+});
+
+original.Roles.ForEach(x => {
+    var newRoleNo = user.Roles.FirstOrDefault( y => y.Id == x.Id);
+
+    if(newRoleNo == null){
+        var oldUserRole = new UserRoles(){UserId = user.Id, RoleId = x.Id};
+        _travelContext.Entry(oldUserRole).State = EntityState.Deleted;
+    }
+});
+
+
+
+user.FlyerNos.ForEach(x =>
+{
+    if (x.Id == 0 || x.Id == null)
+    {
+        _travelContext.Entry(x).State = EntityState.Added;
+    }
+    else
+    {
+        var originalFlyerNo = original.FlyerNos.FirstOrDefault(y => y.Id == x.Id);
+        if (originalFlyerNo != null)
+        {
+            _travelContext.Entry(originalFlyerNo).CurrentValues.SetValues(x);
+            _travelContext.Entry(originalFlyerNo).State = EntityState.Modified;
+        }
+        else
+        {
+            _travelContext.Entry(x).State = EntityState.Added;
+        }
+    }
+});
+
+
+_travelContext.Entry(user).State = EntityState.Modified;
+
+await _travelContext.SaveChangesAsync();
            }
             
 

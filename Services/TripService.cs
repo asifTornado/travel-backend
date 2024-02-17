@@ -20,7 +20,7 @@ using ZstdSharp.Unsafe;
 using Newtonsoft.Json.Converters;
 
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class TripService
 {

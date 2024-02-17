@@ -17,7 +17,7 @@ using backEnd.Services.IServices;
 using Dapper;
 using models.DTOs;
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class HotelForBrandService: IHotelForBrandService
 {

@@ -21,7 +21,7 @@ using AutoMapper.QueryableExtensions;
 
 
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class BudgetsService : IBudgetsService
 {
@@ -152,10 +152,9 @@ public class BudgetsService : IBudgetsService
     }
 
 
-    public async Task<List<BudgetDTO>> GetAllBudgets(){
+    public async Task<List<Budget>> GetAllBudgets(){
 
       var results = await _travelContext.Budgets.AsNoTracking()
-      .ProjectTo<BudgetDTO>(_mapper.ConfigurationProvider)
       .ToListAsync();
       return results;
 

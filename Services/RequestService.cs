@@ -20,7 +20,7 @@ using ZstdSharp.Unsafe;
 using Newtonsoft.Json.Converters;
 using AutoMapper.QueryableExtensions;
 
-namespace backEnd.services;
+namespace backEnd.Services;
 
 public class RequestService: IRequestService
 {
@@ -440,13 +440,13 @@ public class RequestService: IRequestService
    }
 
 
-   public async Task<List<RequestDTO>> GetUnapprovedRequests(int id){
+   public async Task<List<Request>> GetUnapprovedRequests(int id){
     var result = await _travelContext.Requests.AsNoTracking()
                     .Include(x => x.Requester)
                     .Where(x => (x.SupervisorApproved == false || x.DepartmentHeadApproved  == false) && x.PermanentlyRejected != true
                     && (x.RequesterId == id || x.Requester!.SuperVisorId == id || x.Requester!.ZonalHeadId == id)
                     )
-                    .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
+                    
                     .ToListAsync();
     return result;
    }

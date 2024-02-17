@@ -29,11 +29,18 @@ public class MoneyReceiptController : ControllerBase
     private IUsersService _usersService;
     private MoneyReceiptService _moneyReceiptService;
 
+    private INotifier _notifier;
+    private ILogService _logService;
 
 
-    public MoneyReceiptController(IUsersService usersService, MoneyReceiptService moneyReceiptService)
+
+
+
+    public MoneyReceiptController(ILogService logService,  IUsersService usersService, MoneyReceiptService moneyReceiptService, INotifier notifier)
     {
       _moneyReceiptService = moneyReceiptService;
+      _notifier = notifier;
+      _logService = logService;
     }
 
   
@@ -46,11 +53,17 @@ public class MoneyReceiptController : ControllerBase
 
     moneyReceipt.RequestId = request.Id;
     moneyReceipt.CurrentHandlerId = request.Requester.SuperVisorId;
-    moneyReceipt.Approvals = new List<User>();
-    moneyReceipt.Approvals.Add(request.Requester);
+ 
     moneyReceipt.Submitted = true;
+    moneyReceipt.Rejected = false;
 
     await _moneyReceiptService.SubmitMoneyReceipt(moneyReceipt, request);
+
+    var message = $"{request.Requester.EmpName} has submitted his advance payment form for the trip numbered {request.BudgetId}";
+
+  await _notifier.InsertNotification(message, request.RequesterId, request.Requester.SuperVisorId, moneyReceipt.Id, Events.AdvancePaymentFormSubmitted, "moneyReceipt");
+  await _logService.InsertLog(moneyReceipt.RequestId, request.RequesterId, request.Requester.SuperVisorId, Events.AdvancePaymentFormSubmitted);
+
 
     return Ok(true);
 
