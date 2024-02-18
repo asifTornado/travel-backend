@@ -76,6 +76,12 @@ public class ExpenseReport {
     [JsonPropertyName("travelManagerSubmitted")]
     public bool?  TravelManagerSubmitted {get; set;} = false;
 
+    [JsonPropertyName("expenseDisbursed")]
+    public bool? ExpenseDisbursed {get; set;} = false;
+
+    [JsonPropertyName("amountDisbursed")]
+    public string? AmountDisbursed {get; set;} 
+
 }
 
 

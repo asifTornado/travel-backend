@@ -47,6 +47,21 @@ public class ExpenseReportController : ControllerBase
     var result = await _expenseReportService.GetExpenseReport(id);
     return Ok(result);
 
+  }
+
+  [HttpPost]
+  [Route("disburse")]
+  public async Task<IActionResult> Disburse(IFormCollection data){
+    var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
+    var amount = data["amount"];
+    expenseReport.ExpenseDisbursed = true;
+    expenseReport.AmountDisbursed = amount;
+    
+    await _expenseReportService.UpdateExpenseReport(expenseReport);
+
+    return Ok(expenseReport);
+
+  } 
   } 
   
 
@@ -58,7 +73,7 @@ public class ExpenseReportController : ControllerBase
    
     
 
-}
+
 
  
 

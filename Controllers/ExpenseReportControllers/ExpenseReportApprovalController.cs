@@ -118,7 +118,7 @@ public class ExpenseReportApprovalController : ControllerBase
     
     expenseReport.Status = "Seeking Rectification";
     
-    expenseReport.Rejected = true;
+    expenseReport.Rejected = false;
     expenseReport.TravelManagerSubmitted = false;
     
 

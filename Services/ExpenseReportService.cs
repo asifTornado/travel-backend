@@ -65,18 +65,21 @@ public class ExpenseReportService : IExpenseReportService
             var exist = original.Expenses.Any(x => x.Id == expense.Id);
             if (exist == true)
             {
-                _travelContext.Entry(expense).State = EntityState.Modified
+                _travelContext.Entry(expense).State = EntityState.Modified;
             }
             else
             {
-                _travelContext.Entry(expense).State = EntityState.Added
-                    .
+                _travelContext.Entry(expense).State = EntityState.Added;
+                    
             }
     }
 
     foreach(var expense in original.Expenses)
         {
             var exist = expenseReport.Expenses.Any(x => x.Id == expense.Id);
+            if(exist == false){
+                 _travelContext.Entry(expense).State = EntityState.Deleted;
+            }
             
         }
     
