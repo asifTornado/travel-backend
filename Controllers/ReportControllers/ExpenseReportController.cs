@@ -91,7 +91,7 @@ public class ExpenseReportController : ControllerBase
 
  var message = $"{request.Requester.EmpName} has submitted an expense report for the trip numbered {request.BudgetId} ";
 
-  await _notifier.InsertNotification(message, request.RequesterId, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportSubmitted, "expenseReport");
+  await _notifier.InsertNotification(message, request.RequesterId, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportSubmitted, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, request.RequesterId, expenseReport.CurrentHandlerId, Events.ExpenseReportSubmitted);
 
         return Ok(expenseReport);
@@ -124,7 +124,7 @@ public class ExpenseReportController : ControllerBase
 
          var message = $"{request.Requester.EmpName} has resubmitted an expense report for the trip numbered {request.BudgetId} ";
 
-  await _notifier.InsertNotification(message, request.RequesterId, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportResubmitted, "expenseReport");
+  await _notifier.InsertNotification(message, request.RequesterId, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportResubmitted, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, request.RequesterId, expenseReport.CurrentHandlerId, Events.ExpenseReportResubmitted);
         return Ok(expenseReport);
     }
@@ -149,7 +149,7 @@ public class ExpenseReportController : ControllerBase
 
          var message = $"{travelManager.EmpName} has submitted an expense report for the trip numbered {request.BudgetId} ";
 
-  await _notifier.InsertNotification(message, travelManager.Id, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportTravelManagerSubmitted, "expenseReport");
+  await _notifier.InsertNotification(message, travelManager.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportTravelManagerSubmitted, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, travelManager.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportTravelManagerSubmitted);
         return Ok(expenseReport);
     }
@@ -181,7 +181,7 @@ public class ExpenseReportController : ControllerBase
 
          var message = $"{travelManager.EmpName} has rejected your expense report for the trip numbered {request.BudgetId} ";
 
-  await _notifier.InsertNotification(message, travelManager.Id, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportRejected, "expenseReport");
+  await _notifier.InsertNotification(message, travelManager.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportRejected, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, travelManager.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportRejected);
   
         return Ok(expenseReport);

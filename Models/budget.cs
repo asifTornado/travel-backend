@@ -107,6 +107,43 @@ public class Budget
     [JsonPropertyName("custom")]
     public bool? Custom {get; set;} = false;
 
+    [JsonPropertyName("ticketApprovals")]
+    public List<User>? TicketApprovals {get; set;} = new List<User>();
+
+  
+
+    [JsonPropertyName("ticketsApprovedByAccounts")]
+    public bool? TicketsApprovedByAccounts {get; set;} = false;
+
+    [JsonPropertyName("seekingAccountsApprovalForTickets")]
+    public bool? SeekingAccountsApprovalForTickets {get; set;} = false;
+
+    [JsonPropertyName("currentHandlerId")]
+    public int? CurrentHandlerId {get; set;} 
+
+    [JsonPropertyName("prevHandlerIds")]
+    public List<int>? PrevHandlerIds {get; set;} = new List<int>();
+
+    [JsonPropertyName("rejected")]
+    public bool? Rejected {get; set;} = false;
+
+    [JsonPropertyName("processed")]
+    public bool? Processed {get; set;} = false; 
+
+
+    [JsonPropertyName("ticketsMoneyDisbursed")]
+    public bool? TicketsMoneyDisbursed {get; set;} = false;
+
+    [JsonPropertyName("amountDisbursedTickets")]
+    public string? AmountDisbursedTickets {get; set;}
+
+    [JsonPropertyName("ticketsAccountNumber")]
+    public string? TicketsAccountNumber {get; set;}
+    
+    [JsonPropertyName("ticketsAccountHolderName")]
+    public string? TicketsAccountHolderNumber {get; set;}
+   
+
 
     
 

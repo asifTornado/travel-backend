@@ -65,7 +65,7 @@ public class ApprovalController : ControllerBase
     private IQuotationService _quotationService;
     private IBudgetsService _budgetService;
     private ILogService _logService;
-    private TripService _tripService;
+    private ITripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
     private IIDCheckService _idCheckService;
@@ -78,7 +78,7 @@ public class ApprovalController : ControllerBase
 
     public ApprovalController(
     IIDCheckService iDCheckService,
-    TripService tripService,   IBudgetsService budgetsService, 
+    ITripService tripService,   IBudgetsService budgetsService, 
     ILogService logService, IQuotationService quotationService, 
     TravelContext travelContext, IHelperClass helperClass, 
     IFileHandler fileHandler, IUsersService usersService, 

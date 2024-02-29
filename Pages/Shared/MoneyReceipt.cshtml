@@ -1,0 +1,126 @@
+@using backEnd.Models;
+@model MoneyReceipt
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Money Requisition</title>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+</head>
+<body class="h-screen">
+
+    <div class="container" style="margin-top: 10px; margin-bottom: 14px;">
+        <div class="shadow-md shadow-black">
+            <div class="row align-items-center justify-content-center text-h5">Money Requisition</div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="no">No:</label>
+                        <label>@Model.Id</label>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-4">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <label>@Model.Date</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 offset-md-1">
+                    <div class="form-group">
+                        <label for="unit">UNIT:</label>
+                        <label>@Model.Unit</label>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <div class="form-group">
+                        <label for="advanceMoneyInHand">Advance Money In Hand:</label>
+                        <label>@Model.AdvanceMoneyInHand</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-md-1 justify-content-center align-items-center">
+                    <span class="text-h5">I</span>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="i">I:</label>
+                         <label for="i">@Model.I</label>
+                        
+                    </div>
+                </div>
+          
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="designation">Designation:</label>
+                       <label>@Model.Designation</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="requiredTK">Required Taka:</label>
+                        <label>@Model.RequiredTK</label>
+                    </div>
+                </div>
+              
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="taka">Taka:</label>
+                        <label for="taka">@Model.Taka</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+        
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label for="asAdvanceAgainst">As Advance Against:</label>
+                        <label>@Model.AsAdvanceAgainst</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-md-7 justify-content-center align-items-center">
+                    <span class="text-body-1">These Purposes are Entered in Movement Register at Serial No:</span>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+             
+                      <label>@Model.SerialNo</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <span class="text-body-1">to-day</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container mt-4 m-10 shadow-md shadow-black">
+        <div class="row justify-content-center align-items-center text-h5 bg-blue-darken-2">
+            Approvals
+        </div>
+        <div class="row justify-content-start align-items-start">
+            @foreach (var approval in Model.Approvals)
+            {
+                <span class="badge badge-primary m-1">@approval.EmpName</span>
+            }
+        </div>
+    </div>
+
+
+  <script src="~/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
+

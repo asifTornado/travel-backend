@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {}
+    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {}
   },
   "projects": {
-    "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {
+    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+        "projectUniqueName": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
         "projectName": "backEnd",
-        "projectPath": "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+        "projectPath": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
         "packagesPath": "C:\\Users\\Hameem\\.nuget\\packages\\",
-        "outputPath": "E:\\travelling source code-current\\backend-dapper\\obj\\",
+        "outputPath": "e:\\travelling source code-current\\backend-dapper\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Hameem\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -128,7 +128,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

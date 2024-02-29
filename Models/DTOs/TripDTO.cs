@@ -20,31 +20,14 @@ public class TripDTO : Trip{
     [JsonPropertyName("brand")]
     public string? Brand {get; set;} = string.Empty;
     
-    // [JsonPropertyName("travellerName")]
-    // public string? TravellerName {get; set;} 
-        
-    // [JsonPropertyName("travellerEmail")]
-    // public string? TravellerEmail {get; set;} 
-    
-    // [JsonPropertyName("travelMode")]
-    // public string? TravelMode {get; set;} 
-
-    
     [JsonPropertyName("destination")]
-    public string? Destination {get; set;} 
+    public string? Destination {get; set;}  
 
-    
-    // [JsonPropertyName("purpose")]
-    // public string? Purpose {get; set;} 
-
-    
     [JsonPropertyName("departure_date")]
     public string? DepartureDate {get; set;} 
-
     
     [JsonPropertyName("arrival_date")]
     public string? ArrivalDate {get; set;} 
-
 
     [JsonPropertyName("numberOfDays")]
     public string? NumberOfDays {get; set;} 
@@ -52,12 +35,8 @@ public class TripDTO : Trip{
     [JsonPropertyName("numberOfTravelers")]
     public string? NumberOfTravelers {get; set;}
 
-
-
-        
     [JsonPropertyName("airTicketBudget")]
     public string? AirTicketBudget {get; set;} 
-
 
     [JsonPropertyName("hotelBudget")]
     public string? HotelBudget {get; set;}
@@ -74,35 +53,45 @@ public class TripDTO : Trip{
     [JsonPropertyName("totalTripBudget")]
     public string? TotalTripBudget {get; set;}
 
-
-
     [JsonPropertyName("initiated")]
     public string? Initiated {get; set;} = "No";
-
-
-
-
-
 
     [JsonPropertyName("travelers")]
     public List<User>? Travelers {get; set;}
 
-
     [JsonPropertyName("requests")]
     public List<Request>? Requests {get; set;}
-
-
-
-
+    public List<Message> Messages { get; set; } = new List<Message>();
+    public List<Quotation> Quotations { get; set; } = new List<Quotation>();
+    public List<HotelQuotation> HotelQuotations { get; set; } = new List<HotelQuotation>();
+    public List<User> TicketApprovers { get; set; } = new List<User>();
+    public List<User> HotelApprovers { get; set; } = new List<User>();
     
+    [JsonPropertyName("ticketApprovals")]
+    public List<User>? TicketApprovals {get; set;} = new List<User>();
 
+    [JsonPropertyName("hotelApprovals")]
+    public List<User>? HotelApprovals {get; set;} = new List<User>();
 
+    [JsonPropertyName("ticketsApprovedByAccounts")]
+    public bool? TicketsApprovedByAccounts {get; set;} = false;
 
-      public List<Message> Messages { get; set; } = new List<Message>();
-      public List<Quotation> Quotations { get; set; } = new List<Quotation>();
-      public List<HotelQuotation> HotelQuotations { get; set; } = new List<HotelQuotation>();
+    [JsonPropertyName("seekingAccountsApprovalForTickets")]
+    public bool? SeekingAccountsApprovalForTickets {get; set;} = false;
 
-      public List<User> TicketApprovers { get; set; } = new List<User>();
-      public List<User> HotelApprovers { get; set; } = new List<User>();
+    [JsonPropertyName("currentHandlerId")]
+    public int? CurrentHandlerId {get; set;} 
+
+      [JsonPropertyName("ticketsMoneyDisbursed")]
+    public bool? TicketsMoneyDisbursed {get; set;} = false;
+
+    [JsonPropertyName("amountDisbursedTickets")]
+    public string? AmountDisbursedTickets {get; set;}
+
+    [JsonPropertyName("ticketsAccountNumber")]
+    public string? TicketsAccountNumber {get; set;}
+    
+    [JsonPropertyName("ticketsAccountHolderName")]
+    public string? TicketsAccountHolderNumber {get; set;}
       
 }

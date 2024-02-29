@@ -54,7 +54,7 @@ public class RequestController : ControllerBase
     private IQuotationService _quotationService;
     private IBudgetsService _budgetService;
     private ILogService _logService;
-    private TripService _tripService;
+    private ITripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
     private IIDCheckService _idCheckService;
@@ -67,7 +67,7 @@ public class RequestController : ControllerBase
 
     public RequestController(
         IIDCheckService idCheckService,
-        IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+        IJwtTokenConverter jwtTokenConverter, ITripService tripService, 
         IBudgetsService budgetsService, ILogService logService, 
         IQuotationService quotationService, TravelContext travelContext, 
         IHelperClass helperClass, IFileHandler fileHandler, 
@@ -100,6 +100,8 @@ public class RequestController : ControllerBase
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var user = JsonSerializer.Deserialize<User>(data["user"]);
         var token = data["token"];
+
+        
 
 
         var allowed = _idCheckService.CheckSupervisor(request, token);
@@ -301,7 +303,7 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
 
 
 
-            return Ok(request.Status);
+            return Ok(request);
 
        }
 
@@ -316,14 +318,17 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
             var recipient = data["recipient"];
             var whom = data["whom"];
             var type = data["type"];
+
+            var currentHandler = await _usersService.GetUserByMail(recipient);
             
             User auditor;
 
             auditor = whom == "accounts" ? await _usersService.GetAuditor() : null;
 
-            
+            request.CurrentHandlerId = currentHandler.Id;
 
             request.Status = whom == "accounts" ? "Being Processed" : request.Status;
+            request.BeingProcessed = true;
 
 
             await _requestService.UpdateStatus(request);
@@ -332,7 +337,7 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
 
            await _notifier.DeleteNotification(request.Id, user.Id, Events.AirTicketInvoiceSent);
 
-            return Ok(request.Status);
+            return Ok(request);
 
 
         }

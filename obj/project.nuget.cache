@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4e+GuWn/jyaTkR+jsyVhsaJh/yR+y6cEoMG1xr1a0hJhQMvEKiPqPt0C6RWtKbjPdK1k9mA/4lG7ly3ovaHlTg==",
+  "dgSpecHash": "JFxD31rMsxGlStpLrEH9v48Sv4mfaakW7muA8UATeuJxAw0cdjMXFgQrUHDRSpnhpY+PV1CzVrt7BUR3Ax4zSQ==",
   "success": true,
-  "projectFilePath": "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+  "projectFilePath": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hameem\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Hameem\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -111,26 +111,5 @@
     "C:\\Users\\Hameem\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
     "C:\\Users\\Hameem\\.nuget\\packages\\zstdsharp.port\\0.6.2\\zstdsharp.port.0.6.2.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    }
-  ]
+  "logs": []
 }

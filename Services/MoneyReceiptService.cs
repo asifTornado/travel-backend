@@ -82,6 +82,7 @@ public class MoneyReceiptService
 
   public async Task<MoneyReceipt> GetMoneyReceipt(int id){
     var result = await _context.MoneyReceipts.AsNoTracking()
+                 .Include(x => x.Request)
                  .Where(x => x.Id == id)
                  .FirstOrDefaultAsync();
     return result;

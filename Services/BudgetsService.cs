@@ -77,6 +77,7 @@ public class BudgetsService : IBudgetsService
 
         var budget = await _travelContext.Budgets.AsNoTracking()
         .Include(x => x.Travelers)
+        .Include(x => x.TicketApprovals)
         .FirstOrDefaultAsync(b => b.Id == id);
 
         var requests = await _travelContext.Requests.AsNoTracking()
@@ -249,7 +250,7 @@ return new JsonResult(filteredResults);
     }
 
 
-    public async Task<Budget> GetTrip(int id)
+    public async Task<Budget> GetTicketQuotation(int id)
     {
         var result = await _travelContext.Budgets.AsNoTracking()
         .Include(b => b.Requests)
@@ -259,6 +260,43 @@ return new JsonResult(filteredResults);
         .FirstOrDefaultAsync(b => b.Initiated == "Yes" && b.Id == id);
         return result;
     }
+
+
+    
+    public async Task<List<Budget>> GetAllTicketQuotations(){
+        var result = await _travelContext.Budgets.AsNoTracking()
+                    .Where(x =>  x.SeekingAccountsApprovalForTickets == true)
+                    .ToListAsync();
+       return result;
+    }
+
+ 
+
+    public async Task<List<Budget>> GetTicketQuotationsForMe(User user){
+        var result = await _travelContext.Budgets.AsNoTracking()
+                    .Where(x => x.CurrentHandlerId == user.Id && x.SeekingAccountsApprovalForTickets == true)
+                    .ToListAsync();
+       return result;
+    }
+
+
+       public async Task<List<Budget>> GetTicketQuotationsApprovedByMe(User user){
+        var result = await _travelContext.Budgets.AsNoTracking()
+                     .Include(x => x.TicketApprovals)
+                     .Where(x => x.TicketApprovals.Any(x => x.Id == user.Id) && x.SeekingAccountsApprovalForTickets == true)
+                     .ToListAsync();
+
+       return result;
+
+
+      
+    }
+
+
+     public async Task InsertBudgetTicketApprover(BudgetTicketApprovals budgetTicketApprovals){
+        _travelContext.Entry(budgetTicketApprovals).State = EntityState.Added;
+        await _travelContext.SaveChangesAsync();
+       }
 }
 
 

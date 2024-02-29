@@ -36,6 +36,19 @@ namespace backEnd.Helpers
         }
 
 
+           public async Task<byte[]?> GenerateAdvancePaymentForm(string fileName,  MoneyReceipt moneyReceipt, ControllerContext controllerContext)
+        {
+            var pdf = await new ViewAsPdf("MoneyReceipt", moneyReceipt){
+            FileName = fileName,
+            PageSize = Size.A4,
+            PageOrientation = Orientation.Portrait,
+            PageMargins = { Left = 15, Right = 15, Top = 20, Bottom = 20 }
+        }.BuildFile(controllerContext);
+
+        return pdf;
+        }
+
+
         public async Task<string?> GenerateCSStatement(string type, Request request, ControllerContext controllerContext){
                    string fileName = $"request_{request.Id}_{type}_CSStatement.pdf";
 

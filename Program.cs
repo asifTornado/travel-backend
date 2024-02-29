@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient();
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IIDCheckService, IDCheckService>();
 builder.Services.AddScoped<MoneyReceiptService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<MailerWorkFlow>();
+builder.Services.AddScoped<MailerMoneyReceipt>();
 
 
 builder.Services.AddScoped<ICounterService, CounterService>();
@@ -48,7 +50,7 @@ builder.Services.AddScoped<IHotelForBrandService, HotelForBrandService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
 builder.Services.AddScoped<IChartService, ChartService>();
 builder.Services.AddScoped<IExpenseReportService, ExpenseReportService>();
-builder.Services.AddScoped<TripService>();
+builder.Services.AddScoped<ITripService, TripService>();
 
 builder.Services.AddScoped<ILogService, LogService>();
 

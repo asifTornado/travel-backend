@@ -6,13 +6,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backEnd.Models
 {
+ 
     public class Notification
     {
+
+
     [JsonPropertyName("_id")]
     [Key]
 
     public int Id { get; set; }
-
    
     [JsonPropertyName("time")] 
     public string? Time { get; set; } = string.Empty;
@@ -21,13 +23,8 @@ namespace backEnd.Models
     public string? Message { get; set; } = string.Empty;
 
 
-    [JsonPropertyName("ticketId")]
-    public int? TicketId { get; set; } = 0;
-
-
-    [JsonPropertyName("request")]
-    public Request? Ticket { get; set; }
-
+    [JsonPropertyName("sourceId")]
+    public int? SourceId { get; set; } = 0;
 
 
     [JsonPropertyName("from")]
@@ -44,10 +41,6 @@ namespace backEnd.Models
 
     [JsonPropertyName("event")]
     public string? Event {get; set;} = string.Empty;
-
-
-
-
 
 
 

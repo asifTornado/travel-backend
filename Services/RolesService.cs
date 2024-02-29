@@ -55,6 +55,8 @@ public class RoleService
         var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Accounts Expense Report")).FirstOrDefaultAsync();
         return result;
     }
+    
+
 
     public async Task<User> GetTravelManager(){
         var result = await _travelContext.Users.Where(x => x.Roles.Any(y => y.Value == "Travel Manager")).FirstOrDefaultAsync();

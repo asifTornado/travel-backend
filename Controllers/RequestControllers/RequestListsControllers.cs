@@ -69,7 +69,7 @@ public class RequestListsController : ControllerBase
     private ILogService _logService;
 
 
-    private TripService _tripService;
+    private ITripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
 
@@ -78,7 +78,7 @@ public class RequestListsController : ControllerBase
    
 
 
-    public RequestListsController(IJwtTokenConverter jwtTokenConverter, TripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestListsController(IJwtTokenConverter jwtTokenConverter, ITripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
     {
         _imapper = mapper;
         _requestService = requestService;

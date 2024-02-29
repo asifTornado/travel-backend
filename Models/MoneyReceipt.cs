@@ -68,7 +68,7 @@ public class MoneyReceipt{
     
 
      [JsonPropertyName("approvals")]
-public List<User>? Approvals {get; set;} = new List<User>();
+    public List<User>? Approvals {get; set;} = new List<User>();
 
 
     [JsonPropertyName("currentHandlerId")]
@@ -90,6 +90,19 @@ public List<User>? Approvals {get; set;} = new List<User>();
 
     [JsonPropertyName("rejected")]
     public bool? Rejected {get; set;} = true;
+
+    [JsonPropertyName("disbursed")]
+    public bool? Disbursed {get; set;} = false;
+
+ 
+    [JsonPropertyName("amountDisbursed")]
+    public string? AmountDisbursed {get; set;} 
+
+    [JsonPropertyName("bankAccountHolderName")]
+    public string? BankAccountHolderName {get; set;}
+
+    [JsonPropertyName("bankAccountNumber")]
+    public string? BankAccountNumber {get; set;}
     
 }
 

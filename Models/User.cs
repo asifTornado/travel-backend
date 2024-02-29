@@ -225,6 +225,11 @@ public class User
     [NotMapped]
     [JsonPropertyName("ticketApproved")]
     public virtual List<Quotation>? TicketApproved {get; set;} = new List<Quotation>();
+
+
+    [NotMapped]
+    [JsonPropertyName("budgetTicketsApproved")]
+    public virtual List<Budget>? BudgetTicketsApproved {get; set;} = new List<Budget>();
     
     [NotMapped]
     [JsonPropertyName("hotelApproved")]

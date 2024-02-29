@@ -31,7 +31,7 @@ namespace backEnd.Helpers
        
 
 
-         public async Task InsertNotification(string message, int? from, int? to, int? ticketId, string Event, string type = "message")
+         public async Task InsertNotification(string message, int? from, int? to, int sourceId, string Event, string type = "message")
         {
             
             var time = _helper.GetCurrentTime();
@@ -42,7 +42,7 @@ namespace backEnd.Helpers
                 Message = message,
                 From = from,
                 To = to,
-                TicketId = ticketId,
+                SourceId = sourceId,
                 Type = type,
                 Event = Event
                 
@@ -58,9 +58,9 @@ namespace backEnd.Helpers
         }
 
 
-        public async Task DeleteNotification(int? TicketId, int? To, string Event)
+        public async Task DeleteNotification(int? sourceId, int? To, string Event)
         {   
-            await _notificationService.DeleteNotification(TicketId, To, Event);
+            await _notificationService.DeleteNotification(sourceId, To, Event);
         }
 
 

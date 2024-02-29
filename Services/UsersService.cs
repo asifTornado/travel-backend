@@ -43,6 +43,14 @@ public class UsersService:IUsersService
                
             }
 
+    public async Task<User> GetAdmin(){
+        var result = await _travelContext.Users.AsNoTracking()
+                           .Where(x => x.UserType == "admin" )
+                           .FirstOrDefaultAsync();
+
+                    return result;
+    }
+
     public async Task<List<User>> GetUsersForSupervisor(int id){
         var results = await _travelContext.Users.AsNoTracking()
                       .Where(x => x.SuperVisorId == id)

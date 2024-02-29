@@ -55,7 +55,7 @@ namespace backEnd.Controllers.TripControllers;
 public class TripController : ControllerBase
 {
     private IBudgetsService _budgetsService;
-    private TripService _tripService;
+    private ITripService _tripService;
     private IMapper _imapper;
     private IFileHandler _fileHandler;
     private IUsersService _usersService;
@@ -63,9 +63,10 @@ public class TripController : ControllerBase
     private ILogService _logService;
     private IIDCheckService _idCheckService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    private readonly RoleService _rolesService;
 
     
-    public TripController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
+    public TripController(IJwtTokenConverter jwtTokenConverter, RoleService rolesService, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -76,6 +77,7 @@ public class TripController : ControllerBase
         _mailer = mailer;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _rolesService = rolesService;
         
 
 
@@ -160,6 +162,7 @@ public class TripController : ControllerBase
             var requestIds = trip.Requests.Select( x => x.Id).ToList();
         
             var auditor = await _usersService.GetAuditor();
+        
 
             
 

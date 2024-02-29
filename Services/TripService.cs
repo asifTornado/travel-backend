@@ -1,5 +1,6 @@
 using backEnd.Models;
 using backEnd.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -22,7 +23,7 @@ using Newtonsoft.Json.Converters;
 
 namespace backEnd.Services;
 
-public class TripService
+public class TripService:ITripService
 {
       
     private TravelContext _travelContext;

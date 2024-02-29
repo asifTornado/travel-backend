@@ -1,0 +1,10 @@
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.csproj.AssemblyReference.cache
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.GeneratedMSBuildEditorConfig.editorconfig
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.AssemblyInfoInputs.cache
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.AssemblyInfo.cs
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.csproj.CoreCompileInputs.cache
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.MvcApplicationPartsAssemblyInfo.cs
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.MvcApplicationPartsAssemblyInfo.cache
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.RazorAssemblyInfo.cache
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.RazorAssemblyInfo.cs
+E:\travelling source code-current\backend-dapper\obj\Release\net7.0\backEnd.sourcelink.json

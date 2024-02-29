@@ -18,6 +18,8 @@ namespace backEnd.Services.IServices
         Task UpdateTicketQuotations(List<Quotation> quotations);
 
         Task UpdateHotelQuotations(List<HotelQuotation> quotations);
+
+      
         
     }
 }

@@ -15,6 +15,8 @@ namespace backEnd.Models;
 
 
 public class ExpenseReport {
+
+
    [JsonPropertyName("_id")]
    [Key]
    public int Id {get; set;}
@@ -25,32 +27,32 @@ public class ExpenseReport {
    [JsonPropertyName("employeeId")]
    public int? EmployeeId {get; set;}
 
-   [JsonPropertyName("department")]
-   public string? Department {get; set;}
+  [JsonPropertyName("department")]
+  public string? Department {get; set;}
+  
+  [JsonPropertyName("startDate")]
+  public string? StartDate {get; set;}
 
-   [JsonPropertyName("startDate")]
-   public string? StartDate {get; set;}
+  [JsonPropertyName("endDate")]
+  public string? EndDate {get; set;}
+  
+  [JsonPropertyName("expenses")]
+  public virtual List<Expenses>? Expenses {get; set;}
 
-   [JsonPropertyName("endDate")]
-   public string? EndDate {get; set;}
-   
-   [JsonPropertyName("expenses")]
-   public virtual List<Expenses>? Expenses {get; set;}
+  [JsonPropertyName("requestId")]
+  public int? RequestId {get; set;} 
 
-   [JsonPropertyName("requestId")]
-   public int? RequestId {get; set;} 
+  [JsonPropertyName("request")]
+  public virtual Request? Request {get; set;}
 
-   [JsonPropertyName("request")]
-   public virtual Request? Request {get; set;}
+  [JsonPropertyName("status")]
+  public string? Status {get; set;} 
 
-    [JsonPropertyName("status")]
-    public string? Status {get; set;} 
+  [JsonPropertyName("processed")]
+  public bool? Processed {get; set;} = false; 
 
-      [JsonPropertyName("processed")]
-    public bool? Processed {get; set;} = false; 
-
-    [JsonPropertyName("supervisorApproved")]
-    public bool? SupervisorApproved {get; set;} = false;
+  [JsonPropertyName("supervisorApproved")]
+  public bool? SupervisorApproved {get; set;} = false;
 
 
     [JsonPropertyName("submitted")]
@@ -58,7 +60,6 @@ public class ExpenseReport {
 
     [JsonPropertyName("approvals")]
     public List<User>? Approvals {get; set;} = new List<User>();
-
 
     [JsonPropertyName("currentHandlerId")]
     public int? CurrentHandlerId {get; set;} 
@@ -76,11 +77,18 @@ public class ExpenseReport {
     [JsonPropertyName("travelManagerSubmitted")]
     public bool?  TravelManagerSubmitted {get; set;} = false;
 
-    [JsonPropertyName("expenseDisbursed")]
-    public bool? ExpenseDisbursed {get; set;} = false;
+    [JsonPropertyName("disbursed")]
+    public bool? Disbursed {get; set;} = false;
 
     [JsonPropertyName("amountDisbursed")]
     public string? AmountDisbursed {get; set;} 
+
+
+    [JsonPropertyName("bankAccountHolderName")]
+    public string? BankAccountHolderName {get; set;}
+
+    [JsonPropertyName("bankAccountNumber")]
+    public string? BankAccountNumber {get; set;}
 
 }
 

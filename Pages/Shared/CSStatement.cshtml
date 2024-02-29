@@ -118,75 +118,59 @@
         </div>
     
         <div class="row justify-content-center align-items-center">
-            <table>
+            <table class="table">
+                <thead>
+                    <th>
+                       Quotation Giver 
+                    </th>
+                    <th>
+                        Quotation
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Invoices
+                    </th>
+                    <th>
+                        Approvals
+                    </th>
+                </thead>
+                <tbody>
+                    
+                    @foreach(var quotation in Model.Request.Quotations){
+                             <tr>
+                                <td>
+                                    @quotation.QuoteGiver
+                                </td>
+                                <td>
+                                    @Html.Raw(quotation.QuotationText)
+                                </td>
+                                <td>
+                                    @if(quotation.Confirmed == true){
+                                       <span>Confirmed</span> 
+                                    }else if(quotation.Booked == true){
+                                        <span>Booked</span>
+                                    }
+                                </td>
+                                <td>
+                                       @foreach(var invoice in quotation.Invoices){
+                                     <span  class="p-2 bg-info m-4"> @invoice.Filename</span>
+                                           }
+                                </td>
+                                <td> 
+                                      @foreach(var ticketApproval in quotation.TicketApprovals){
+                                              <span  class="p-2 bg-info m-4">@ticketApproval.EmpName</span>
+                                              }
+
+                                </td>
+                             </tr>
+                    }
+                </tbody>
+                
                 
             </table>
-            @foreach(var quotation in Model.Request.Quotations){
-                  <div  class="col-lg-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
-                <div class="row">
-                    <div class="col-lg-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
-                </div>
-    
-                <div class="row text-center">
-                    <div class="col-lg-12 text-center">
-                        <div class="col-lg-12 text-center ">
-                            <div class="text-caption font-weight-thin p-2 mr-2 bg-primary text-white border border-solid border-dark text-center">
-                               @Html.Raw(quotation.QuotationText)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="row mb-2">
-                    <div class="col-lg-12">
-                        <div class="text-center">Confirmed</div>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="d-flex w-100 justify-content-between">
-                          @if(quotation.Booked == true && quotation.Confirmed == true){
-                            <div  class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
-                        }
-                        </div>
-    
-                   
-                    </div>
-                </div>
-    
-             @if(quotation.Confirmed == true){
-                <div  class="row elevation-4 mb-2">
-                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
-                        Ticket Invoices
-                    </div>
-                    <div class="col-lg-12">
-                        @foreach(var invoice in quotation.Invoices){
-                            <span  class="p-2 bg-info m-4">
-                            @invoice.Filename
-                        </span>
-                        }
-                        
-                    </div>
-                </div>
-                }
-    
-                <div class="row elevation-4">
-                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
-                        Ticket Approvals
-                    </div>
-                    <div class="col-lg-12">
-                        @foreach(var ticketApproval in quotation.TicketApprovals){
-                         <span  class="p-2 bg-info m-4">
-                            @ticketApproval.EmpName
-                        </span>
-
-                        }
-                      
-                    </div>
-                </div>
-            </div>
-            }
+       
            
         </div>
     
@@ -214,74 +198,62 @@
         </div>
     
         <div class="row justify-content-center align-items-center">
-            @foreach(var quotation in Model.Request.HotelQuotations){
-                  <div  class="col-lg-5 mr-5 mt-5 shadow-sm p-4 bg-white mb-4 border border-solid border-dark">
-                <div class="row">
-                    <div class="col-lg-12 bg-gray-400 font-weight-bold text-xl text-white">@quotation.QuoteGiver</div>
-                </div>
-    
-                <div class="row text-center">
-                    <div class="col-lg-12 text-center">
-                        <div class="col-lg-12 text-center ">
-                            <div class="text-caption font-weight-thin p-2 mr-2 bg-primary text-white border border-solid border-dark text-center">
-                               @Html.Raw(quotation.QuotationText)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="row mb-2">
-                    <div class="col-lg-12">
-                        <div class="text-center">Confirmed</div>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="d-flex w-100 justify-content-between">
-                         @if(quotation.Booked == true && quotation.Confirmed == true){
+    <div class="row justify-content-center align-items-center">
+            <table class="table">
+                <thead>
+                    <th>
+                       Quotation Giver 
+                    </th>
+                    <th>
+                        Quotation
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Invoices
+                    </th>
+                    <th>
+                        Approvals
+                    </th>
+                </thead>
+                <tbody>
+                    
+                    @foreach(var quotation in Model.Request.HotelQuotations){
+                             <tr>
+                                <td>
+                                    @quotation.QuoteGiver
+                                </td>
+                                <td>
+                                    @Html.Raw(quotation.QuotationText)
+                                </td>
+                                <td>
+                                    @if(quotation.Confirmed == true){
+                                       <span>Confirmed</span> 
+                                    }else if(quotation.Booked == true){
+                                        <span>Booked</span>
+                                    }
+                                </td>
+                                <td>
+                                       @foreach(var invoice in quotation.Invoices){
+                                     <span  class="p-2 bg-info m-4"> @invoice.Filename</span>
+                                           }
+                                </td>
+                                <td> 
+                                      @foreach(var ticketApproval in quotation.HotelApprovals){
+                                              <span  class="p-2 bg-info m-4">@ticketApproval.EmpName</span>
+                                              }
 
-                            <div class="font-weight-bold border border-solid border-dark text-dark bg-success   mb-3">Confirmed</div>
-                         }
-                        </div>
-    
-                   
-                    </div>
-                </div>
-    
-                @if(quotation.Confirmed == true){
-                <div  class="row elevation-4 mb-2">
-                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
-                        Hotel Invoices
-                    </div>
-                    <div class="col-lg-12">
-                              @foreach(var invoice in quotation.Invoices){
-                            <span  class="p-2 bg-info m-4">
-                            @invoice.Filename
-                        </span>
-                        }
-                        
-                        
-                    </div>
-                </div>
-                }
-    
-                <div class="row elevation-4">
-                    <div class="col-lg-12 text-sm font-weight-bold bg-info text-white p-2">
-                        Hotel Approvals
-                    </div>
-                    <div class="col-lg-12">
-                        @foreach(var ticketApproval in quotation.HotelApprovals){
-                         <span  class="p-2 bg-info m-4">
-                            @ticketApproval.EmpName
-                        </span>
-
-                        }
-                      
-                    </div>
-                </div>
-            </div>
-            }
+                                </td>
+                             </tr>
+                    }
+                </tbody>
+                
+                
+            </table>
+       
+           
+        </div>
            
         </div>
     

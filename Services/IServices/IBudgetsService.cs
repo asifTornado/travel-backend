@@ -19,8 +19,12 @@ namespace backEnd.Services.IServices
 
         Task CreateCustomRequestBudget(Budget budget);
 
-        Task<Budget> GetTrip(int id);
+        Task<Budget> GetTicketQuotation(int id);
 
         Task<int> CreateBudgetId(Budget budget);
+        Task<List<Budget>> GetTicketQuotationsForMe(User user);
+        Task<List<Budget>> GetTicketQuotationsApprovedByMe(User user);
+        Task<List<Budget>> GetAllTicketQuotations();
+        Task InsertBudgetTicketApprover(BudgetTicketApprovals budgetTicketApprovals);
     }
 }

@@ -103,8 +103,19 @@ public class RequestAccountsController : ControllerBase
         _idCheckService = iDCheckService;
     }
     
+    
+    [HttpPost]
+    [Route("requestForward")]
+    public async Task<IActionResult> Forward(IFormCollection data){
+        var request = JsonSerializer.Deserialize<Request>(data["request"]);
+        var forwardedTo = JsonSerializer.Deserialize<User>(data["forwardedTo"]);
 
+        request.CurrentHandlerId = forwardedTo.Id;
 
+        await _requestService.UpdateAsync(request);
+
+        return Ok(true);
+    }
    
 
 }

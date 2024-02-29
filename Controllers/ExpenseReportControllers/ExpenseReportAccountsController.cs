@@ -76,7 +76,7 @@ public class ExpenseReportAccountsController : ControllerBase
 
      var message = $"{user.EmpName} has forwarded to you an expense report for the trip numbered {expenseReport.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportForward, "expenseReport");
+  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportForward, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportForward);
   
     return Ok(expenseReport);
@@ -114,7 +114,7 @@ public class ExpenseReportAccountsController : ControllerBase
 
      var message = $"{user.EmpName} has rejected to you an expense report for the trip numbered {expenseReport.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportForward, "expenseReport");
+  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportForward, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportForward);
 
     return Ok(expenseReport);
@@ -141,7 +141,7 @@ public class ExpenseReportAccountsController : ControllerBase
 
       var message = $"{user.EmpName} has completed processing the expense report for the trip numbered {expenseReport.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.RequestId, Events.ExpenseReportProcessed, "expenseReport");
+  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportProcessed, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportProcessed);
 
 

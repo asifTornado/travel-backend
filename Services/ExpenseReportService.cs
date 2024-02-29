@@ -109,6 +109,7 @@ public class ExpenseReportService : IExpenseReportService
 
     public async Task<List<ExpenseReport>> GetExpenseReportsApprovedByMe(User user){
     var result = await _travelContext.ExpenseReports.AsNoTracking()
+    .Include(x => x.Approvals)
     .Include(x => x.CurrentHandler)
     .ToListAsync();
     var finalResult = result.Where(x => x.Approvals.Any(y => y.Id == user.Id)).ToList();

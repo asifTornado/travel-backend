@@ -64,6 +64,7 @@ public class BudgetController : ControllerBase
     public async Task<IActionResult> InsertBudget(IFormCollection data){
             var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
             var time = _helperClass.GetCurrentTime();
+           
             
             budget.CreationDate = time;
             

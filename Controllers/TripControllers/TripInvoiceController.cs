@@ -55,7 +55,7 @@ namespace backEnd.Controllers.TripControllers;
 public class TripInvoicController : ControllerBase
 {
     private IBudgetsService _budgetsService;
-    private TripService _tripService;
+    private ITripService _tripService;
     private IMapper _imapper;
     private IFileHandler _fileHandler;
     private IUsersService _usersService;
@@ -65,7 +65,7 @@ public class TripInvoicController : ControllerBase
     private readonly IJwtTokenConverter _jwtTokenConverter;
 
     
-    public TripInvoicController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, TripService tripService, IFileHandler fileHandler)
+    public TripInvoicController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
