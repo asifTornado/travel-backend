@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {}
+    "C:\\Travel App\\backend\\backEnd.csproj": {}
   },
   "projects": {
-    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {
+    "C:\\Travel App\\backend\\backEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+        "projectUniqueName": "C:\\Travel App\\backend\\backEnd.csproj",
         "projectName": "backEnd",
-        "projectPath": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
-        "packagesPath": "C:\\Users\\Hameem\\.nuget\\packages\\",
-        "outputPath": "e:\\travelling source code-current\\backend-dapper\\obj\\",
+        "projectPath": "C:\\Travel App\\backend\\backEnd.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "C:\\Travel App\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hameem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -128,7 +126,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.406\\RuntimeIdentifierGraph.json"
         }
       }
     }
