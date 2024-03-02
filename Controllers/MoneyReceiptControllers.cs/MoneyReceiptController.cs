@@ -36,6 +36,7 @@ public class MoneyReceiptController : ControllerBase
     private ILogService _logService;
     private IReportGenerator _reportGenerator;
     private IFileHandler _fileHandler;
+    private IIDCheckService _idCheckService;
    
 
 
@@ -49,7 +50,9 @@ public class MoneyReceiptController : ControllerBase
     RoleService roleService,
     IReportGenerator reportGenerator,
     MailerMoneyReceipt mailerMoneyReceipt,
-    IFileHandler fileHandler
+    IFileHandler fileHandler,
+    IIDCheckService idCheckService
+
     )
     
     {
@@ -61,13 +64,25 @@ public class MoneyReceiptController : ControllerBase
       _reportGenerator = reportGenerator;
       _mailerMoneyReceipt = mailerMoneyReceipt;
       _fileHandler = fileHandler;
+      _idCheckService = idCheckService;
     }
 
   
   [HttpPost]
   [Route("submitMoneyReceipt")]
   public async Task<IActionResult> SubmitMoneyReceipt(IFormCollection data){
+    
+   
+
     var request = JsonSerializer.Deserialize<Request>(data["request"]);
+    
+    var allowed = _idCheckService.CheckTraveler(request, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
+
     var moneyReceipt = JsonSerializer.Deserialize<MoneyReceipt>(data["moneyReceipt"]);
     request.MoneyReceiptSubmitted = true;
     var accounts = await _roleService.GetAccountsReceiverForMoneyReceipt();
@@ -106,6 +121,13 @@ public class MoneyReceiptController : ControllerBase
   public async Task<IActionResult> MoneyReceiptResend(IFormCollection data){
     var moneyReceipt = JsonSerializer.Deserialize<MoneyReceipt>(data["moneyReceipt"]);
     var request = await _requestService.GetAsync(moneyReceipt.RequestId);
+
+    var allowed = _idCheckService.CheckTraveler(request, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
     request.MoneyReceiptSubmitted = true;
 
     
@@ -151,21 +173,6 @@ public class MoneyReceiptController : ControllerBase
 
 
 
-   [HttpPost]
-  [Route("moneyReceiptMoneyDisburse")]
-  public async Task<IActionResult> Disburse(IFormCollection data){
-    var moneyReceipt = JsonSerializer.Deserialize<MoneyReceipt>(data["moneyReceipt"]);
-    
-    moneyReceipt.Disbursed = true;
-   
-    
-    await _moneyReceiptService.UpdateMoneyReceipt(moneyReceipt);
-    
-
-    return Ok(moneyReceipt);
-
-  } 
-  
 
 
 

@@ -60,6 +60,7 @@ public class TicketQuotationController : ControllerBase
    private IBudgetsService _budgetService;
    private IMapper _imapper;
    private RoleService _roleService;
+   private IIDCheckService _idCheckService;
 
 
 
@@ -67,11 +68,13 @@ public class TicketQuotationController : ControllerBase
    
 
 
-    public TicketQuotationController(IBudgetsService budgetsService, IMapper mapper, RoleService roleService)
+    public TicketQuotationController(IBudgetsService budgetsService, IMapper mapper, 
+    RoleService roleService, IIDCheckService idCheckService)
     {
         _budgetService = budgetsService;
         _imapper = mapper;
         _roleService = roleService;
+        _idCheckService = idCheckService;
     }
     
 
@@ -125,6 +128,12 @@ public class TicketQuotationController : ControllerBase
     [HttpPost]
     [Route("sendToAccounts")]
     public async Task<IActionResult> SendToAccounts(IFormCollection data){
+      var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+      if(allowed == false){
+        return Ok(false);
+      }
+
         var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
         var accounts = await _roleService.GetAccountsReceiverForExpenseReport();
         budget.SeekingAccountsApprovalForTickets = true;
@@ -140,7 +149,17 @@ public class TicketQuotationController : ControllerBase
   [HttpPost]
   [Route("ticketQuotationsMoneyDisburse")]
   public async Task<IActionResult> Disburse(IFormCollection data){
+    
+  
+
     var ticketQuotations = JsonSerializer.Deserialize<TripDTO>(data["ticketQuotations"]);
+
+      var allowed =  _idCheckService.CheckCurrent(ticketQuotations.CurrentHandlerId, data["token"]);
+
+      if(allowed == false){
+        return Ok(false);
+      }
+
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     
     ticketQuotations.TicketsMoneyDisbursed = true;

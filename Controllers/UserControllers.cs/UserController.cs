@@ -47,6 +47,8 @@ public class UserController : ControllerBase
 
     private IUserApi _userApi;
 
+    private IIDCheckService _idCheckService;
+
    
 
 
@@ -87,6 +89,11 @@ public class UserController : ControllerBase
    
    [HttpPost("deleteUser")]
    public async Task<IActionResult> DeleteUser(IFormCollection data){
+
+         var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+         if(allowed == false){
+            return Ok(false);
+         }
          Console.WriteLine("this is teh id");
          Console.WriteLine(data["id"]);
          Console.WriteLine("This is the id after parsing");
@@ -103,7 +110,11 @@ public class UserController : ControllerBase
 [HttpPost]
 [Route("updateUserNormal")]
 public async Task<IActionResult> UpdateUserNormal(IFormCollection data)
-{
+{   
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+         if(allowed == false){
+            return Ok(false);
+         }
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     user.SuperVisorId = user.SuperVisor?.Id;
     user.TravelHandlerId = user.TravelHandler?.Id;
@@ -122,6 +133,11 @@ public async Task<IActionResult> UpdateUserNormal(IFormCollection data)
 [Route("insertUser")]
 public async Task<IActionResult> InsertUser(IFormCollection data)
 {
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+         if(allowed == false){
+            return Ok(false);
+         }
+
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     // var userDTO = _imapper.Map<UserDTO>(user);
     var userString = JsonSerializer.Serialize(user);

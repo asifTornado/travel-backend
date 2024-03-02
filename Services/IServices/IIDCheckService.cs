@@ -10,10 +10,13 @@ namespace backEnd.Services.IServices;
 
 public interface IIDCheckService
 {
-    Boolean CheckSupervisor(Request request, string token);
-    Boolean CheckTraveler(Request request, string token);
-    Boolean CheckDepartmentHead(Request request, string token);
-    Task<Boolean> CheckAdmin(string token);
+    bool CheckSupervisor(Request request, string token);
+    bool CheckTraveler(Request request, string token);
+    bool CheckDepartmentHead(Request request, string token);
+    Task<bool> CheckAdmin(string token);
+    Task<bool> CheckManager(Request request, string token);
+    Task<bool> CheckAdminOrManager(string token);
+    bool CheckCurrent(int? currentHandlerId, string token);
     
 }
 

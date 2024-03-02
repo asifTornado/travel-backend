@@ -46,11 +46,11 @@ public class UserListsController : ControllerBase
 
 
     private IUserApi _userApi;
-
+    private IIDCheckService _idCheckService;
    
 
 
-    public UserListsController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService)
+    public UserListsController(IIDCheckService idCheckService, IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -58,6 +58,7 @@ public class UserListsController : ControllerBase
         _mailer = mailer;
         _userService = usersService;
         _userApi = userapi;
+        _idCheckService = idCheckService;
  
 
     }
@@ -69,8 +70,9 @@ public class UserListsController : ControllerBase
 
 
    [HttpGet("getUsers")]
-   public async Task<IActionResult> GetUsers(){
-         
+   public async Task<IActionResult> GetUsers(IFormCollection data){
+         var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+         if(allowed == false) return Ok(false);
          var users = await _userService.GetAsync();
          Console.WriteLine("these are the users");
          Console.WriteLine(users);

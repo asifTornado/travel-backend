@@ -71,6 +71,7 @@ public class RequestListsController : ControllerBase
 
     private ITripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
+    private IIDCheckService _idCheckService;
 
 
 
@@ -78,7 +79,15 @@ public class RequestListsController : ControllerBase
    
 
 
-    public RequestListsController(IJwtTokenConverter jwtTokenConverter, ITripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestListsController(IJwtTokenConverter jwtTokenConverter, ITripService tripService, 
+    IBudgetsService budgetsService, ILogService logService, 
+    IQuotationService quotationService, TravelContext travelContext, 
+    IHelperClass helperClass, IFileHandler fileHandler, 
+    IUsersService usersService, IAgentsService agentsService, 
+    IMapper mapper, IRequestService requestService, 
+    IMailer mailer, INotifier notifier,
+    IIDCheckService idCheckService
+    )
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -94,6 +103,7 @@ public class RequestListsController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
     }
 
 
@@ -125,6 +135,12 @@ public async Task<IActionResult> GetMyRequests(IFormCollection data){
 [HttpPost]
 [Route("getAllRequests")]
 public async Task<IActionResult> GetAllRequests(IFormCollection data){
+
+    var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+    if(allowed == false){
+        return Ok(false);
+    }
      
      var id = data["id"];
      

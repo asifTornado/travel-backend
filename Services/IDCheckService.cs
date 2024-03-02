@@ -24,16 +24,18 @@ public class IDCheckService : IIDCheckService
     private TravelContext _travelContext;
     private IJwtTokenConverter _jwtTokenConverter;
     private IUsersService _usersService;
+    private RoleService _roleService;
 
-    public IDCheckService(TravelContext travelContext, IJwtTokenConverter jwtTokenConverter, IUsersService usersService)
+    public IDCheckService(RoleService roleService, TravelContext travelContext, IJwtTokenConverter jwtTokenConverter, IUsersService usersService)
     {
         _travelContext = travelContext;
         _jwtTokenConverter = jwtTokenConverter;
         _usersService = usersService;
+        _roleService = roleService;
 
     }
 
-    public async Task<Boolean> CheckAdmin(string token)
+    public async Task<bool> CheckAdmin(string token)
     {
         int? tokenId = _jwtTokenConverter.ParseToken(token);
         var user = await _usersService.GetOneUser(tokenId);
@@ -43,6 +45,18 @@ public class IDCheckService : IIDCheckService
             return false;
         }
 
+    }
+
+    public async Task<bool> CheckAdminOrManager(string token){
+        int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var user = await _usersService.GetOneUser(tokenId);
+
+        if(user.UserType == "admin" || user.UserType == "manager"){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
    
@@ -81,6 +95,30 @@ public class IDCheckService : IIDCheckService
         }else{
             return false;
         }
+    }
+
+
+    public async Task<bool> CheckManager(Request request, string token){
+        int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var manager = await _usersService.GetOneUser(tokenId);
+        if(manager.UserType == "manager"){
+            return true;
+        }else{
+            return false;
+        }
+
+    
+        
+    }
+
+
+    public bool CheckCurrent(int? currentHandlerId, string token){
+         int? tokenId = _jwtTokenConverter.ParseToken(token);
+         if(currentHandlerId == tokenId){
+            return true;
+         }else{
+            return false;
+         }
     }
 
 

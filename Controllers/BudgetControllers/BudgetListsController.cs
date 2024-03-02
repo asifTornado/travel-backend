@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using backEnd.Mappings;
 using System.Diagnostics;
+using backEnd.Services;
 
 namespace backEnd.Controllers.BudgetControllers;
 
@@ -31,6 +32,7 @@ public class BudgetListsController : ControllerBase
     private IHelperClass _helperClass;
     private ILogService _logService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    private readonly IIDCheckService _idCheckService;
 
    
 
@@ -40,7 +42,7 @@ public class BudgetListsController : ControllerBase
     IUsersService usersService, IAgentsService agentsService, 
     IMapper mapper, IRequestService requestService, 
     IMailer mailer, INotifier notifier, ILogService logService,
-    IJwtTokenConverter jwtTokenConverter
+    IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService
     )
     {
         _imapper = mapper;
@@ -54,6 +56,7 @@ public class BudgetListsController : ControllerBase
         _helperClass = helperClass;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
 
     }
     
@@ -64,6 +67,12 @@ public class BudgetListsController : ControllerBase
     public async Task<IActionResult> SearchBudget(IFormCollection data){
         Console.WriteLine("this is the data");
         Console.WriteLine(data["search"]);
+
+            var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+           if(allowed == false){
+            return Ok(false);
+           } 
         
 
 
@@ -79,6 +88,13 @@ public class BudgetListsController : ControllerBase
      [HttpPost]
     [Route("getBudgets")]
     public async Task<IActionResult> GetBudget(IFormCollection data){
+
+             var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+           if(allowed == false){
+            return Ok(false);
+           } 
+        
        
             var result = await _budgetsService.GetAllBudgets();
 

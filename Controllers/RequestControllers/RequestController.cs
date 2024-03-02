@@ -281,6 +281,12 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
             
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
 
+            var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+            if(allowed == false){
+                return Ok(false);
+            }
+
             request.Status = "Processing Complete";
 
             request.Processed = true;

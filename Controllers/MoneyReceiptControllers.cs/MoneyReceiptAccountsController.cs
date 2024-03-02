@@ -34,18 +34,24 @@ public class MoneyReceiptAccountsController : ControllerBase
     private INotifier _notifier;
     private ILogService _logService;
 
+    private IIDCheckService _idCheckService;
+
 
 
     public MoneyReceiptAccountsController(
       INotifier notifier, ILogService logService,
       IUsersService usersService, IRequestService requestService, 
-      MoneyReceiptService moneyReceiptService, RoleService roleService)
+      MoneyReceiptService moneyReceiptService, RoleService roleService,
+      IDCheckService idCheckService
+      )
     {
       _moneyReceiptService = moneyReceiptService;
       _roleService = roleService;
       _requestService = requestService;
       _logService = logService;
       _notifier = notifier;
+      _idCheckService = idCheckService;
+      
     }
 
   
@@ -54,8 +60,15 @@ public class MoneyReceiptAccountsController : ControllerBase
   [Route("moneyReceiptForward")]
   public async Task<IActionResult> MoneyReceiptSupervisorApprove(IFormCollection data){
     
-     var moneyReceiptId = data["id"];
+    var moneyReceiptId = data["id"];
     var moneyReceipt = await _moneyReceiptService.GetMoneyReceipt(int.Parse(moneyReceiptId));
+
+    var allowed =  _idCheckService.CheckCurrent(moneyReceipt.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     var next = int.Parse(data["next"]);
 
@@ -87,6 +100,15 @@ public class MoneyReceiptAccountsController : ControllerBase
     
      var moneyReceiptId = data["id"];
     var moneyReceipt = await _moneyReceiptService.GetMoneyReceipt(int.Parse(moneyReceiptId));
+
+
+      var allowed =  _idCheckService.CheckCurrent(moneyReceipt.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
+
     var user = JsonSerializer.Deserialize<User>(data["user"]); 
    
     if(moneyReceipt.PrevHandlerIds.Count < 2){
@@ -148,6 +170,21 @@ public class MoneyReceiptAccountsController : ControllerBase
 
 
 
+   [HttpPost]
+  [Route("moneyReceiptMoneyDisburse")]
+  public async Task<IActionResult> Disburse(IFormCollection data){
+    var moneyReceipt = JsonSerializer.Deserialize<MoneyReceipt>(data["moneyReceipt"]);
+    
+    moneyReceipt.Disbursed = true;
+   
+    
+    await _moneyReceiptService.UpdateMoneyReceipt(moneyReceipt);
+    
+
+    return Ok(moneyReceipt);
+
+  } 
+  
 
 
 

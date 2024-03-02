@@ -87,7 +87,7 @@ public class TripInvoicController : ControllerBase
     [HttpPost("TUploadTicketFile")]
     public async Task<IActionResult> TUploadTicketFiles(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -145,7 +145,7 @@ public class TripInvoicController : ControllerBase
     [HttpPost("TUploadHotelFile")]
     public async Task<IActionResult> TUploadHotelFiles(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };

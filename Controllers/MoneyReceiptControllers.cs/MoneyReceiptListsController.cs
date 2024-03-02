@@ -29,11 +29,14 @@ public class MoneyReceiptListsController : ControllerBase
     private IUsersService _usersService;
     private MoneyReceiptService _moneyReceiptService;
 
+    private IIDCheckService _idCheckService;
 
 
-    public MoneyReceiptListsController(IUsersService usersService, MoneyReceiptService moneyReceiptService)
+
+    public MoneyReceiptListsController(IUsersService usersService, IIDCheckService idCheckService, MoneyReceiptService moneyReceiptService)
     {
       _moneyReceiptService = moneyReceiptService;
+      _idCheckService = idCheckService;
     }
 
   
@@ -79,6 +82,12 @@ public class MoneyReceiptListsController : ControllerBase
   [HttpPost]
   [Route("getAllMoneyReceipts")]
   public async Task<IActionResult> GetAllMoneyReceipts(IFormCollection data){
+
+    var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
     
     var result = await _moneyReceiptService.GetAllMoneyReceipts();
     return Ok(result);

@@ -29,12 +29,15 @@ public class ExpenseReportListsController : ControllerBase
 
     private IUsersService _usersService;
     private IExpenseReportService _expenseReportService;
+    private IIDCheckService _idCheckService;
+    
 
 
 
-    public ExpenseReportListsController(IUsersService usersService, IExpenseReportService expenseReportService)
+    public ExpenseReportListsController(IUsersService usersService, IExpenseReportService expenseReportService, IIDCheckService idCheckService)
     {
       _expenseReportService = expenseReportService;
+      _idCheckService = idCheckService;
     }
 
   
@@ -80,6 +83,14 @@ public class ExpenseReportListsController : ControllerBase
   [HttpPost]
   [Route("getAllExpenseReports")]
   public async Task<IActionResult> GetAllExpenseReports(IFormCollection data){
+
+    var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }else{
+      return Ok(true);
+    }
     
     var result = await _expenseReportService.GetAllExpenseReports();
     return Ok(result);

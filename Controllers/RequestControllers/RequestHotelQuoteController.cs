@@ -71,6 +71,7 @@ public class RequestHotelQuoteController : ControllerBase
 
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
+    private IIDCheckService _idCheckService;
 
 
 
@@ -78,7 +79,16 @@ public class RequestHotelQuoteController : ControllerBase
    
 
 
-    public RequestHotelQuoteController(IJwtTokenConverter jwtTokenConverter, TripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestHotelQuoteController(
+    IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+    IBudgetsService budgetsService, ILogService logService, 
+    IQuotationService quotationService, TravelContext travelContext, 
+    IHelperClass helperClass, IFileHandler fileHandler, 
+    IUsersService usersService, IAgentsService agentsService, 
+    IMapper mapper, IRequestService requestService, 
+    IMailer mailer, INotifier notifier,
+    IIDCheckService idCheckService
+    )
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -94,6 +104,7 @@ public class RequestHotelQuoteController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
     }
 
 
@@ -126,6 +137,12 @@ public class RequestHotelQuoteController : ControllerBase
     [HttpPost]
     [Route("addCustomHotelQuote")]
     public async Task<IActionResult> AddCustomHotelQuote(IFormCollection data){
+
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
 
         var user = JsonSerializer.Deserialize<User>(data["user"]);
         var quoteGiver = data["quoteGiver"];
@@ -188,6 +205,13 @@ public class RequestHotelQuoteController : ControllerBase
         [HttpPost]
         [Route("bookHotelQuotation")]
         public async Task<IActionResult> BookHotelQuotation(IFormCollection data){
+
+
+                   var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
             var quotationFrontEnd = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -273,6 +297,12 @@ public class RequestHotelQuoteController : ControllerBase
           [HttpPost]
         [Route("hotelRevoke")]
         public async Task<IActionResult> HotelRevoke(IFormCollection data){
+
+                   var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
             var quotationFrontEnd = JsonSerializer.Deserialize<HotelQuotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -325,6 +355,12 @@ public class RequestHotelQuoteController : ControllerBase
         [HttpPost]
         [Route("hotelunbook")]
         public async Task<IActionResult> HotelUnBook(IFormCollection data){
+
+                   var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
             var request = await _requestService.GetAsync(int.Parse(data["id"]));
             var quotationFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -370,6 +406,12 @@ public class RequestHotelQuoteController : ControllerBase
          [HttpPost]
         [Route("hotelconfirm")]
         public async Task<IActionResult> HotelConfirm(IFormCollection data){
+
+                   var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
             var request = await _requestService.GetAsync(int.Parse(data["id"]));
             var quotationFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);

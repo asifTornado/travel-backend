@@ -83,8 +83,12 @@ public class TripListsController : ControllerBase
 
 
     [HttpPost("getAllTrips")]
-    public async Task<IActionResult> GetAllTrips()
-    {
+    public async Task<IActionResult> GetAllTrips(IFormCollection data)
+    {   
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+        if(allowed == false){
+            return Ok(false);
+        }
         var results = await _budgetsService.GetAllInitiatedTrips();
         return Ok(results);
     }

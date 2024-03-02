@@ -63,10 +63,15 @@ public class TicketQuotationAccountsController : ControllerBase
      private ILogService _logService;
      private IUsersService _userService;
      private RoleService _roleService;
+     private IIDCheckService _idCheckService;
 
 
 
-    public TicketQuotationAccountsController(RoleService roleService, IUsersService  usersService,  IBudgetsService budgetsService, IMapper mapper, INotifier notifier, ILogService logService)
+    public TicketQuotationAccountsController(RoleService roleService, IUsersService  usersService, 
+     IBudgetsService budgetsService, IMapper mapper, 
+     INotifier notifier, ILogService logService,
+     IIDCheckService idCheckService
+     )
     {
         _budgetService = budgetsService;
         _imapper = mapper;
@@ -74,6 +79,8 @@ public class TicketQuotationAccountsController : ControllerBase
         _logService = logService;
         _userService = usersService;
         _roleService = roleService;
+        _idCheckService = idCheckService;
+        
     }
     
 
@@ -82,9 +89,19 @@ public class TicketQuotationAccountsController : ControllerBase
   [HttpPost]
   [Route("ticketQuotationForward")]
   public async Task<IActionResult> MoneyReceiptSupervisorApprove(IFormCollection data){
+
     
-     var tripId = data["id"];
+    
+    var tripId = data["id"];
     var trip = await _budgetService.GetAsync(int.Parse(tripId));
+    
+    var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
+
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     var next = int.Parse(data["next"]);
     var admin = await _userService.GetAdmin();
@@ -125,9 +142,19 @@ public class TicketQuotationAccountsController : ControllerBase
   [HttpPost]
   [Route("ticketQuotationBackward")]
   public async Task<IActionResult> TicketQuotationBackward(IFormCollection data){
+
+      
+
     
   var tripId = data["id"];
   var trip = await _budgetService.GetAsync(int.Parse(tripId));
+
+  var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+  
   var user = JsonSerializer.Deserialize<User>(data["user"]); 
    
   if(trip.PrevHandlerIds.Count < 2){
@@ -164,6 +191,15 @@ public class TicketQuotationAccountsController : ControllerBase
     
      var tripId = data["id"];
     var trip = await _budgetService.GetAsync(int.Parse(tripId));
+
+
+    var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
+    
     var user = JsonSerializer.Deserialize<User>(data["user"]); 
 
     var travelManager = await _roleService.GetTravelManager();

@@ -9,21 +9,21 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = backEnd
 build_property.RootNamespace = backEnd
-build_property.ProjectDir = C:\Travel App\backend\
+build_property.ProjectDir = E:\travelling source code-current\backend-dapper\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = C:\Travel App\backend
+build_property.MSBuildProjectDirectory = E:\travelling source code-current\backend-dapper
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Travel App/backend/Pages/Shared/CSStatement.cshtml]
+[E:/travelling source code-current/backend-dapper/Pages/Shared/CSStatement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXENTU3RhdGVtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Travel App/backend/Pages/Shared/ExpenseReport.cshtml]
+[E:/travelling source code-current/backend-dapper/Pages/Shared/ExpenseReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXEV4cGVuc2VSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Travel App/backend/Pages/Shared/MoneyReceipt.cshtml]
+[E:/travelling source code-current/backend-dapper/Pages/Shared/MoneyReceipt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXE1vbmV5UmVjZWlwdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

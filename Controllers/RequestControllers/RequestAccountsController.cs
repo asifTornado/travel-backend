@@ -110,6 +110,12 @@ public class RequestAccountsController : ControllerBase
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var forwardedTo = JsonSerializer.Deserialize<User>(data["forwardedTo"]);
 
+        var allowed = _idCheckService.CheckCurrent(request.Id, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
         request.CurrentHandlerId = forwardedTo.Id;
 
         await _requestService.UpdateAsync(request);

@@ -38,19 +38,21 @@ public class ExpenseReportAccountsController : ControllerBase
 
     private ILogService _logService;
     private INotifier _notifier;
+    private IIDCheckService _idCheckService;
 
 
 
     public ExpenseReportAccountsController(IUsersService usersService, 
     IRequestService requestService, ILogService logService,
     INotifier notifier,
-    IExpenseReportService expenseReportService, RoleService roleService)
+    IExpenseReportService expenseReportService, RoleService roleService, IIDCheckService idCheckService)
     {
       _expenseReportService = expenseReportService;
       _roleService = roleService;
       _requestService = requestService;
       _logService = logService;
       _notifier = notifier;
+      _idCheckService = idCheckService;
     }
 
   
@@ -58,9 +60,20 @@ public class ExpenseReportAccountsController : ControllerBase
   [HttpPost]
   [Route("expenseReportForward")]
   public async Task<IActionResult> ExpenseReportForward(IFormCollection data){
+     
+   
     
      var expenseReportId = data["id"];
     var expenseReport  = await _expenseReportService.GetExpenseReport(int.Parse(expenseReportId));
+
+
+  
+    var allowed = _idCheckService.CheckCurrent(expenseReport.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     var next = int.Parse(data["next"]);
 
@@ -91,6 +104,13 @@ public class ExpenseReportAccountsController : ControllerBase
     
      var expenseReportId = data["id"];
     var expenseReport  = await _expenseReportService.GetExpenseReport(int.Parse(expenseReportId));
+
+    var allowed = _idCheckService.CheckCurrent(expenseReport.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+    
     var user = JsonSerializer.Deserialize<User>(data["user"]); 
 
     if(expenseReport.PrevHandlerIds.Count < 2){
@@ -128,6 +148,15 @@ public class ExpenseReportAccountsController : ControllerBase
     
     var expenseReportId = data["id"];
     var expenseReport  = await _expenseReportService.GetExpenseReport(int.Parse(expenseReportId));
+
+
+    var allowed = _idCheckService.CheckCurrent(expenseReport.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+    
+
     var user = JsonSerializer.Deserialize<User>(data["user"]); 
    
     expenseReport.Status = "Processing Complete";
@@ -144,6 +173,31 @@ public class ExpenseReportAccountsController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportProcessed, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportProcessed);
 
+
+    return Ok(expenseReport);
+
+  } 
+
+
+   [HttpPost]
+  [Route("expenseReportMoneyDisburse")]
+  public async Task<IActionResult> Disburse(IFormCollection data){
+    var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
+
+    
+  
+    var allowed = _idCheckService.CheckCurrent(expenseReport.CurrentHandlerId, data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+    
+  
+    expenseReport.Disbursed = true;
+    
+    
+    await _expenseReportService.UpdateExpenseReport(expenseReport);
+    
 
     return Ok(expenseReport);
 

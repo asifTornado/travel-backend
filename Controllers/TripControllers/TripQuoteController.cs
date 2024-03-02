@@ -88,7 +88,7 @@ public class TripQuoteController : ControllerBase
     [HttpPost("TAddCustomQuote")]
     public async Task<IActionResult> TAddCustomQuote(IFormCollection data)
     {         var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };

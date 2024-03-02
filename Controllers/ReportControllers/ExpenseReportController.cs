@@ -13,6 +13,7 @@ using Amazon.Util.Internal;
 using backEnd.Helpers;
 using backEnd.Services;
 using backEnd.Helpers.Mails;
+using Org.BouncyCastle.Security;
 
 
 namespace backEnd.Controllers;
@@ -24,21 +25,17 @@ namespace backEnd.Controllers;
 [ApiController]
 public class ExpenseReportController : ControllerBase
 {
-
-
-
     private IExpenseReportService _expenseReportService;
     private IRequestService _requestService;
     private IFileHandler _fileHandler;
     private IUsersService _usersService;
     private IMailer _mailer;
-
     private IReportGenerator _reportGenerator;
-
     private RoleService _roleService;
     private INotifier _notifier;
     private ILogService _logService;
     private MailerWorkFlow _mailerWorkFlow;
+    private IIDCheckService _idCheckService;
 
     public ExpenseReportController(
         IReportGenerator reportGenerator, RoleService roleService,  
@@ -47,8 +44,9 @@ public class ExpenseReportController : ControllerBase
         IUsersService usersService,
         ILogService logService,
         INotifier notifier,
-        MailerWorkFlow mailerWorkFlow
-        
+        MailerWorkFlow mailerWorkFlow,
+        IIDCheckService idCheckService
+
         )
     {
        _expenseReportService = expenseReportService;
@@ -61,6 +59,7 @@ public class ExpenseReportController : ControllerBase
        _logService = logService;
        _notifier = notifier;
        _mailerWorkFlow = mailerWorkFlow;
+       _idCheckService = idCheckService;
 
     }
 
@@ -73,6 +72,12 @@ public class ExpenseReportController : ControllerBase
         var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
         var requestId = data["requestId"];
         var request = await _requestService.GetAsync(int.Parse(requestId));
+
+        var allowed =  _idCheckService.CheckTraveler(request, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
        
       
         var travelManager = await _roleService.GetTravelManager();
@@ -106,6 +111,13 @@ public class ExpenseReportController : ControllerBase
         var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
         var requestId = data["requestId"];
         var request = await _requestService.GetAsync(int.Parse(requestId));
+
+         var allowed =  _idCheckService.CheckTraveler(request, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+       
        
       
         var travelManager = await _roleService.GetTravelManager();
@@ -140,6 +152,12 @@ public class ExpenseReportController : ControllerBase
 
         var travelManager = await _roleService.GetTravelManager();
 
+        var allowed = await _idCheckService.CheckManager(request, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
         expenseReport.Rejected = false;
         expenseReport.CurrentHandlerId = request.Requester.SuperVisorId;
         expenseReport.Status = "Seeking Supervisor's Approval";
@@ -167,6 +185,12 @@ public class ExpenseReportController : ControllerBase
         var request = await _requestService.GetAsync(int.Parse(requestId));
         
         var travelManager = await _roleService.GetTravelManager();
+
+           var allowed = await _idCheckService.CheckManager(request, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
       
       
         

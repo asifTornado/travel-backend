@@ -31,6 +31,7 @@ public class BudgetController : ControllerBase
     private IHelperClass _helperClass;
     private ILogService _logService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    private readonly IIDCheckService _idCheckService;
 
    
 
@@ -40,7 +41,7 @@ public class BudgetController : ControllerBase
     IUsersService usersService, IAgentsService agentsService, 
     IMapper mapper, IRequestService requestService, 
     IMailer mailer, INotifier notifier, ILogService logService,
-    IJwtTokenConverter jwtTokenConverter
+    IJwtTokenConverter jwtTokenConverter, IIDCheckService iDCheckService
     )
     {
         _imapper = mapper;
@@ -54,6 +55,7 @@ public class BudgetController : ControllerBase
         _helperClass = helperClass;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = iDCheckService;
 
     }
     
@@ -62,6 +64,14 @@ public class BudgetController : ControllerBase
     [Route("insertBudget")]
 
     public async Task<IActionResult> InsertBudget(IFormCollection data){
+
+           var allowed = await _idCheckService.CheckAdmin(data["token"]);
+
+           if(allowed == false){
+            return Ok(false);
+           } 
+
+
             var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
             var time = _helperClass.GetCurrentTime();
            
@@ -96,6 +106,11 @@ public class BudgetController : ControllerBase
     [HttpPost]
     [Route("deleteBudget")]
     public async Task<IActionResult> DeleteBudget(IFormCollection data){
+        var allowed = await _idCheckService.CheckAdmin(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
         Console.WriteLine("this is the id");
         Console.WriteLine(data["id"]);
         await _budgetsService.RemoveAsync(int.Parse(data["id"]));
@@ -107,6 +122,11 @@ public class BudgetController : ControllerBase
     [HttpPost]
     [Route("updateBudget")]
     public async Task<IActionResult> ReplaceBudget(IFormCollection data){
+            var allowed = await _idCheckService.CheckAdmin(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
         var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
         await _budgetsService.UpdateAsync(budget.Id, budget);
         return Ok();
@@ -119,6 +139,12 @@ public class BudgetController : ControllerBase
     [HttpPost]
     [Route("initiate")]
     public async Task<IActionResult> Initiate(IFormCollection data){
+
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
         
         var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
         var budgetFromDB = await _budgetsService.GetAsync(budget.Id);

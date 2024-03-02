@@ -71,6 +71,7 @@ public class RequestTicketQuoteController : ControllerBase
 
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
+    private IIDCheckService _idCheckService;
 
 
 
@@ -78,7 +79,16 @@ public class RequestTicketQuoteController : ControllerBase
    
 
 
-    public RequestTicketQuoteController(IJwtTokenConverter jwtTokenConverter, TripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestTicketQuoteController(
+    IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+    IBudgetsService budgetsService, ILogService logService, 
+    IQuotationService quotationService, TravelContext travelContext, 
+    IHelperClass helperClass, IFileHandler fileHandler, 
+    IUsersService usersService, IAgentsService agentsService, 
+    IMapper mapper, IRequestService requestService, 
+    IMailer mailer, INotifier notifier,
+    IIDCheckService idCheckService
+    )
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -94,6 +104,7 @@ public class RequestTicketQuoteController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
     }
 
 
@@ -102,6 +113,12 @@ public class RequestTicketQuoteController : ControllerBase
     [HttpPost]
     [Route("giveQuotation")]
     public async Task<IActionResult> GiveQuote(IFormCollection data){
+
+           var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
 
         var id = data["id"];
         var agentId = data["agentId"];
@@ -164,6 +181,13 @@ public class RequestTicketQuoteController : ControllerBase
         [HttpPost]
         [Route("bookQuotation")]
         public async Task<IActionResult> BookQuotation(IFormCollection data){
+
+                var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
             var quotationForFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -223,6 +247,13 @@ public class RequestTicketQuoteController : ControllerBase
         [HttpPost]
         [Route("confirm")]
         public async Task<IActionResult> Confirm(IFormCollection data){
+
+                var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
             var quotationFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -278,6 +309,14 @@ public class RequestTicketQuoteController : ControllerBase
         [HttpPost]
         [Route("revoke")]
         public async Task<IActionResult> Revoke(IFormCollection data){
+
+
+                var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
             var quotationFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);
@@ -322,6 +361,13 @@ public class RequestTicketQuoteController : ControllerBase
         [HttpPost]
         [Route("unBook")]
         public async Task<IActionResult> UnBook(IFormCollection data){
+
+                var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
             var request = await _requestService.GetAsync(int.Parse(data["id"]));
             var quotationFrontEnd = JsonSerializer.Deserialize<Quotation>(data["quotation"]);
             var user = JsonSerializer.Deserialize<User>(data["user"]);

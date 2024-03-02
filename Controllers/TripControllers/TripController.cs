@@ -151,7 +151,7 @@ public class TripController : ControllerBase
         [Route("TEmailRequestsAccounts")]
         public async Task<IActionResult> TEmailRequestsAccounts(IFormCollection data){
                var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -194,7 +194,7 @@ public class TripController : ControllerBase
          [Route("TEmailRequestsCustom")]
          public async Task<IActionResult> TEmailRequestsCustom(IFormCollection data){
                var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -225,7 +225,7 @@ public class TripController : ControllerBase
          [Route("TComplete")]
             public async Task<IActionResult> TEmailRequests(IFormCollection data){
                    var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };

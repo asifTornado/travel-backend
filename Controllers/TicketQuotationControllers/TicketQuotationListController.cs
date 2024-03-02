@@ -53,6 +53,7 @@ public class TicketQuotationListController : ControllerBase
 {
 
 private readonly IBudgetsService _budgetService;
+private IIDCheckService _idCheckService;
    
 
 
@@ -62,10 +63,12 @@ private readonly IBudgetsService _budgetService;
 
 
     public TicketQuotationListController(
-        IBudgetsService budgetsService
+        IBudgetsService budgetsService,
+        IIDCheckService idCheckService
   )
     {
         _budgetService = budgetsService;
+        _idCheckService = idCheckService;
     }
     
 
@@ -74,6 +77,12 @@ private readonly IBudgetsService _budgetService;
     [HttpPost]
     [Route("/getAllTicketQuotations")]
     public async Task<IActionResult> GetRequestForApproval(IFormCollection data){
+
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
      
               var result = await _budgetService.GetAllTicketQuotations();
               return Ok(result);

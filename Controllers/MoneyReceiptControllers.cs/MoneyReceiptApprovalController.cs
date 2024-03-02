@@ -33,16 +33,22 @@ public class MoneyReceiptApprovalController : ControllerBase
     private IRequestService _requestService;
     private ILogService _logService;
     private INotifier _notifier;
+    private IIDCheckService _idCheckService;
 
 
 
-    public MoneyReceiptApprovalController(ILogService logService, INotifier notifier, IUsersService usersService, IRequestService requestService, MoneyReceiptService moneyReceiptService, RoleService roleService)
+    public MoneyReceiptApprovalController(ILogService logService, INotifier notifier, 
+    IUsersService usersService, IRequestService requestService, 
+    MoneyReceiptService moneyReceiptService, RoleService roleService,
+    IIDCheckService idCheckService
+    )
     {
       _moneyReceiptService = moneyReceiptService;
       _roleService = roleService;
       _requestService = requestService;
       _logService = logService;
       _notifier = notifier;
+      _idCheckService = idCheckService;
     }
 
   
@@ -51,9 +57,21 @@ public class MoneyReceiptApprovalController : ControllerBase
   [Route("moneyReceiptSupervisorApprove")]
   public async Task<IActionResult> MoneyReceiptSupervisorApprove(IFormCollection data){
     
-       var moneyReceiptId = data["id"];
+       
+    var moneyReceiptId = data["id"];
     var moneyReceipt = await _moneyReceiptService.GetMoneyReceipt(int.Parse(moneyReceiptId));
     var user = JsonSerializer.Deserialize<User>(data["user"]); 
+
+    var request = await _requestService.GetAsync(moneyReceipt.RequestId);
+
+    var allowed = _idCheckService.CheckSupervisor(request,  data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
+    
+
+
     moneyReceipt.Approvals.Add(user);
     moneyReceipt.Status = "Being Processed";
     var accounts = await _roleService.GetAccountsReceiverForMoneyReceipt();
@@ -84,6 +102,13 @@ public class MoneyReceiptApprovalController : ControllerBase
     
 
     var request = await _requestService.GetAsync(moneyReceipt.RequestId);
+
+
+    var allowed = _idCheckService.CheckSupervisor(request,  data["token"]);
+
+    if(allowed == false){
+      return Ok(false);
+    }
     
     moneyReceipt.Status = "Seeking Rectification";
     moneyReceipt.Submitted = false;
@@ -94,8 +119,8 @@ public class MoneyReceiptApprovalController : ControllerBase
 
      var message = $"{user.EmpName} has rejected your money receipt for the trip numbered {request.BudgetId}";
 
-  await _notifier.InsertNotification(message, user.Id, request.RequesterId, moneyReceipt.Id, Events.AdvancePaymentFormRejected, "moneyReceipt");
-  await _logService.InsertLog(moneyReceipt.RequestId, user.Id, request.RequesterId, Events.AdvancePaymentFormRejected);
+    await _notifier.InsertNotification(message, user.Id, request.RequesterId, moneyReceipt.Id, Events.AdvancePaymentFormRejected, "moneyReceipt");
+    await _logService.InsertLog(moneyReceipt.RequestId, user.Id, request.RequesterId, Events.AdvancePaymentFormRejected);
 
 
     return Ok(moneyReceipt);

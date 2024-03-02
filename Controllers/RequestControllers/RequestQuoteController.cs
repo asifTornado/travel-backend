@@ -72,13 +72,22 @@ public class RequestQuoteController : ControllerBase
     private TripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
+    private IIDCheckService _idCheckService;
+
 
 
 
    
 
 
-    public RequestQuoteController(IJwtTokenConverter jwtTokenConverter, TripService tripService, IBudgetsService budgetsService, ILogService logService, IQuotationService quotationService, TravelContext travelContext, IHelperClass helperClass, IFileHandler fileHandler, IUsersService usersService, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, INotifier notifier)
+    public RequestQuoteController(IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+    IBudgetsService budgetsService, ILogService logService, 
+    IQuotationService quotationService, TravelContext travelContext, 
+    IHelperClass helperClass, IFileHandler fileHandler, 
+    IUsersService usersService, IAgentsService agentsService, 
+    IMapper mapper, IRequestService requestService, 
+    IMailer mailer, INotifier notifier,
+    IIDCheckService idCheckService)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -94,6 +103,7 @@ public class RequestQuoteController : ControllerBase
         _budgetService = budgetsService;
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
+        _idCheckService = idCheckService;
     }
 
 
@@ -116,8 +126,15 @@ public class RequestQuoteController : ControllerBase
     [Route("supervisorApprove")]
     public async Task<IActionResult> SupervisorApprove(IFormCollection data){
 
-
+      
         var requestFront = JsonSerializer.Deserialize<Request>(data["request"]);
+
+        var allowed =  _idCheckService.CheckSupervisor(requestFront, data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
         var what = data["what"];
         var approval = data["approval"];
         var message = data["message"];
@@ -284,6 +301,13 @@ public class RequestQuoteController : ControllerBase
     [HttpPost]
     [Route("addCustomQuote")]
     public async Task<IActionResult> AddCustomQuote(IFormCollection data){
+
+        var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+
+        if(allowed == false){
+            return Ok(false);
+        }
+
 
         var user = JsonSerializer.Deserialize<User>(data["user"]);
         var what = data["what"];

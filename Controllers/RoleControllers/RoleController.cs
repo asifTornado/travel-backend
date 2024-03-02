@@ -54,6 +54,7 @@ public class RoleController : ControllerBase
 
 
    private RoleService _roleService;
+   private IIDCheckService _idCheckService;
 
 
 
@@ -61,9 +62,10 @@ public class RoleController : ControllerBase
    
 
 
-    public RoleController(RoleService roleService)
+    public RoleController(RoleService roleService, IIDCheckService idCheckService)
     {
         _roleService = roleService;
+        _idCheckService = idCheckService;
       
     }
 
@@ -71,6 +73,11 @@ public class RoleController : ControllerBase
     [HttpPost]
     [Route("insertRole")]
     public async Task<IActionResult> InsertRole(IFormCollection data){
+
+           var allowed = await _idCheckService.CheckAdmin(data["token"]);
+           if(allowed == false){
+            return Ok(false);
+           }
            var role = JsonSerializer.Deserialize<Role>(data["role"]);
            await _roleService.InsertRole(role);
            return Ok(role);
@@ -81,6 +88,10 @@ public class RoleController : ControllerBase
     [HttpPost]
     [Route("updateRole")]
      public async Task<IActionResult> UpdateRole(IFormCollection data){
+          var allowed = await _idCheckService.CheckAdmin(data["token"]);
+           if(allowed == false){
+            return Ok(false);
+           }
            var role = JsonSerializer.Deserialize<Role>(data["role"]);
            await _roleService.UpdateRole(role);
            return Ok(role);
@@ -91,6 +102,10 @@ public class RoleController : ControllerBase
 [HttpPost]
 [Route("removeRole")]
      public async Task<IActionResult> RemoveRole(IFormCollection data){
+          var allowed = await _idCheckService.CheckAdmin(data["token"]);
+           if(allowed == false){
+            return Ok(false);
+           }
            var role = JsonSerializer.Deserialize<Role>(data["role"]);
            await _roleService.RemoveRole(role);
            return Ok(role);

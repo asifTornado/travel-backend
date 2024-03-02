@@ -98,7 +98,7 @@ public class TripTicketQuoteController : ControllerBase
     public async Task<IActionResult> TTicketBook(IFormCollection data)
     {
              var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -161,7 +161,7 @@ public class TripTicketQuoteController : ControllerBase
     public async Task<IActionResult> TUnBook(IFormCollection data)
     {
          var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -205,7 +205,7 @@ public class TripTicketQuoteController : ControllerBase
     [HttpPost("TTicketConfirm")]
     public async Task<IActionResult> TTicketConfirm(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -248,7 +248,7 @@ public class TripTicketQuoteController : ControllerBase
     [HttpPost("TTicketRevoke")]
     public async Task<IActionResult> TTicketRevoke(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };

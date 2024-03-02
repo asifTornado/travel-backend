@@ -89,7 +89,7 @@ public class TripHotelQuoteController : ControllerBase
     [HttpPost("TAddHotelQuote")]
     public async Task<IActionResult> TAddHotelQuote(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -136,7 +136,7 @@ public class TripHotelQuoteController : ControllerBase
     public async Task<IActionResult> THotelBook(IFormCollection data){
 
           var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -199,7 +199,7 @@ public class TripHotelQuoteController : ControllerBase
     [HttpPost("THotelUnBook")]
     public async Task<IActionResult> THotelUnBook(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -242,7 +242,7 @@ public class TripHotelQuoteController : ControllerBase
     [HttpPost("THotelConfirm")]
     public async Task<IActionResult> THotelConfirm(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
@@ -283,7 +283,7 @@ public class TripHotelQuoteController : ControllerBase
     [HttpPost("THotelRevoke")]
     public async Task<IActionResult> THotelRevoke(IFormCollection data){
            var token = data["token"];
-              var allowed = await _idCheckService.CheckAdmin(token);
+              var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
