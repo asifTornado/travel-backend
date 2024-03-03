@@ -12,6 +12,8 @@ using Rotativa.AspNetCore.Options;
 using Amazon.Util.Internal;
 using backEnd.Helpers;
 using backEnd.Services;
+using backEnd.Helpers.Mails;
+using Org.BouncyCastle.Asn1.Cms;
 
 
 namespace backEnd.Controllers.MoneyReceiptControllers;
@@ -35,6 +37,7 @@ public class MoneyReceiptAccountsController : ControllerBase
     private ILogService _logService;
 
     private IIDCheckService _idCheckService;
+    private MailerWorkFlow _mailerWorkFlow;
 
 
 
@@ -42,7 +45,8 @@ public class MoneyReceiptAccountsController : ControllerBase
       INotifier notifier, ILogService logService,
       IUsersService usersService, IRequestService requestService, 
       MoneyReceiptService moneyReceiptService, RoleService roleService,
-      IDCheckService idCheckService
+      IDCheckService idCheckService,
+      MailerWorkFlow mailerWorkFlow
       )
     {
       _moneyReceiptService = moneyReceiptService;
@@ -51,6 +55,7 @@ public class MoneyReceiptAccountsController : ControllerBase
       _logService = logService;
       _notifier = notifier;
       _idCheckService = idCheckService;
+      _mailerWorkFlow = mailerWorkFlow;
       
     }
 
@@ -71,6 +76,7 @@ public class MoneyReceiptAccountsController : ControllerBase
 
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     var next = int.Parse(data["next"]);
+    var recipient = await _usersService.GetOneUser(next);
 
     moneyReceipt.Approvals.Add(user);
 
@@ -84,6 +90,8 @@ public class MoneyReceiptAccountsController : ControllerBase
 
      var message = $"{user.EmpName} has forwarded an advance payment form from {moneyReceipt.I} to you";
 
+
+  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
   await _notifier.InsertNotification(message, user.Id, next, moneyReceipt.Id, Events.AdvancePaymentFormForward, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, next, Events.AdvancePaymentFormForward);
 
@@ -131,6 +139,10 @@ public class MoneyReceiptAccountsController : ControllerBase
 
          var message = $"{user.EmpName} has rejected an advance payment form from {moneyReceipt.I} ";
 
+  var recipient = await _usersService.GetOneUser(moneyReceipt.CurrentHandlerId);
+
+  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+
   await _notifier.InsertNotification(message, user.Id, moneyReceipt.CurrentHandlerId, moneyReceipt.Id, Events.AdvancePaymentFormRejected, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, moneyReceipt.CurrentHandlerId, Events.AdvancePaymentFormForward);
 
@@ -162,6 +174,10 @@ public class MoneyReceiptAccountsController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, travelManager.Id, moneyReceipt.Id, Events.AdvancePaymentFormProcessed, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, travelManager.Id, Events.AdvancePaymentFormProcessed);
 
+   var recipient = await _usersService.GetOneUser(travelManager.Id);
+   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+
+
 
     return Ok(moneyReceipt);
 
@@ -174,11 +190,21 @@ public class MoneyReceiptAccountsController : ControllerBase
   [Route("moneyReceiptMoneyDisburse")]
   public async Task<IActionResult> Disburse(IFormCollection data){
     var moneyReceipt = JsonSerializer.Deserialize<MoneyReceipt>(data["moneyReceipt"]);
+    var travelManager = await _roleService.GetTravelManager();
+    var user = JsonSerializer.Deserialize<User>(data["user"]);
     
     moneyReceipt.Disbursed = true;
    
     
     await _moneyReceiptService.UpdateMoneyReceipt(moneyReceipt);
+    
+    var message = $"Money Has Been Disbursed for your trip numbered {moneyReceipt.RequestId}";
+    
+   var recipient = await _usersService.GetOneUser(travelManager.Id);
+   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+
+    await _notifier.InsertNotification(message, user.Id, travelManager.Id, moneyReceipt.Id, Events.AdvancePaymentFormMoneyDisbursed, "moneyReceipt");
+  await _logService.InsertLog(moneyReceipt.RequestId, user.Id, travelManager.Id, Events.AdvancePaymentFormMoneyDisbursed);
     
 
     return Ok(moneyReceipt);

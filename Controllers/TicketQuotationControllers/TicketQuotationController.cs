@@ -44,6 +44,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using Org.BouncyCastle.Asn1.IsisMtt.Ocsp;
 using System.Diagnostics.CodeAnalysis;
 using Org.BouncyCastle.Bcpg;
+using backEnd.Helpers.Mails;
 
 namespace backEnd.Controllers.TicketQuotationControllers;
 
@@ -61,6 +62,9 @@ public class TicketQuotationController : ControllerBase
    private IMapper _imapper;
    private RoleService _roleService;
    private IIDCheckService _idCheckService;
+   private INotifier _notifier;
+   private ILogService _logService;
+   private MailerWorkFlow _mailerWorkFlow;
 
 
 
@@ -69,12 +73,14 @@ public class TicketQuotationController : ControllerBase
 
 
     public TicketQuotationController(IBudgetsService budgetsService, IMapper mapper, 
-    RoleService roleService, IIDCheckService idCheckService)
+    RoleService roleService, IIDCheckService idCheckService, INotifier notifier, ILogService logService)
     {
         _budgetService = budgetsService;
         _imapper = mapper;
         _roleService = roleService;
         _idCheckService = idCheckService;
+        _notifier = notifier;
+        _logService = logService;
     }
     
 
@@ -129,6 +135,7 @@ public class TicketQuotationController : ControllerBase
     [Route("sendToAccounts")]
     public async Task<IActionResult> SendToAccounts(IFormCollection data){
       var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+      var user = JsonSerializer.Deserialize<User>(data["user"]);
 
       if(allowed == false){
         return Ok(false);
@@ -140,6 +147,12 @@ public class TicketQuotationController : ControllerBase
         budget.CurrentHandlerId = accounts.Id;
 
         await _budgetService.UpdateAsync(budget.Id, budget);
+
+        var message = $"Ticket quations for the trip numbered {budget.Id} has been sent to accounts for processing";
+
+    await _notifier.InsertNotification(message, user.Id, accounts.Id, budget.Id, Events.TicketQuotationsSentToAccounts, "ticketQuotations");
+    await _logService.InsertLogs(budget.Requests.Select(x => x.Id).ToList(), user.Id, accounts.Id, Events.TicketQuotationsSentToAccounts);
+    
 
         return Ok(true);
     }
@@ -161,6 +174,8 @@ public class TicketQuotationController : ControllerBase
       }
 
     var user = JsonSerializer.Deserialize<User>(data["user"]);
+
+    var manager = await _roleService.GetTravelManager();
     
     ticketQuotations.TicketsMoneyDisbursed = true;
     var budget = _imapper.Map<Budget>(ticketQuotations);
@@ -174,7 +189,17 @@ public class TicketQuotationController : ControllerBase
    
     
     await _budgetService.UpdateAsync(ticketQuotations.Id, budget);
+
+    var message = $"Money has been disbursed for the air ticket of trip numbered {budget.Id}";
+
+    await _notifier.InsertNotification(message, user.Id, manager.Id, budget.Id, Events.TicketQuotationsMoneyDispursed, "ticketQuotations");
+    await _logService.InsertLogs(budget.Requests.Select(x => x.Id).ToList(), user.Id, manager.Id, Events.TicketQuotationsMoneyDispursed);
     
+
+    
+   
+
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, budget.Id, "ticketQuotations");
 
     return Ok(ticketQuotations);
 

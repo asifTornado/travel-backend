@@ -38,7 +38,7 @@ public class MailerWorkFlow
 
 
   
-public async Task WorkFlowMail(string? from, string? toEmail, int? tripNo, int? id, string? action, string? typePath, string? type){
+public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, string? typePath){
 
     string subject = "New Expense Report";
 
@@ -64,7 +64,7 @@ public async Task WorkFlowMail(string? from, string? toEmail, int? tripNo, int? 
             </head>
         
             <body>
-                <h1>{type} for Trip Numbered {tripNo} has been {action} by {from}. Click on the link below for more information: </h1>
+                <h1>{customMessage}. Click on the link below for more information: </h1>
 
                  <a href='{url}' />      
 

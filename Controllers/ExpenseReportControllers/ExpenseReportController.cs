@@ -49,20 +49,6 @@ public class ExpenseReportController : ControllerBase
 
   }
 
-  [HttpPost]
-  [Route("expenseReportMoneyDisburse")]
-  public async Task<IActionResult> Disburse(IFormCollection data){
-    var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
-  
-    expenseReport.Disbursed = true;
-    
-    
-    await _expenseReportService.UpdateExpenseReport(expenseReport);
-    
-
-    return Ok(expenseReport);
-
-  } 
   } 
   
 

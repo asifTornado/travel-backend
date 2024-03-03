@@ -96,7 +96,7 @@ public class MoneyReceiptApprovalController : ControllerBase
   [Route("moneyReceiptSupervisorReject")]
   public async Task<IActionResult> MoneyReceiptSupervisorReject(IFormCollection data){
     
-       var moneyReceiptId = data["id"];
+    var moneyReceiptId = data["id"];
     var moneyReceipt = await _moneyReceiptService.GetMoneyReceipt(int.Parse(moneyReceiptId));
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     

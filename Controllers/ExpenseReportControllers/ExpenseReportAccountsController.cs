@@ -13,6 +13,7 @@ using Amazon.Util.Internal;
 using backEnd.Helpers;
 using backEnd.Services;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using backEnd.Helpers.Mails;
 
 
 
@@ -39,13 +40,18 @@ public class ExpenseReportAccountsController : ControllerBase
     private ILogService _logService;
     private INotifier _notifier;
     private IIDCheckService _idCheckService;
+    private MailerWorkFlow _mailerWorkFlow;
+    private UsersService _userService;
 
 
 
     public ExpenseReportAccountsController(IUsersService usersService, 
     IRequestService requestService, ILogService logService,
-    INotifier notifier,
-    IExpenseReportService expenseReportService, RoleService roleService, IIDCheckService idCheckService)
+    INotifier notifier, MailerWorkFlow mailerWorkFlow,
+    IExpenseReportService expenseReportService, RoleService roleService, 
+    IIDCheckService idCheckService,
+    UsersService userService
+    )
     {
       _expenseReportService = expenseReportService;
       _roleService = roleService;
@@ -53,6 +59,8 @@ public class ExpenseReportAccountsController : ControllerBase
       _logService = logService;
       _notifier = notifier;
       _idCheckService = idCheckService;
+      _mailerWorkFlow = mailerWorkFlow;
+      _userService = userService;
     }
 
   
@@ -92,6 +100,13 @@ public class ExpenseReportAccountsController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportForward, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportForward);
   
+
+  
+     var recipient = await _userService.GetOneUser(next);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport");
+
+
     return Ok(expenseReport);
 
   } 
@@ -137,6 +152,11 @@ public class ExpenseReportAccountsController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportForward, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportForward);
 
+    var recipient = await _userService.GetOneUser(expenseReport.CurrentHandlerId);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport");
+
+
     return Ok(expenseReport);
 
   } 
@@ -167,12 +187,18 @@ public class ExpenseReportAccountsController : ControllerBase
     
     await _expenseReportService.UpdateExpenseReport(expenseReport);
 
+    var manager = await _roleService.GetTravelManager();
+
 
       var message = $"{user.EmpName} has completed processing the expense report for the trip numbered {expenseReport.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportProcessed, "expenseReport");
-  await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportProcessed);
+  await _notifier.InsertNotification(message, user.Id, manager.Id, expenseReport.Id, Events.ExpenseReportProcessed, "expenseReport");
+  await _logService.InsertLog(expenseReport.RequestId, user.Id, manager.Id, Events.ExpenseReportProcessed);
+  
 
+ 
+
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport");
 
     return Ok(expenseReport);
 
@@ -183,6 +209,7 @@ public class ExpenseReportAccountsController : ControllerBase
   [Route("expenseReportMoneyDisburse")]
   public async Task<IActionResult> Disburse(IFormCollection data){
     var expenseReport = JsonSerializer.Deserialize<ExpenseReport>(data["expenseReport"]);
+    var user = await _userService.GetOneUser(expenseReport.CurrentHandlerId);
 
     
   
@@ -197,6 +224,18 @@ public class ExpenseReportAccountsController : ControllerBase
     
     
     await _expenseReportService.UpdateExpenseReport(expenseReport);
+
+     var manager = await _roleService.GetTravelManager();
+
+var message = $"{user.EmpName} has disbursed money for the expense report for the trip numbered {expenseReport.Id} ";
+
+  await _notifier.InsertNotification(message, user.Id, manager.Id, expenseReport.Id, Events.ExpenseReportMoneyDisbursed, "expenseReport");
+  await _logService.InsertLog(expenseReport.RequestId, user.Id, manager.Id, Events.ExpenseReportProcessed);
+  
+
+ 
+
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport");
     
 
     return Ok(expenseReport);

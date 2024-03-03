@@ -43,15 +43,7 @@ public class AgentsService : IAgentsService
         var result  = await _travelContext.Agents.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
         return result;
 
-        // await using var connection = _connection.GetConnection();
-
-        // await connection.OpenAsync();
-
-        // string sql = @"SELECT * FROM dbo.Agents WHERE Id = @Id";
-
-        // var result = await connection.QueryFirstOrDefaultAsync<Agent>(sql, new {Id = id});
-
-        // return result;
+      
      
     
     }
@@ -61,23 +53,7 @@ public class AgentsService : IAgentsService
         _travelContext.Entry(agent).State = EntityState.Added;
 
         await _travelContext.SaveChangesAsync();
-        
-        // await using var connection = _connection.GetConnection();
-        // await connection.OpenAsync();
-        // string sql =@"INSERT INTO dbo.Agents (Name, Email, Phone) VALUES (@Name, @Email, @Phone)";
-
-        // await connection.ExecuteAsync(sql, agent);
-
-
-
-
-
-   
-
-   
-
-
-        
+                
     }
 
 
@@ -88,15 +64,7 @@ public class AgentsService : IAgentsService
 
         return results;
     
-        //  await using var connection = _connection.GetConnection();
-
-        // await connection.OpenAsync();
-
-        // string sql = @"SELECT * FROM dbo.Agents";
-
-        // var result = await connection.QueryAsync<Agent>(sql);
-
-        // return result.ToList();
+     
     }
 
 
@@ -115,20 +83,7 @@ public class AgentsService : IAgentsService
 
         await _travelContext.SaveChangesAsync();
  
-        // await using var connection = _connection.GetConnection();
-
-        // connection.Open();
-
-        // string sql = @"
-        //  UPDATE dbo.Agents SET
-        //  Name = @Name,
-        //  Email = @Email,
-        //  Phone = @Phone
-        //  WHERE Id = @Id
-
-        // ";
-
-        // await connection.ExecuteAsync(sql, agent);
+  
 
    
 

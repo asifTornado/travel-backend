@@ -12,6 +12,7 @@ using Rotativa.AspNetCore.Options;
 using Amazon.Util.Internal;
 using backEnd.Helpers;
 using backEnd.Services;
+using backEnd.Helpers.Mails;
 
 
 
@@ -41,6 +42,7 @@ public class ExpenseReportApprovalController : ControllerBase
 
     private INotifier _notifier;
     private ILogService _logService;
+    private MailerWorkFlow _mailerWorkFlow;
 
 
 
@@ -48,7 +50,7 @@ public class ExpenseReportApprovalController : ControllerBase
     public ExpenseReportApprovalController(IMailer mailer, IFileHandler fileHandler, 
     IUsersService usersService, IReportGenerator reportGenerator, 
     IRequestService requestService, IExpenseReportService expenseReportService, 
-    RoleService roleService, ILogService logService,
+    RoleService roleService, ILogService logService, MailerWorkFlow mailerWorkFlow,
         INotifier notifier)
     {
       _expenseReportService = expenseReportService;
@@ -59,6 +61,7 @@ public class ExpenseReportApprovalController : ControllerBase
       _mailer = mailer;
        _logService = logService;
        _notifier = notifier;
+       _mailerWorkFlow = mailerWorkFlow;
     }
 
   
@@ -132,6 +135,8 @@ public class ExpenseReportApprovalController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportRejected, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportRejected);
 
+   _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, expenseReport.Id, "expenseReport");
+  
     return Ok(expenseReport);
 
   } 

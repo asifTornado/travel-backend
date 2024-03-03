@@ -44,6 +44,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using Org.BouncyCastle.Asn1.IsisMtt.Ocsp;
 using System.Diagnostics.CodeAnalysis;
 using Org.BouncyCastle.Bcpg;
+using backEnd.Helpers.Mails;
 
 namespace backEnd.Controllers.TicketQuotationControllers;
 
@@ -64,10 +65,11 @@ public class TicketQuotationAccountsController : ControllerBase
      private IUsersService _userService;
      private RoleService _roleService;
      private IIDCheckService _idCheckService;
+     private MailerWorkFlow _mailerWorkFlow;
 
 
 
-    public TicketQuotationAccountsController(RoleService roleService, IUsersService  usersService, 
+    public TicketQuotationAccountsController(RoleService roleService, MailerWorkFlow mailerWorkFlow, IUsersService  usersService, 
      IBudgetsService budgetsService, IMapper mapper, 
      INotifier notifier, ILogService logService,
      IIDCheckService idCheckService
@@ -80,6 +82,7 @@ public class TicketQuotationAccountsController : ControllerBase
         _userService = usersService;
         _roleService = roleService;
         _idCheckService = idCheckService;
+        _mailerWorkFlow = mailerWorkFlow;
         
     }
     
@@ -125,13 +128,17 @@ public class TicketQuotationAccountsController : ControllerBase
 
     var message = $"{user.EmpName} has forwarded ticket quotations for the Trip numbered {trip.TripId}";
 
-    await _notifier.InsertNotification(message, user.Id, next, admin.Id, Events.AdvancePaymentFormForward, "moneyReceipt");
-    await _logService.InsertLogs(trip.Requests.Select(x => x.Id).ToList(), user.Id, next, Events.AdvancePaymentFormForward);
+    await _notifier.InsertNotification(message, user.Id, next, admin.Id, Events.TicketQuotationsForwarded, "ticketQuotations");
+    await _logService.InsertLogs(trip.Requests.Select(x => x.Id).ToList(), user.Id, next, Events.TicketQuotationsForwarded);
     
     var newData = new {
       Id = trip.Id,
       TicketApprovals = trip.TicketApprovals
     };
+
+    var recipient = await _userService.GetOneUser(next);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations");
    
     return Ok(newData);
 
@@ -177,9 +184,14 @@ public class TicketQuotationAccountsController : ControllerBase
 
   var message = $"{user.EmpName} has backwarded a trip numbered {trip.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, trip.CurrentHandlerId, trip.Id, Events.AdvancePaymentFormRejected, "trip");
-  await _logService.InsertLogs(trip.Requests.Select(x => x.Id).ToList(), user.Id, trip.CurrentHandlerId, Events.AdvancePaymentFormForward);
+  await _notifier.InsertNotification(message, user.Id, trip.CurrentHandlerId, trip.Id, Events.TicketQuotationsRejected, "ticketQuotations");
+  await _logService.InsertLogs(trip.Requests.Select(x => x.Id).ToList(), user.Id, trip.CurrentHandlerId, Events.TicketQuotationsRejected);
 
+     var recipient = await _userService.GetOneUser(trip.CurrentHandlerId);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations");
+    
+    
     return Ok(trip);
 
   } 
@@ -215,10 +227,14 @@ public class TicketQuotationAccountsController : ControllerBase
 
       var message = $"{user.EmpName} has completed processing the air ticket quotations for the trip numbered {trip.Id} ";
 
-  await _notifier.InsertNotification(message, user.Id, travelManager.Id, trip.Id, Events.TicketQuotationsProcessed, "trip");
+  await _notifier.InsertNotification(message, user.Id, travelManager.Id, trip.Id, Events.TicketQuotationsProcessed, "ticketQuotations");
   await _logService.InsertLogs(trip.Requests.Select(x => x.Id).ToList(), user.Id, travelManager.Id, Events.TicketQuotationsProcessed);
    
-   
+    
+    
+
+
+    _mailerWorkFlow.WorkFlowMail(travelManager.MailAddress, message, trip.Id, "ticketQuotations");
 
     return Ok(travelManager.Id);
 

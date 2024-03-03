@@ -64,16 +64,22 @@ public static class Events {
     public static string AdvancePaymentFormResubmitted {get;} = "Advance Payment Form Resubmitted By Traveller";
     public static string AdvancePaymentFormForward {get;} = "Advance Payment Form Forwarded";
     public static string AdvancePaymentFormProcessed {get;} = "Advance Payment Form Processing Complete";
+
+       public static string AdvancePaymentFormMoneyDisbursed {get;} = "Advance Payment Form Money Disbursed";
     public static string ExpenseReportSubmitted  {get;} = "ExpenseReport Submitted";
     public static string ExpenseReportApprovedSupervisor {get;} = "ExpenseReport Submitted By Supervisor";
     public static string ExpenseReportRejected {get;} = "ExpenseReport Rejected";
     public static string ExpenseReportResubmitted {get;} = "ExpenseReport Resubmitted By Traveller";
     public static string ExpenseReportForward {get;} = "ExpenseReport Forwarded";
     public static string ExpenseReportProcessed {get;} = "ExpenseReport Processing Complete";
+     public static string ExpenseReportMoneyDisbursed {get;} = "ExpenseReport Money Disbursed";
     public static string ExpenseReportTravelManagerSubmitted {get;} = "Expense Report Information Added By Travel Manager";
     public static string TicketQuotationsForwarded {get;} = "Ticket Quotations Forwarded";
     public static string TicketQuotationsRejected {get;} = "Ticket Quotations Rejected";
     public static string TicketQuotationsProcessed {get;} = "Ticket Quotations Processed";
+    public static string TicketQuotationsSentToAccounts {get;} = "Ticket Quotations Sent To Accounts";
+
+    public static string TicketQuotationsMoneyDispursed {get;} = "Money Dispursed For Ticket Quotation";
     
 
 
