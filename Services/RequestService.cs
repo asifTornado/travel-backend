@@ -440,11 +440,11 @@ public class RequestService: IRequestService
    }
 
 
-   public async Task<List<Request>> GetUnapprovedRequests(int id){
+   public async Task<List<Request>> GetUnapprovedRequests(User user){
     var result = await _travelContext.Requests.AsNoTracking()
                     .Include(x => x.Requester)
                     .Where(x => (x.SupervisorApproved == false || x.DepartmentHeadApproved  == false) && x.PermanentlyRejected != true
-                    && (x.RequesterId == id || x.Requester!.SuperVisorId == id || x.Requester!.ZonalHeadId == id)
+                    && (x.RequesterId == user.Id || x.Requester!.SuperVisorId == user.Id || x.Requester!.ZonalHeadId == user.Id || user.UserType == "admin")
                     )
                     
                     .ToListAsync();

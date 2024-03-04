@@ -17,6 +17,7 @@ public interface IIDCheckService
     Task<bool> CheckManager(Request request, string token);
     Task<bool> CheckAdminOrManager(string token);
     bool CheckCurrent(int? currentHandlerId, string token);
+  
     
 }
 

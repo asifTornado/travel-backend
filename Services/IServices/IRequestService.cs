@@ -39,7 +39,7 @@ namespace backEnd.Services.IServices
 
         Task UpdateRequestForApproval(Request request);
         
-         Task<List<Request>> GetUnapprovedRequests(int id);
+         Task<List<Request>> GetUnapprovedRequests(User user);
     
 
 

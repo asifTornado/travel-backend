@@ -206,8 +206,8 @@ public async Task<IActionResult> GetRequestsProcessedByMe(IFormCollection data){
     [HttpPost]
     [Route("/getUnapprovedRequests")]
     public async Task<IActionResult> GetUnapprovedRequests(IFormCollection data){
-        var id = int.Parse(data["id"]);
-        var result = await _requestService.GetUnapprovedRequests(id);
+        var user  = JsonSerializer.Deserialize<User>(data["user"]);
+        var result = await _requestService.GetUnapprovedRequests(user);
         return Ok(result);
     }
 

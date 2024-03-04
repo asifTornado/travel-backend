@@ -64,8 +64,9 @@ public class IDCheckService : IIDCheckService
     public bool CheckDepartmentHead(Request request, string token)
     {
         int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var userType = _jwtTokenConverter.GetUserType(token);
 
-        if(tokenId == request.Requester.ZonalHeadId){
+        if(tokenId == request.Requester.ZonalHeadId || userType == "userType: admin"){
             return true;
         }else{
             return false;
@@ -76,8 +77,9 @@ public class IDCheckService : IIDCheckService
     public bool CheckSupervisor(Request request, string token)
     {
         int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var userType = _jwtTokenConverter.GetUserType(token);
 
-        if(tokenId == request.Requester.SuperVisorId){
+        if(tokenId == request.Requester.SuperVisorId || userType == "userType: admin"){
             return true;
         }else{
             return false;
@@ -90,7 +92,9 @@ public class IDCheckService : IIDCheckService
     {
          int? tokenId = _jwtTokenConverter.ParseToken(token);
 
-        if(tokenId == request.RequesterId){
+           var userType = _jwtTokenConverter.GetUserType(token);
+
+        if(tokenId == request.RequesterId || userType == "userType: admin"){
             return true;
         }else{
             return false;
@@ -101,7 +105,11 @@ public class IDCheckService : IIDCheckService
     public async Task<bool> CheckManager(Request request, string token){
         int? tokenId = _jwtTokenConverter.ParseToken(token);
         var manager = await _usersService.GetOneUser(tokenId);
-        if(manager.UserType == "manager"){
+
+          var userType = _jwtTokenConverter.GetUserType(token);
+
+
+        if(manager.UserType == "manager" ||  userType == "userType: admin"){
             return true;
         }else{
             return false;
@@ -113,8 +121,10 @@ public class IDCheckService : IIDCheckService
 
 
     public bool CheckCurrent(int? currentHandlerId, string token){
+
+          var userType = _jwtTokenConverter.GetUserType(token);
          int? tokenId = _jwtTokenConverter.ParseToken(token);
-         if(currentHandlerId == tokenId){
+         if(currentHandlerId == tokenId || userType == "userType: admin"){
             return true;
          }else{
             return false;

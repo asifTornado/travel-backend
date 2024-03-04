@@ -28,7 +28,8 @@ public class JwtTokenConverter:IJwtTokenConverter
         var claims = new List<Claim>
         {
           
-            new (ClaimTypes.Name, user.Id.ToString())
+            new (ClaimTypes.Name, user.Id.ToString()),
+            new ("userType", user.UserType)
             // Add additional claims as needed
         };
 
@@ -62,6 +63,33 @@ public class JwtTokenConverter:IJwtTokenConverter
             var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
             var userIdClaim = claimsPrincipal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             return Convert.ToInt32(userIdClaim.Value);
+        }
+        catch
+        {
+            return null; // Invalid token
+        }
+    }
+
+
+    public string? GetUserType(string token){
+          var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_secretKey);
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+
+        try
+        {
+            var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+            var userTypeClaim = claimsPrincipal.FindFirst("userType");
+            return userTypeClaim.ToString();
+          
         }
         catch
         {

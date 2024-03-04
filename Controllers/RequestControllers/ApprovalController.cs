@@ -204,7 +204,7 @@ public class ApprovalController : ControllerBase
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var token = data["token"];
         var allowed = _idCheckService.CheckTraveler(request, token);
-        if(allowed != true){
+        if(allowed == false){
             return Ok(false);
         }
         request.Status = "Seeking Supervisor Approval For Trip";
