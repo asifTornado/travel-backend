@@ -12,7 +12,7 @@ namespace backEnd.Models;
 public class  TravelContext: DbContext
 {   
 
-    static readonly string ConnectionString = "Server=TOKEN\\SQLEXPRESS;Database=master;Trusted_Connection=true;TrustServerCertificate=True";
+    static readonly string ConnectionString = "Server=HR-Asif-Lap\\SQLEXPRESS;Database=master;Trusted_Connection=true;TrustServerCertificate=True";
     public DbSet<Request> Requests { get; set; }
     public DbSet<Quotation> Quotations {get; set;}
     public DbSet<HotelQuotation> HotelQuotations {get; set;}

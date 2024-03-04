@@ -52,7 +52,7 @@ public class UserController : ControllerBase
    
 
 
-    public UserController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService)
+    public UserController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService, IIDCheckService idCheckService)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -60,6 +60,7 @@ public class UserController : ControllerBase
         _mailer = mailer;
         _userService = usersService;
         _userApi = userapi;
+        _idCheckService = idCheckService;
  
 
     }

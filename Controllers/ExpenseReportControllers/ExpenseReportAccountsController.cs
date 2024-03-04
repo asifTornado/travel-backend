@@ -227,7 +227,8 @@ public class ExpenseReportAccountsController : ControllerBase
 
      var manager = await _roleService.GetTravelManager();
 
-var message = $"{user.EmpName} has disbursed money for the expense report for the trip numbered {expenseReport.Id} ";
+  
+  var message = $"{user.EmpName} has disbursed money for the expense report for the trip numbered {expenseReport.Id} ";
 
   await _notifier.InsertNotification(message, user.Id, manager.Id, expenseReport.Id, Events.ExpenseReportMoneyDisbursed, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, manager.Id, Events.ExpenseReportProcessed);

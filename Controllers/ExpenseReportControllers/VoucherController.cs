@@ -46,6 +46,8 @@ public class VoucherController : ControllerBase
   [HttpPost]
   [Route("uploadVoucher")]
   public async Task<IActionResult> UploadVoucher(IFormCollection data){
+
+    
     var file = data.Files[0];
     var fileName = _fileHandler.GetUniqueFileName(file.FileName);
     var filePath = await _fileHandler.SaveFile(fileName, file);

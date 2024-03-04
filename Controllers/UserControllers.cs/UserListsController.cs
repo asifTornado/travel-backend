@@ -71,8 +71,8 @@ public class UserListsController : ControllerBase
 
    [HttpGet("getUsers")]
    public async Task<IActionResult> GetUsers(IFormCollection data){
-         var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
-         if(allowed == false) return Ok(false);
+      //    var allowed = await _idCheckService.CheckAdminOrManager(data["token"]);
+      //    if(allowed == false) return Ok(false);
          var users = await _userService.GetAsync();
          Console.WriteLine("these are the users");
          Console.WriteLine(users);

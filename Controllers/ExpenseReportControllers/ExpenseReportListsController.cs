@@ -88,9 +88,8 @@ public class ExpenseReportListsController : ControllerBase
 
     if(allowed == false){
       return Ok(false);
-    }else{
-      return Ok(true);
     }
+
     
     var result = await _expenseReportService.GetAllExpenseReports();
     return Ok(result);
