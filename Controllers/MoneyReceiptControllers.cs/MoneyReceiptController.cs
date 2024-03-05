@@ -37,6 +37,7 @@ public class MoneyReceiptController : ControllerBase
     private IReportGenerator _reportGenerator;
     private IFileHandler _fileHandler;
     private IIDCheckService _idCheckService;
+    private MailerWorkFlow _mailerWorkFlow;
    
 
 
@@ -51,7 +52,9 @@ public class MoneyReceiptController : ControllerBase
     IReportGenerator reportGenerator,
     MailerMoneyReceipt mailerMoneyReceipt,
     IFileHandler fileHandler,
-    IIDCheckService idCheckService
+    IIDCheckService idCheckService,
+    MailerWorkFlow mailerWorkFlow
+
 
     )
     
@@ -65,6 +68,7 @@ public class MoneyReceiptController : ControllerBase
       _mailerMoneyReceipt = mailerMoneyReceipt;
       _fileHandler = fileHandler;
       _idCheckService = idCheckService;
+      _mailerWorkFlow = mailerWorkFlow;
     }
 
   
@@ -94,7 +98,7 @@ public class MoneyReceiptController : ControllerBase
     await _fileHandler.SaveFile(moneyReceiptPdf, fileName);
 
 
-     _mailerMoneyReceipt.SendMoneyReceipt(accounts.MailAddress, fileName, request, audit.MailAddress);
+     _mailerMoneyReceipt.SendMoneyReceipt(accounts.MailAddress, fileName, moneyReceipt.Id, request, data["token"], audit.MailAddress);
 
     moneyReceipt.RequestId = request.Id;
     moneyReceipt.CurrentHandlerId = request.Requester.SuperVisorId;
@@ -108,7 +112,7 @@ public class MoneyReceiptController : ControllerBase
 
   await _notifier.InsertNotification(message, request.RequesterId, request.Requester.SuperVisorId, moneyReceipt.Id, Events.AdvancePaymentFormSubmitted, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, request.RequesterId, request.Requester.SuperVisorId, Events.AdvancePaymentFormSubmitted);
-
+  
 
     return Ok(true);
 
@@ -147,7 +151,7 @@ public class MoneyReceiptController : ControllerBase
     await _fileHandler.SaveFile(moneyReceiptPdf, fileName);
 
 
-     _mailerMoneyReceipt.SendMoneyReceiptAgain(accounts.MailAddress, fileName, request, audit.MailAddress);
+     _mailerMoneyReceipt.SendMoneyReceiptAgain(accounts.MailAddress, fileName, moneyReceipt.Id, request, data["token"], audit.MailAddress);
 
 
 

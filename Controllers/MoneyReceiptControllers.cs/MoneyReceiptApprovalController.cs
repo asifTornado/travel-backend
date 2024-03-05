@@ -11,6 +11,7 @@ using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using Amazon.Util.Internal;
 using backEnd.Helpers;
+using backEnd.Helpers.Mails;
 using backEnd.Services;
 
 
@@ -34,13 +35,14 @@ public class MoneyReceiptApprovalController : ControllerBase
     private ILogService _logService;
     private INotifier _notifier;
     private IIDCheckService _idCheckService;
+    private MailerWorkFlow _mailerWorkFlow;
 
 
 
     public MoneyReceiptApprovalController(ILogService logService, INotifier notifier, 
     IUsersService usersService, IRequestService requestService, 
     MoneyReceiptService moneyReceiptService, RoleService roleService,
-    IIDCheckService idCheckService
+    IIDCheckService idCheckService, MailerWorkFlow mailerWorkFlow
     )
     {
       _moneyReceiptService = moneyReceiptService;
@@ -49,6 +51,7 @@ public class MoneyReceiptApprovalController : ControllerBase
       _logService = logService;
       _notifier = notifier;
       _idCheckService = idCheckService;
+      _mailerWorkFlow = mailerWorkFlow;
     }
 
   
@@ -85,6 +88,7 @@ public class MoneyReceiptApprovalController : ControllerBase
 
   await _notifier.InsertNotification(message, user.Id, accounts.Id, moneyReceipt.Id, Events.AdvancePaymentFormApprovedSupervisor, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, accounts.Id, Events.AdvancePaymentFormApprovedSupervisor);
+  _mailerWorkFlow.WorkFlowMail(accounts.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
 
     return Ok(moneyReceipt);
 
@@ -121,7 +125,7 @@ public class MoneyReceiptApprovalController : ControllerBase
 
     await _notifier.InsertNotification(message, user.Id, request.RequesterId, moneyReceipt.Id, Events.AdvancePaymentFormRejected, "moneyReceipt");
     await _logService.InsertLog(moneyReceipt.RequestId, user.Id, request.RequesterId, Events.AdvancePaymentFormRejected);
-
+     _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
 
     return Ok(moneyReceipt);
 

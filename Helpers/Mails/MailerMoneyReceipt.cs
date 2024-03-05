@@ -39,11 +39,11 @@ public class MailerMoneyReceipt
 
   
 
-public async Task SendMoneyReceipt(string accountsMail, string filename, Request request, string auditorMail = null){
+public async Task SendMoneyReceipt(string accountsMail, string filename, int moneyReceiptId, Request request, string token, string auditorMail = null){
 
     string subject = "New Money Receipt";
 
-    
+      var url = $"{frontEnd}email/moneyReceipt/{moneyReceiptId}/{token}";
 
     var message = new MimeMessage();
     message.To.Add(new MailboxAddress("", accountsMail));
@@ -62,8 +62,8 @@ public async Task SendMoneyReceipt(string accountsMail, string filename, Request
             </head>
         
             <body>
-                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted </h1>
-
+                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted. Click on the link below for more information </h1>
+                    <a href='{url}' />  
                
 
             </body>
@@ -89,11 +89,11 @@ public async Task SendMoneyReceipt(string accountsMail, string filename, Request
        
 }
 
-  public async Task SendMoneyReceiptAgain(string accountsMail, string filename, Request request, string auditorMail = null){
+  public async Task SendMoneyReceiptAgain(string accountsMail, string filename, int moneyReceiptId, Request request, string token, string auditorMail = null){
 
     string subject ="Rectified Money Receipt";
 
-    
+    var url = $"{frontEnd}email/moneyReceipt/{moneyReceiptId}/{token}";
 
     var message = new MimeMessage();
     message.To.Add(new MailboxAddress("", accountsMail));
@@ -112,8 +112,8 @@ public async Task SendMoneyReceipt(string accountsMail, string filename, Request
             </head>
         
             <body>
-                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted again after rectification </h1>
-
+                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted again after rectification. Click on the link below for more information </h1>
+                    <a href='{url}' />  
                
 
             </body>

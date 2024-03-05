@@ -66,13 +66,15 @@ public class TicketQuotationAccountsController : ControllerBase
      private RoleService _roleService;
      private IIDCheckService _idCheckService;
      private MailerWorkFlow _mailerWorkFlow;
+     private IJwtTokenConverter _jwtTokenConverter;
 
 
 
     public TicketQuotationAccountsController(RoleService roleService, MailerWorkFlow mailerWorkFlow, IUsersService  usersService, 
      IBudgetsService budgetsService, IMapper mapper, 
      INotifier notifier, ILogService logService,
-     IIDCheckService idCheckService
+     IIDCheckService idCheckService,
+     IJwtTokenConverter jwtTokenConverter
      )
     {
         _budgetService = budgetsService;
@@ -83,6 +85,7 @@ public class TicketQuotationAccountsController : ControllerBase
         _roleService = roleService;
         _idCheckService = idCheckService;
         _mailerWorkFlow = mailerWorkFlow;
+        _jwtTokenConverter = jwtTokenConverter;
         
     }
     
@@ -97,6 +100,7 @@ public class TicketQuotationAccountsController : ControllerBase
     
     var tripId = data["id"];
     var trip = await _budgetService.GetAsync(int.Parse(tripId));
+    var token = data["token"];
     
     var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
 
@@ -138,7 +142,9 @@ public class TicketQuotationAccountsController : ControllerBase
 
     var recipient = await _userService.GetOneUser(next);
 
-    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations");
+      var emailToken = _jwtTokenConverter.GenerateToken(recipient);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations", emailToken);
    
     return Ok(newData);
 
@@ -155,6 +161,7 @@ public class TicketQuotationAccountsController : ControllerBase
     
   var tripId = data["id"];
   var trip = await _budgetService.GetAsync(int.Parse(tripId));
+  var token = data["token"];
 
   var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
 
@@ -189,7 +196,10 @@ public class TicketQuotationAccountsController : ControllerBase
 
      var recipient = await _userService.GetOneUser(trip.CurrentHandlerId);
 
-    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations");
+     
+      var emailToken = _jwtTokenConverter.GenerateToken(recipient);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, trip.Id, "ticketQuotations", emailToken);
     
     
     return Ok(trip);
@@ -203,6 +213,7 @@ public class TicketQuotationAccountsController : ControllerBase
     
      var tripId = data["id"];
     var trip = await _budgetService.GetAsync(int.Parse(tripId));
+    var token = data["token"];
 
 
     var allowed = _idCheckService.CheckCurrent(trip.CurrentHandlerId, data["token"]);
@@ -232,9 +243,10 @@ public class TicketQuotationAccountsController : ControllerBase
    
     
     
+   
+      var emailToken = _jwtTokenConverter.GenerateToken(travelManager);
 
-
-    _mailerWorkFlow.WorkFlowMail(travelManager.MailAddress, message, trip.Id, "ticketQuotations");
+    _mailerWorkFlow.WorkFlowMail(travelManager.MailAddress, message, trip.Id, "ticketQuotations", emailToken);
 
     return Ok(travelManager.Id);
 

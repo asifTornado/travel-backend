@@ -38,13 +38,13 @@ public class MailerWorkFlow
 
 
   
-public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, string? typePath){
+public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, string? typePath, string token){
 
     string subject = "New Expense Report";
 
 
 
-    var url = $"{frontEnd}{typePath}/{id}";
+    var url = $"{frontEnd}email/{typePath}/{id}/{token}";
 
     var message = new MimeMessage();
     

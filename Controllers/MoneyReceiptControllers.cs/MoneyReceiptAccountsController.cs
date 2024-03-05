@@ -91,7 +91,7 @@ public class MoneyReceiptAccountsController : ControllerBase
      var message = $"{user.EmpName} has forwarded an advance payment form from {moneyReceipt.I} to you";
 
 
-  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
   await _notifier.InsertNotification(message, user.Id, next, moneyReceipt.Id, Events.AdvancePaymentFormForward, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, next, Events.AdvancePaymentFormForward);
 
@@ -141,7 +141,7 @@ public class MoneyReceiptAccountsController : ControllerBase
 
   var recipient = await _usersService.GetOneUser(moneyReceipt.CurrentHandlerId);
 
-  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+  _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
 
   await _notifier.InsertNotification(message, user.Id, moneyReceipt.CurrentHandlerId, moneyReceipt.Id, Events.AdvancePaymentFormRejected, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, moneyReceipt.CurrentHandlerId, Events.AdvancePaymentFormForward);
@@ -175,7 +175,7 @@ public class MoneyReceiptAccountsController : ControllerBase
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, travelManager.Id, Events.AdvancePaymentFormProcessed);
 
    var recipient = await _usersService.GetOneUser(travelManager.Id);
-   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
 
 
 
@@ -201,7 +201,7 @@ public class MoneyReceiptAccountsController : ControllerBase
     var message = $"Money Has Been Disbursed for your trip numbered {moneyReceipt.RequestId}";
     
    var recipient = await _usersService.GetOneUser(travelManager.Id);
-   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt");
+   _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, moneyReceipt.Id, "moneyReceipt", data["token"]);
 
     await _notifier.InsertNotification(message, user.Id, travelManager.Id, moneyReceipt.Id, Events.AdvancePaymentFormMoneyDisbursed, "moneyReceipt");
   await _logService.InsertLog(moneyReceipt.RequestId, user.Id, travelManager.Id, Events.AdvancePaymentFormMoneyDisbursed);

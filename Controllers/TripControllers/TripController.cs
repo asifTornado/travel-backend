@@ -174,7 +174,8 @@ public class TripController : ControllerBase
                 requests.Add(request);
             }
 
-            _mailer.TEmailRequestsAccounts(requests, recipient, auditor, user);
+
+            _mailer.TEmailRequestsAccounts(requests, recipient, auditor,  user);
 
 
             await _tripService.UpdateRequests(requests);

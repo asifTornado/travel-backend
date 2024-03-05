@@ -43,6 +43,7 @@ public class ExpenseReportApprovalController : ControllerBase
     private INotifier _notifier;
     private ILogService _logService;
     private MailerWorkFlow _mailerWorkFlow;
+    private IJwtTokenConverter _jwtTokenConverter;
 
 
 
@@ -51,6 +52,7 @@ public class ExpenseReportApprovalController : ControllerBase
     IUsersService usersService, IReportGenerator reportGenerator, 
     IRequestService requestService, IExpenseReportService expenseReportService, 
     RoleService roleService, ILogService logService, MailerWorkFlow mailerWorkFlow,
+    IJwtTokenConverter jwtTokenConverter,
         INotifier notifier)
     {
       _expenseReportService = expenseReportService;
@@ -59,9 +61,10 @@ public class ExpenseReportApprovalController : ControllerBase
       _reportGenerator = reportGenerator;
       _fileHandler = fileHandler;
       _mailer = mailer;
-       _logService = logService;
-       _notifier = notifier;
-       _mailerWorkFlow = mailerWorkFlow;
+      _logService = logService;
+      _notifier = notifier;
+      _mailerWorkFlow = mailerWorkFlow;
+      _jwtTokenConverter = jwtTokenConverter;
     }
 
   
@@ -88,8 +91,10 @@ public class ExpenseReportApprovalController : ControllerBase
         var pdf = await _reportGenerator.GenerateExpenseReport(fileName, expenseReport, this.ControllerContext);
         
         await _fileHandler.SaveFile(pdf, fileName);
+
+         var emailToken = _jwtTokenConverter.GenerateToken(accounts);
        
-    _mailer.SendExpenseReport(accounts.MailAddress, fileName, request, auditor.MailAddress);
+    _mailer.SendExpenseReport(accounts.MailAddress, fileName, request, int.Parse(expenseReportId), emailToken, auditor.MailAddress);
  
     expenseReport.CurrentHandlerId = accounts.Id;
     expenseReport.SupervisorApproved = true;
@@ -135,7 +140,9 @@ public class ExpenseReportApprovalController : ControllerBase
   await _notifier.InsertNotification(message, user.Id, expenseReport.CurrentHandlerId, expenseReport.Id, Events.ExpenseReportRejected, "expenseReport");
   await _logService.InsertLog(expenseReport.RequestId, user.Id, expenseReport.CurrentHandlerId, Events.ExpenseReportRejected);
 
-   _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, expenseReport.Id, "expenseReport");
+    var emailToken = _jwtTokenConverter.GenerateToken(manager);
+
+   _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, expenseReport.Id, "expenseReport", emailToken);
   
     return Ok(expenseReport);
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {}
+    "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {}
   },
   "projects": {
-    "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {
+    "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+        "projectUniqueName": "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
         "projectName": "backEnd",
-        "projectPath": "e:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
+        "projectPath": "E:\\travelling source code-current\\backend-dapper\\backEnd.csproj",
         "packagesPath": "C:\\Users\\Hameem\\.nuget\\packages\\",
-        "outputPath": "e:\\travelling source code-current\\backend-dapper\\obj\\",
+        "outputPath": "E:\\travelling source code-current\\backend-dapper\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Hameem\\AppData\\Roaming\\NuGet\\NuGet.Config",

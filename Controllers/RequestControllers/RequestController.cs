@@ -339,7 +339,10 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
 
             await _requestService.UpdateStatus(request);
 
-            _mailer.EmailRequest(request, recipient, auditor, type, this.ControllerContext, user);
+
+            var emailToken = _jwtTokenConverter.GenerateToken(currentHandler);
+
+            _mailer.EmailRequest(request, recipient, auditor, type, this.ControllerContext, emailToken, user);
 
            await _notifier.DeleteNotification(request.Id, user.Id, Events.AirTicketInvoiceSent);
 

@@ -42,6 +42,7 @@ public class ExpenseReportAccountsController : ControllerBase
     private IIDCheckService _idCheckService;
     private MailerWorkFlow _mailerWorkFlow;
     private UsersService _userService;
+    private IJwtTokenConverter _jwtTokenConver;
 
 
 
@@ -50,7 +51,8 @@ public class ExpenseReportAccountsController : ControllerBase
     INotifier notifier, MailerWorkFlow mailerWorkFlow,
     IExpenseReportService expenseReportService, RoleService roleService, 
     IIDCheckService idCheckService,
-    UsersService userService
+    UsersService userService,
+    IJwtTokenConverter jwtTokenConverter
     )
     {
       _expenseReportService = expenseReportService;
@@ -61,6 +63,7 @@ public class ExpenseReportAccountsController : ControllerBase
       _idCheckService = idCheckService;
       _mailerWorkFlow = mailerWorkFlow;
       _userService = userService;
+      _jwtTokenConver = jwtTokenConverter;
     }
 
   
@@ -104,7 +107,9 @@ public class ExpenseReportAccountsController : ControllerBase
   
      var recipient = await _userService.GetOneUser(next);
 
-    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport");
+     var emailToken = _jwtTokenConver.GenerateToken(recipient);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport", emailToken);
 
 
     return Ok(expenseReport);
@@ -117,7 +122,7 @@ public class ExpenseReportAccountsController : ControllerBase
   [Route("expenseReportBackWard")]
   public async Task<IActionResult> ExpenseReportBackward(IFormCollection data){
     
-     var expenseReportId = data["id"];
+    var expenseReportId = data["id"];
     var expenseReport  = await _expenseReportService.GetExpenseReport(int.Parse(expenseReportId));
 
     var allowed = _idCheckService.CheckCurrent(expenseReport.CurrentHandlerId, data["token"]);
@@ -154,7 +159,9 @@ public class ExpenseReportAccountsController : ControllerBase
 
     var recipient = await _userService.GetOneUser(expenseReport.CurrentHandlerId);
 
-    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport");
+     var emailToken = _jwtTokenConver.GenerateToken(recipient);
+
+    _mailerWorkFlow.WorkFlowMail(recipient.MailAddress, message, expenseReport.Id, "expenseReport", emailToken);
 
 
     return Ok(expenseReport);
@@ -196,9 +203,9 @@ public class ExpenseReportAccountsController : ControllerBase
   await _logService.InsertLog(expenseReport.RequestId, user.Id, manager.Id, Events.ExpenseReportProcessed);
   
 
- 
+     var emailToken = _jwtTokenConver.GenerateToken(manager);
 
-    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport");
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport", emailToken);
 
     return Ok(expenseReport);
 
@@ -234,9 +241,9 @@ public class ExpenseReportAccountsController : ControllerBase
   await _logService.InsertLog(expenseReport.RequestId, user.Id, manager.Id, Events.ExpenseReportProcessed);
   
 
- 
+     var emailToken = _jwtTokenConver.GenerateToken(manager);
 
-    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport");
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, manager.Id, "expenseReport", emailToken);
     
 
     return Ok(expenseReport);

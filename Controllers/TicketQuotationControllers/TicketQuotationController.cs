@@ -65,6 +65,7 @@ public class TicketQuotationController : ControllerBase
    private INotifier _notifier;
    private ILogService _logService;
    private MailerWorkFlow _mailerWorkFlow;
+   private IJwtTokenConverter _jwtTokenConverter;
 
 
 
@@ -73,7 +74,9 @@ public class TicketQuotationController : ControllerBase
 
 
     public TicketQuotationController(IBudgetsService budgetsService, IMapper mapper, 
-    RoleService roleService, IIDCheckService idCheckService, INotifier notifier, ILogService logService)
+    RoleService roleService, IIDCheckService idCheckService, INotifier notifier, ILogService logService,
+    MailerWorkFlow mailerWorkFlow, IJwtTokenConverter jwtTokenConverter
+    )
     {
         _budgetService = budgetsService;
         _imapper = mapper;
@@ -81,6 +84,9 @@ public class TicketQuotationController : ControllerBase
         _idCheckService = idCheckService;
         _notifier = notifier;
         _logService = logService;
+        _mailerWorkFlow = mailerWorkFlow;
+        _jwtTokenConverter = jwtTokenConverter;
+        
     }
     
 
@@ -153,7 +159,10 @@ public class TicketQuotationController : ControllerBase
     await _notifier.InsertNotification(message, user.Id, accounts.Id, budget.Id, Events.TicketQuotationsSentToAccounts, "ticketQuotations");
     await _logService.InsertLogs(budget.Requests.Select(x => x.Id).ToList(), user.Id, accounts.Id, Events.TicketQuotationsSentToAccounts);
     
-
+    
+      var emailToken = _jwtTokenConverter.GenerateToken(accounts);
+    
+    _mailerWorkFlow.WorkFlowMail(accounts.MailAddress, message, budget.Id, "ticketQuotations", emailToken);
         return Ok(true);
     }
 
@@ -194,12 +203,13 @@ public class TicketQuotationController : ControllerBase
 
     await _notifier.InsertNotification(message, user.Id, manager.Id, budget.Id, Events.TicketQuotationsMoneyDispursed, "ticketQuotations");
     await _logService.InsertLogs(budget.Requests.Select(x => x.Id).ToList(), user.Id, manager.Id, Events.TicketQuotationsMoneyDispursed);
-    
+
 
     
+      var emailToken = _jwtTokenConverter.GenerateToken(manager);
    
 
-    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, budget.Id, "ticketQuotations");
+    _mailerWorkFlow.WorkFlowMail(manager.MailAddress, message, budget.Id, "ticketQuotations", emailToken);
 
     return Ok(ticketQuotations);
 

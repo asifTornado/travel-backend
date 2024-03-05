@@ -229,7 +229,7 @@ public class TicketMailer:IMailer
   }
 
 
-   public async Task EmailRequest(Request request, string recipient, User auditor, string type, ControllerContext controllerContext, User user = null){
+   public async Task EmailRequest(Request request, string recipient, User auditor, string type, ControllerContext controllerContext, string token, User user = null){
    
 
    string subject;
@@ -240,6 +240,8 @@ public class TicketMailer:IMailer
 
     var ticketQuotation = request.Quotations.Find(x => x.Confirmed == true);
     var hotelQuotation = request.HotelQuotations.Find(x => x.Confirmed == true);
+
+      var url = $"{frontEnd}email/request/{request.Id}/{token}";
 
     var message = new MimeMessage();
     message.From.Add(new MailboxAddress("", user.MailAddress));
@@ -294,9 +296,8 @@ public class TicketMailer:IMailer
                 </section>
 
             
-
-                <!-- Add more sections as needed -->
-
+               <h1>Click on the link below for more information</h1>
+                <a href='{url}' />  
             </body>
             </html>
         ";
@@ -1054,11 +1055,11 @@ public void SeekSupervisorApproval(Request request, string quotation, string typ
 }
 
 
-public async Task SendExpenseReport(string accountsMail, string filename, Request request, string auditorMail = null){
+public async Task SendExpenseReport(string accountsMail, string filename, Request request, int expenseReportId, string token, string auditorMail = null){
 
     string subject = "New Expense Report";
 
-    
+      var url = $"{frontEnd}email/expenseReport/{expenseReportId}/{token}";
 
     var message = new MimeMessage();
     message.From.Add(new MailboxAddress("", senderEmail));
@@ -1078,9 +1079,9 @@ public async Task SendExpenseReport(string accountsMail, string filename, Reques
             </head>
         
             <body>
-                <h1>Expense Report for Trip Number {request.Id} has been submitted </h1>
+                <h1>Expense Report for Trip Number {request.Id} has been submitted. Click on the link below for more information. </h1>
 
-               
+                     <a href='{url}' />            
 
             </body>
             </html>
