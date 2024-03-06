@@ -9,6 +9,7 @@ using backEnd.Services.IServices;
 using backEnd.Helpers.IHelpers;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc;
+using backEnd.Models.DTOs;
 
 
 
@@ -38,7 +39,7 @@ public class TicketMailer:IMailer
 
 
   
-  public async Task TEmailRequestsAccounts(List<Request> requests, string recipient, User auditor, User user = null){
+  public async Task TEmailRequestsAccounts(TripDTO trip, User user, string token){
                 
 
 
@@ -47,18 +48,18 @@ public class TicketMailer:IMailer
 
         
   
- foreach(var request in requests){
+ 
 
-    var ticketQuotation = request.Quotations.Find(x => x.Confirmed == true);
-    var hotelQuotation = request.HotelQuotations.Find(x => x.Confirmed == true);
+    var ticketQuotation = trip.Quotations.Find(x => x.Confirmed == true);
+    var hotelQuotation = trip.HotelQuotations.Find(x => x.Confirmed == true);
+
+       var url = $"{frontEnd}email/trip/{trip.Id}/{token}";
 
     var message = new MimeMessage();
-    message.From.Add(new MailboxAddress("", user.MailAddress));
-    message.To.Add(new MailboxAddress("", recipient));
-    if(auditor != null){
-        Console.WriteLine("found email");
-    message.To.Add(new MailboxAddress("", auditor.MailAddress));
-   }
+   
+    message.To.Add(new MailboxAddress("", user.MailAddress));
+
+  
     message.Subject = subject;
 
     var builder = new BodyBuilder();
@@ -72,36 +73,10 @@ public class TicketMailer:IMailer
             </head>
         
             <body>
-                <h1>Travel Itinerary</h1>
+                <h1>Trip Information</h1>
 
-                <!-- Traveller Section -->
-                <section>
-                    <h2>Traveller Information</h2>
-                    <p>Name: {request.Requester.EmpName}</p>
-                    <p>Email: {request.Requester.MailAddress}</p>
-                    <p>Unique Id: {request.Requester.EmpId}</p>
-                    <!-- Add more traveller information as needed -->
-                </section>
-
-                <!-- Tickets Section -->
-                <section>
-                    <h2>Tickets</h2>
-                    <h3>Ticket Details: </h3>
-                    <p>{ticketQuotation}</p>
-                    <!-- Add more ticket information as needed -->
-                </section>
-
-                <!-- Hotels Section -->
-                <section>
-                    <h2>Hotels</h2>
-                    <p>{hotelQuotation}</p>
-                    <!-- Add more hotel information as needed -->
-                </section>
-
-            
-
-                <!-- Add more sections as needed -->
-
+               <h1>The quotations and invoices for the trip numbered {trip.Id} has been submitted. Click on the link below for more information</h1>
+                   <a href='{url}' />      
             </body>
             </html>
         ";
@@ -131,7 +106,7 @@ public class TicketMailer:IMailer
      FireMail(message, senderEmail, senderPassword);
 
           
- }
+ 
 
   }
 

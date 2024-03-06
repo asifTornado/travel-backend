@@ -150,21 +150,29 @@ public class TripController : ControllerBase
         [HttpPost]
         [Route("TEmailRequestsAccounts")]
         public async Task<IActionResult> TEmailRequestsAccounts(IFormCollection data){
-               var token = data["token"];
+              var token = data["token"];
+              var user = JsonSerializer.Deserialize<User>(data["user"]);
               var allowed = await _idCheckService.CheckAdminOrManager(token);
               if(allowed != true){
                 return Ok(false);
               };
-            var user = JsonSerializer.Deserialize<User>(data["user"]);
+              
+       
             var trip = JsonSerializer.Deserialize<TripDTO>(data["trip"]);
-            var userId = int.Parse(data["userId"]);
-            var recipient = data["recipient"];
-            var requestIds = trip.Requests.Select( x => x.Id).ToList();
-        
-            var auditor = await _usersService.GetAuditor();
+            var budget = await _budgetsService.GetAsync(trip.Id);
+            budget.BeingProcessed = true;  
+             
+         
+  
+            var accounts = await _rolesService.GetAccountsReceiverForExpenseReport();      
+            var auditor = await _rolesService.GetAuditor();
+
+
+             budget.CurrentAccountsHandlerId = accounts.Id;
+             budget.CurrentAuditHandlerId = auditor.Id;   
         
 
-            
+              
 
             List<Request> requests = new List<Request>();   
 
@@ -174,12 +182,17 @@ public class TripController : ControllerBase
                 requests.Add(request);
             }
 
+            var auditToken = _jwtTokenConverter.GenerateToken(accounts);
+            var accountsToken = _jwtTokenConverter.GenerateToken(auditor);
 
-            _mailer.TEmailRequestsAccounts(requests, recipient, auditor,  user);
 
+            _mailer.TEmailRequestsAccounts(trip, accounts, accountsToken);
 
+            _mailer.TEmailRequestsAccounts(trip, auditor, auditToken);
+
+            await _budgetsService.UpdateAsync(budget.Id, budget);
             await _tripService.UpdateRequests(requests);
-            await _logService.InsertLogs(requestIds, userId,  userId, Events.MailedAccountsAndAudit);
+            await _logService.InsertLogs(requests.Select(x => x.Id).ToList(), user.Id,  accounts.Id, Events.MailedAccountsAndAudit);
 
         
 

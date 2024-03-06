@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using backEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
+using backEnd.Models.DTOs;
 
 
 namespace backEnd.Helpers.IHelpers;
@@ -21,7 +22,7 @@ public interface IMailer
     Task Revert(Request request, Agent agent, string msg, string subject);
     void SeekSupervisorApproval(Request request, string quotation, string type, string token);
     Task FireMail(MimeMessage message, string senderEmail, string password);
-    Task TEmailRequestsAccounts(List<Request> requests, string recipient, User auditor, User user = null);
+    Task TEmailRequestsAccounts(TripDTO trip, User user, string token);
     Task TEmailRequestsCustom(List<Request> requests, string recipient, User user = null);
     Task SendExpenseReport(string accountsMail, string filename, Request request, int expenseReportId, string token, string auditorMail = null);
     Task SendMailSeekInformation(Request request, string token);

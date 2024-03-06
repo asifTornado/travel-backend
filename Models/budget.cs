@@ -142,6 +142,36 @@ public class Budget
     
     [JsonPropertyName("ticketsAccountHolderName")]
     public string? TicketsAccountHolderNumber {get; set;}
+
+    [JsonPropertyName("beingProcessed")]
+    public bool? BeingProcessed {get; set;}
+
+    [JsonPropertyName("beingProcessedAccounts")]
+    public bool? BeingProcessedAccounts {get; set;} = false;
+
+     [JsonPropertyName("beingProcessedAudit")]
+    public bool? BeingProcessedAudit {get; set;} = false;
+
+     [JsonPropertyName("AccountsProcessed")]
+    public bool? AccountsProcessed {get; set;} = false;
+
+        [JsonPropertyName("AuditProcessed")]
+    public bool? AuditProcessed {get; set;} = false;
+
+
+    [JsonPropertyName("currentAccountsHandlerId")]
+    public int? CurrentAccountsHandlerId {get; set;}
+    
+    [JsonPropertyName("currentAuditHandlerId")]
+    public int? CurrentAuditHandlerId {get; set;}
+
+    [JsonPropertyName("accountsPrevHandlerIds")]
+    public List<int>? AccountsPrevHandlerIds {get; set;} = new List<int>();
+
+    [JsonPropertyName("auditPrevHandlerIds")]
+    public List<int>? AuditPrevHandlerIds {get; set;} = new List<int>();
+
+    
    
 
 

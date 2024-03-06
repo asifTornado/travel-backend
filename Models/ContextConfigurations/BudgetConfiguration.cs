@@ -33,6 +33,20 @@ public class BudgetConfiguration : IEntityTypeConfiguration<Budget>
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
     );
 
+    builder.Property(x => x.AuditPrevHandlerIds)
+    .HasColumnType("nvarchar(max)")
+    .HasConversion(
+      v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+      v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
+    );
+
+    builder.Property(x => x.AccountsPrevHandlerIds)
+    .HasColumnType("nvarchar(max)")
+    .HasConversion(
+      v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+      v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
+    );
+
 
          builder
         .HasMany(e => e.TicketApprovals)

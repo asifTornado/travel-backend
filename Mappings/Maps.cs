@@ -80,6 +80,18 @@ public static class Events {
     public static string TicketQuotationsSentToAccounts {get;} = "Ticket Quotations Sent To Accounts";
 
     public static string TicketQuotationsMoneyDispursed {get;} = "Money Dispursed For Ticket Quotation";
+
+    public static string TripForwardAccounts {get;} = "Trip Forwarded To Accounts";
+
+    public static string TripBackwardAccounts {get;} = "Trip Backwarded To Accounts";
+
+    public static string TripCompleteAccounts {get;} = "Trip Complete Accounts";
+
+     public static string TripForwardAudit {get;} = "Trip Forwarded To Audit";
+
+    public static string TripBackwardAudit {get;} = "Trip Backwarded To Audit";
+
+    public static string TripCompleteAudit {get;} = "Trip Complete Audit";
     
 
 
