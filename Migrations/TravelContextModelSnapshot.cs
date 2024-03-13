@@ -1340,6 +1340,10 @@ namespace backEnd.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "password");
 
+                    b.Property<string>("PreferenceImage")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "preferenceImage");
+
                     b.Property<string>("Preferences")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "preferences");

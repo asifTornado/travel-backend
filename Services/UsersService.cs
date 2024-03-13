@@ -190,8 +190,7 @@ var original = await _travelContext.Users
     .Include(user => user.Roles)
     .FirstOrDefaultAsync(u => u.Id == id);
 
-
-user.Roles.ForEach(x => {
+user.Roles?.ForEach(x => {
 
      var originalRoleNo = original.Roles.FirstOrDefault(y => y.Id == x.Id);
         if (originalRoleNo == null)
@@ -202,8 +201,9 @@ user.Roles.ForEach(x => {
 
 });
 
-original.Roles.ForEach(x => {
-    var newRoleNo = user.Roles.FirstOrDefault( y => y.Id == x.Id);
+
+original.Roles?.ForEach(x => {
+    var newRoleNo = user.Roles?.FirstOrDefault( y => y.Id == x.Id) ?? null;
 
     if(newRoleNo == null){
         var oldUserRole = new UserRoles(){UserId = user.Id, RoleId = x.Id};
@@ -281,7 +281,12 @@ await _travelContext.SaveChangesAsync();
        
        
 
+  public async Task UploadPreferenceImage(string filepath, int id){
+    string sql = $"UPDATE dbo.Users SET PreferenceImage = {filepath} WHERE Id = {id}";
 
+    await _travelContext.Database.ExecuteSqlRawAsync(sql);
+
+  }
 
 
     

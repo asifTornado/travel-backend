@@ -22,6 +22,7 @@ namespace backEnd.Services.IServices
         Task UpdateUserNumber(User user);
         Task RemoveAsync(int id);
         Task<List<string>> GetUserEmails();
-          Task<User> GetAdmin();
+        Task<User> GetAdmin();
+        Task UploadPreferenceImage(string filepath, int id);
     }
 }

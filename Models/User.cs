@@ -182,7 +182,9 @@ public class User
     [JsonPropertyName("flyerNos")]
     public virtual List<FlyerNos>? FlyerNos { get; set; }
 
-
+    
+    [JsonPropertyName("preferenceImage")]
+    public string? PreferenceImage {get; set;} = string.Empty;
 
     [JsonPropertyName("preferences")]
     public string? Preferences { get; set; } = string.Empty;

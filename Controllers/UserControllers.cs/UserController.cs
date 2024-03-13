@@ -20,6 +20,7 @@ using AutoMapper;
 using backEnd.Helpers;
 using backEnd.Services;
 using backEnd.Helpers.IHelpers;
+using Amazon.Util.Internal;
 
 
 namespace backEnd.Controllers.UserControllers;
@@ -48,11 +49,12 @@ public class UserController : ControllerBase
     private IUserApi _userApi;
 
     private IIDCheckService _idCheckService;
+    private IFileHandler _fileHandler;
 
    
 
 
-    public UserController(IUserApi userapi, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService, IIDCheckService idCheckService)
+    public UserController(IUserApi userapi, IFileHandler fileHandler, IAgentsService agentsService, IMapper mapper, IRequestService requestService, IMailer mailer, IUsersService usersService, IIDCheckService idCheckService)
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -61,6 +63,7 @@ public class UserController : ControllerBase
         _userService = usersService;
         _userApi = userapi;
         _idCheckService = idCheckService;
+        _fileHandler = fileHandler;
  
 
     }
@@ -144,6 +147,33 @@ public async Task<IActionResult> InsertUser(IFormCollection data)
     var userString = JsonSerializer.Serialize(user);
     await _userService.CreateAsync(user);
     return Ok(true);
+}
+
+
+[HttpPost]
+[Route("preferenceImageUpload")]
+public async  Task<IActionResult> ProfileUpload(IFormCollection  data){
+
+      var fileSize = data.Files[0].Length;
+      var id = int.Parse(data["id"]);
+
+      if(fileSize > 100000000){
+
+         return Ok(false);
+
+      }else{
+
+
+
+      var fileName = _fileHandler.GetUniqueFileName(data.Files[0].FileName);
+      var  filePath =   await _fileHandler.SaveFile(fileName, data.Files[0]);
+      
+     
+
+      return Ok(fileName);
+
+      }
+
 }
 
 
