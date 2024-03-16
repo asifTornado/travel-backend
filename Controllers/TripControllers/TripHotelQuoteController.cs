@@ -66,13 +66,15 @@ public class TripHotelQuoteController : ControllerBase
     private readonly IJwtTokenConverter _jwtTokenConverter;
     private INotifier _notifier;
     private MailerWorkFlow _mailerWorkFlow;
+
+    private IRequestService _requestService;
     
 
     
     public TripHotelQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, 
     IMailer mailer, ILogService logService, IUsersService usersService, 
     IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler,
-    INotifier notifier, MailerWorkFlow mailerWorkFlow
+    INotifier notifier, MailerWorkFlow mailerWorkFlow, IRequestService requestService
     )
     {    
         _idCheckService = idCheckService;
@@ -86,6 +88,7 @@ public class TripHotelQuoteController : ControllerBase
         _jwtTokenConverter = jwtTokenConverter;
         _notifier = notifier;
         _mailerWorkFlow = mailerWorkFlow;
+        _requestService = requestService;
         
 
 
@@ -109,25 +112,33 @@ public class TripHotelQuoteController : ControllerBase
         var requestIds = JsonSerializer.Deserialize<List<int>>(data["requestIds"]);
         var travelerCosts = JsonSerializer.Deserialize<List<TravelerCost>>(data["travelerCosts"]);
         var userId = int.Parse(data["userId"]);
+        var requests = await _requestService.GetRequestsFromRequestIds(requestIds);
 
         var guid = Guid.NewGuid();
 
         var hotelQuotations = new List<HotelQuotation>();
 
-        foreach(var id in requestIds){
+           var message = $"A new hotel quotation has been added for your trip numbered {tripId}";
+
+        foreach(var request in requests){
             var newHotelQuotation = new HotelQuotation();
             newHotelQuotation.Linker = guid;
             newHotelQuotation.QuotationText = quote;
             newHotelQuotation.QuoteGiver = quoteGiver;
-            newHotelQuotation.RequestId = id;
+            newHotelQuotation.RequestId = request.Id;
             newHotelQuotation.RequestIds = requestIds;
             newHotelQuotation.TotalCosts = travelerCosts;
             hotelQuotations.Add(newHotelQuotation);
+
+                await _logService.InsertLog(request.Id, userId, request.RequesterId, Events.HotelQuotationSent);
+                var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationSent);
+                _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Hotel Quotation");
            
             
         }
 
-        await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationSent);
+       
 
         await _tripService.AddQuotations<HotelQuotation>(hotelQuotations);
 

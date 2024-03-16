@@ -133,7 +133,7 @@ public class TripQuoteController : ControllerBase
                        quotations.Add(newQuotation);
              
                 }
-                     await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationSent);
+                    
                      await _tripService.AddQuotations<Quotation>(quotations);
 
                       var newRequestIds = await _requestService.GetRequestsFromRequestIds(requestIds);
@@ -144,6 +144,7 @@ public class TripQuoteController : ControllerBase
                      
                      foreach(var request in newRequestIds){
                        var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                        await _logService.InsertLog(request.Id, userId, request.RequesterId, Events.QuotationSent);
                       await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationAdded);
                        _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Hotel Quotation");
                      }
@@ -170,7 +171,6 @@ public class TripQuoteController : ControllerBase
                 }
 
 
-                   await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationSent);
                    await _tripService.AddQuotations<HotelQuotation>(hotelQuotations);
 
                    var newRequestIds = await _requestService.GetRequestsFromRequestIds(requestIds);
@@ -181,9 +181,10 @@ public class TripQuoteController : ControllerBase
                      
                      foreach(var request in newRequestIds){
 
+                           await _logService.InsertLog(request.Id, userId, request.RequesterId, Events.HotelQuotationSent);
                        var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
-                      await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationAdded);
-                       _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Air Ticket Quotation");
+                      await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationSent);
+                       _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Hotel Quotation");
 
                      }
 
