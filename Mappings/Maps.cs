@@ -92,6 +92,10 @@ public static class Events {
     public static string TripBackwardAudit {get;} = "Trip Backwarded To Audit";
 
     public static string TripCompleteAudit {get;} = "Trip Complete Audit";
+
+    public static string QuotationAdded {get;} = "New Air Ticket Quotation Added";
+
+    public static string HotelQuotationAdded {get;} = "New Hotel Quotation Added";
     
 
 

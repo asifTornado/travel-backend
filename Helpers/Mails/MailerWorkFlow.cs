@@ -38,17 +38,17 @@ public class MailerWorkFlow
 
 
   
-public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, string? typePath, string token){
+public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, string? typePath, string token, string subject = "New Trip Event"){
 
-    string subject = "New Expense Report";
+    
 
 
 
-    var url = $"{frontEnd}email/{typePath}/{id}/{token}";
+    var url = $"{frontEnd}{typePath}/{id}/{token}";
 
     var message = new MimeMessage();
     
-    
+    message.From.Add(new MailboxAddress("", senderEmail));
     message.To.Add(new MailboxAddress("", toEmail));
 
     message.Subject = subject;

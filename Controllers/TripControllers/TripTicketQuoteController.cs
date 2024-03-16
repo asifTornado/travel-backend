@@ -45,6 +45,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using Org.BouncyCastle.Asn1.IsisMtt.Ocsp;
 using System.Diagnostics.CodeAnalysis;
 using Org.BouncyCastle.Bcpg;
+using backEnd.Helpers.Mails;
 
 namespace backEnd.Controllers.TripControllers;
 
@@ -65,9 +66,15 @@ public class TripTicketQuoteController : ControllerBase
     private IIDCheckService _idCheckService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
     private INotifier _notifier;
+    private MailerWorkFlow _mailerWorkFlow;
 
     
-    public TripTicketQuoteController(IJwtTokenConverter jwtTokenConverter, INotifier notifier, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
+    public TripTicketQuoteController(IJwtTokenConverter jwtTokenConverter, INotifier notifier, 
+    IIDCheckService idCheckService, IMailer mailer, ILogService logService, 
+    IUsersService usersService, IBudgetsService budgetsService, 
+    IMapper mapper, ITripService tripService, IFileHandler fileHandler,
+    MailerWorkFlow mailerWorkFlow
+    )
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -79,6 +86,7 @@ public class TripTicketQuoteController : ControllerBase
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
         _notifier = notifier;
+        _mailerWorkFlow = mailerWorkFlow;
         
 
 
@@ -126,6 +134,13 @@ public class TripTicketQuoteController : ControllerBase
                       quotation2.Booked = true;
                       quotation2.Approved = true;
                  }
+                  
+                 var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                 var message = $"An Air Ticket Quotation has been booked for your trip numbered {requests[0].BudgetId}";
+                 await _notifier.InsertNotification(message, result.UserId, request.Requester.Id, request.Id, Events.QuotationBooked);
+                 _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Air Ticket Quotation Booked");
+                 await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.QuotationBooked);
+
        
               }else{
                 request.Status =  "Seeking Supervisor's Approval"; 
@@ -138,17 +153,18 @@ public class TripTicketQuoteController : ControllerBase
                 var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
                 _mailer.SeekSupervisorApproval(request, quotations[0].QuotationText, "air-ticket", token2);
                 var message = $"Approval is required from you for a air-ticket quotation for the trip numbered {requests[0].BudgetId}";
-                await _notifier.InsertNotification(message, result.UserId, userId, requests[0].Id, Events.SupervisorApprovalTicket);
+                await _notifier.InsertNotification(message, result.UserId, userId, request.Id, Events.SupervisorApprovalTicket);
+                await _logService.InsertLog(request.Id, userId, request.Requester.SuperVisor.Id, Events.SupervisorApprovalTicket);
               }
 
                
                
        }
 
-      if(best != "Yes"){
+      // if(best != "Yes"){
 
-         await _logService.InsertLogs(requestIds, userId, userId, Events.SupervisorApprovalTicket);
-      }
+      //    
+      // }
          
        await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
         var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
@@ -186,6 +202,12 @@ public class TripTicketQuoteController : ControllerBase
         request.Booked = false;
         request.Status = "Seeking Quotations";
 
+                var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                 var message = $"An Air Ticket Quotation has been unbooked for your trip numbered {requests[0].BudgetId}";
+                 await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationUnbooked);
+                   await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.QuotationUnbooked);
+                 _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Air Ticket Quotation UnBooked");
+
        }
 
        foreach(var Dquotation in quotations){
@@ -193,7 +215,7 @@ public class TripTicketQuoteController : ControllerBase
             Dquotation.Approved = false;
        }
        
-       await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationUnbooked);
+     
        await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
 
            var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
@@ -227,6 +249,11 @@ public class TripTicketQuoteController : ControllerBase
         foreach(var request in requests){
             request.Confirmed = true;
             request.Status = "Seeking Quotes For Hotel";
+              var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+              var message = $"An Air Ticket Quotation has been confirmed for your trip numbered {requests[0].BudgetId}";
+              await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationConfirmed);
+              await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.QuotationConfirmed);
+              _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Air Ticket Quotation Confirmed");
         }
 
         foreach(var LQuotation in quotations){
@@ -234,7 +261,6 @@ public class TripTicketQuoteController : ControllerBase
         }
         
 
-        await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationConfirmed);
         await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
         
 
@@ -270,6 +296,15 @@ public class TripTicketQuoteController : ControllerBase
         foreach(var request in requests){
             request.Confirmed = false;
             request.Status = "Seeking Ticket Confirmation";
+
+
+            var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+            var message = $"An Air Ticket Quotation has been revoked for your trip numbered {requests[0].BudgetId}";
+            await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationRevoked);
+            await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.QuotationRevoked);
+            _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Air Ticket Quotation Revoked");
+
+            
         }
 
         foreach(var LQuotation in quotations){
@@ -278,7 +313,7 @@ public class TripTicketQuoteController : ControllerBase
 
         
         await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
-        await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationRevoked);
+    
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
              var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);

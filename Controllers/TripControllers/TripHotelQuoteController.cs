@@ -44,6 +44,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using Org.BouncyCastle.Asn1.IsisMtt.Ocsp;
 using System.Diagnostics.CodeAnalysis;
 using Org.BouncyCastle.Bcpg;
+using backEnd.Helpers.Mails;
 
 namespace backEnd.Controllers.TripControllers;
 
@@ -63,10 +64,16 @@ public class TripHotelQuoteController : ControllerBase
     private ILogService _logService;
     private IIDCheckService _idCheckService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    private INotifier _notifier;
+    private MailerWorkFlow _mailerWorkFlow;
     
 
     
-    public TripHotelQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
+    public TripHotelQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, 
+    IMailer mailer, ILogService logService, IUsersService usersService, 
+    IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler,
+    INotifier notifier, MailerWorkFlow mailerWorkFlow
+    )
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -77,6 +84,8 @@ public class TripHotelQuoteController : ControllerBase
         _mailer = mailer;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _notifier = notifier;
+        _mailerWorkFlow = mailerWorkFlow;
         
 
 
@@ -160,6 +169,12 @@ public class TripHotelQuoteController : ControllerBase
                           quotation2.Approved = true;
          
                          }
+
+                  var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                 var message = $"A Hotel Quotation has been booked for your trip numbered {requests[0].BudgetId}";
+                 await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationBooked);
+                 _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Hotel Quotation Booked");
+                 await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.HotelQuotationBooked);
               }else{
 
                   foreach(var quotation2 in quotations ){
@@ -169,9 +184,13 @@ public class TripHotelQuoteController : ControllerBase
                          }
 
                 request.Status = "Seeking Supervisor's Approval For Hotel";
+                 var message = $"An Hotel Quotation for the trip numbered {requests[0].BudgetId} requires your approval";
+                 await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.SupervisorApprovalHotel);
                 request.CurrentHandlerId = request.Requester?.SuperVisor.Id;
                 var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
                 _mailer.SeekSupervisorApproval(request, quotations[0].QuotationText, "hotel", token2);
+                await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.SupervisorApprovalHotel);
+
               }
 
              
@@ -179,7 +198,6 @@ public class TripHotelQuoteController : ControllerBase
 
      
 
-    await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationBooked);
     await _tripService.UpdateHotelQuotationsAndRequests(quotations, requests);
     var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
      var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
@@ -215,6 +233,13 @@ public class TripHotelQuoteController : ControllerBase
 
               request.HotelBooked = false;
               request.Status = "Seeking Hotel Quotations";
+
+              
+                var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                var message = $"A Hotel Quotation has been unbooked for your trip numbered {requests[0].BudgetId}";
+                await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationBooked);
+                await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.HotelQuotationBooked);
+                _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Hotel Quotation Quotation UnBooked");
    
           }
 
@@ -224,7 +249,6 @@ public class TripHotelQuoteController : ControllerBase
                 quotation2.Approved = false;
           }
 
-          await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationUnbooked);
           await _tripService.UpdateHotelQuotationsAndRequests(quotations, requests);
     var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
 
@@ -258,6 +282,12 @@ public class TripHotelQuoteController : ControllerBase
         foreach(var request in requests){
             request.HotelConfirmed = true;
             request.Status = "Seeking Invoices";
+
+             var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+              var message = $"A Hotel Quotation has been confirmed for your trip numbered {requests[0].BudgetId}";
+              await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationConfirmed);
+              await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.HotelQuotationConfirmed);
+              _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Hotel Quotation Confirmed");
      
         }
 
@@ -265,7 +295,6 @@ public class TripHotelQuoteController : ControllerBase
             quotation2.Confirmed = true;
         }
         
-        await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationConfirmed);
         await _tripService.UpdateHotelQuotationsAndRequests(quotations, requests);
 
             var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
@@ -301,6 +330,12 @@ public class TripHotelQuoteController : ControllerBase
               request.HotelConfirmed = false;
               request.Status = "Seeking Hotel Confirmation";
               await _logService.InsertLog(request.Id, userId, userId, Events.HotelQuotationRevoked);
+
+               var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+            var message = $"A Hotel Quotation has been revoked for your trip numbered {requests[0].BudgetId}";
+            await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.HotelQuotationRevoked);
+            await _logService.InsertLog(request.Id, userId, request.Requester.Id, Events.HotelQuotationRevoked);
+            _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "Hotel Quotation Revoked");
           }
 
 

@@ -44,6 +44,7 @@ using Microsoft.EntityFrameworkCore.Update;
 using Org.BouncyCastle.Asn1.IsisMtt.Ocsp;
 using System.Diagnostics.CodeAnalysis;
 using Org.BouncyCastle.Bcpg;
+using backEnd.Helpers.Mails;
 
 namespace backEnd.Controllers.TripControllers;
 
@@ -62,10 +63,21 @@ public class TripQuoteController : ControllerBase
     private IMailer _mailer;
     private ILogService _logService;
     private IIDCheckService _idCheckService;
+
+    private INotifier _notifier;
+
+    private MailerWorkFlow _mailerWorkFlow;
+
+    private IRequestService _requestService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
 
     
-    public TripQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
+    public TripQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService,
+     IMailer mailer, ILogService logService, IUsersService usersService,
+      IBudgetsService budgetsService, IMapper mapper, ITripService tripService, 
+      IFileHandler fileHandler, MailerWorkFlow mailerWorkFlow, INotifier notifier,
+      IRequestService requestService
+      )
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -76,6 +88,9 @@ public class TripQuoteController : ControllerBase
         _mailer = mailer;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _mailerWorkFlow = mailerWorkFlow;
+        _notifier = notifier;
+        _requestService = requestService;
         
 
 
@@ -120,6 +135,19 @@ public class TripQuoteController : ControllerBase
                 }
                      await _logService.InsertLogs(requestIds, userId, userId, Events.QuotationSent);
                      await _tripService.AddQuotations<Quotation>(quotations);
+
+                      var newRequestIds = await _requestService.GetRequestsFromRequestIds(requestIds);
+                   
+
+
+                   var message = $"A new hotel quotation has been added for your trip numbered {tripId}";
+                     
+                     foreach(var request in newRequestIds){
+                       var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                      await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationAdded);
+                       _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Hotel Quotation");
+                     }
+
                      
                      return Ok(quotations[0]);
 
@@ -140,8 +168,26 @@ public class TripQuoteController : ControllerBase
                        hotelQuotations.Add(newHotelQuotation);
                   
                 }
-                     await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationSent);
+
+
+                   await _logService.InsertLogs(requestIds, userId, userId, Events.HotelQuotationSent);
                    await _tripService.AddQuotations<HotelQuotation>(hotelQuotations);
+
+                   var newRequestIds = await _requestService.GetRequestsFromRequestIds(requestIds);
+                   
+
+
+                   var message = $"A new hotel quotation has been added for your trip numbered {tripId}";
+                     
+                     foreach(var request in newRequestIds){
+
+                       var mailToken = _jwtTokenConverter.GenerateToken(request.Requester);
+                      await _notifier.InsertNotification(message, userId, request.Requester.Id, request.Id, Events.QuotationAdded);
+                       _mailerWorkFlow.WorkFlowMail(request.Requester.MailAddress, message, request.Id, "showRequest", mailToken, "New Air Ticket Quotation");
+
+                     }
+
+                   
 
                         return Ok(hotelQuotations[0]);
 

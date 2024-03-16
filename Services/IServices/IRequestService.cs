@@ -40,6 +40,8 @@ namespace backEnd.Services.IServices
         Task UpdateRequestForApproval(Request request);
         
          Task<List<Request>> GetUnapprovedRequests(User user);
+
+         Task<List<Request>> GetRequestsFromRequestIds(List<int> requestIds);
     
 
 

@@ -97,6 +97,23 @@ public class RequestService: IRequestService
     }
 
 
+    public async Task<List<Request>> GetRequestsFromRequestIds(List<int> requestIds){
+        var result = await _travelContext
+                      .Requests
+                      .AsNoTracking()
+                      .Select(x => new Request{
+                        Id = x.Id,
+                        Requester = new User {
+                            Id = x.Requester.Id,
+                            MailAddress = x.Requester.MailAddress
+                        }
+                      })
+                      .Where(x => requestIds.Contains(x.Id))
+                      .ToListAsync();
+        return result;
+    }
+
+
 
 
     

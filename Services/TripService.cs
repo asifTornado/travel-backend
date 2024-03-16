@@ -236,6 +236,7 @@ public async Task ApproveRelatedHotelQuotes(HotelQuotation quotation){
 public async Task<List<Request>> GetRelatedRequestsFromQuotation(Quotation quotation){
     var result = await _travelContext.Requests
                     .AsNoTracking()
+                    .AsSplitQuery()
                     .Include(x => x.Quotations)
                     .ThenInclude(x => x.Invoices)
                     .Include(x => x.Quotations)
