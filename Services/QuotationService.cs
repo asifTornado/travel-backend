@@ -35,7 +35,12 @@ namespace backEnd.Services
                 _travelContext.Entry(quotation).State = EntityState.Modified;
 
                 foreach(var ticketApproval in quotation.TicketApprovals){
-                    _travelContext.Entry(ticketApproval).State = EntityState.Modified;
+                    var approval = new TicketApprovals(){
+                        QuotationId = quotation.Id,
+                        UserId = ticketApproval.Id,
+                    };
+
+                    _travelContext.Entry(approval).State = EntityState.Added;
                 }
             }
            
@@ -49,7 +54,12 @@ namespace backEnd.Services
                 _travelContext.Entry(quotation).State = EntityState.Modified;
 
                 foreach(var hotelApproval in quotation.HotelApprovals){
-                    _travelContext.Entry(hotelApproval).State = EntityState.Modified;
+                    var approval = new HotelApprovals(){
+                        QuotationId = quotation.Id,
+                        UserId = hotelApproval.Id
+                    };
+
+                    _travelContext.Entry(approval).State = EntityState.Added;
 
                 }
               }

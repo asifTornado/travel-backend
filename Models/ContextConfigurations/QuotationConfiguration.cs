@@ -28,14 +28,23 @@ public class QuotationConfiguration : IEntityTypeConfiguration<Quotation>
 
       );
 
+      
+        
+
 
       builder.HasMany(x => x.TicketApprovals)
       .WithMany(x => x.TicketApproved)
-      .UsingEntity( x => x.ToTable("TicketApprovals"));
+      .UsingEntity<TicketApprovals>(
+           x => x.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId),
+           y => y.HasOne(y=> y.Quotation).WithMany().HasForeignKey(x => x.QuotationId)
+      );
 
       builder.HasMany(x => x.Invoices)
       .WithMany(x => x.Quotations)
-      .UsingEntity( x => x.ToTable("TicketInvoiceQuotations"));
+      .UsingEntity<TicketQuotationInvoices>(
+             x => x.HasOne(x => x.Invoice).WithMany().HasForeignKey(x => x.InvoiceId),
+             y => y.HasOne(y => y.Quotation).WithMany().HasForeignKey(x => x.QuotationId)
+      );
       
 
     }

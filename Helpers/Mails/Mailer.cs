@@ -1000,7 +1000,7 @@ public void SeekSupervisorApproval(Request request, string quotation, string typ
     var message = new MimeMessage();
     message.From.Add(new MailboxAddress("", senderEmail));
     message.To.Add(new MailboxAddress("", request.Requester.SuperVisor.MailAddress));
-    message.Subject = $"{request.Requester.EmpName} is seeking your approval for a {type} quotation";
+    message.Subject = $"Approval is required from you for a {type} quotation";
 
     var builder  = new BodyBuilder();
      

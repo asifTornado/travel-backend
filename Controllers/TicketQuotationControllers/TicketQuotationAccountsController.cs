@@ -231,9 +231,19 @@ public class TicketQuotationAccountsController : ControllerBase
     trip.TicketsApprovedByAccounts = true;
     trip.Rejected = false;
     trip.TicketApprovals.Add(user);
+    
+    var newApproval = new BudgetTicketApprovals(){
+      BudgetId = trip.Id,
+      UserId = user.Id
+    };
+
+    await _budgetService.InsertBudgetTicketApprover(newApproval);
+
     trip.PrevHandlerIds.Add(user.Id);
     trip.CurrentHandlerId = travelManager.Id;
-    await _budgetService.UpdateAsync(trip.Id, trip);
+
+
+    await _budgetService.UpdateBudgetSolo(trip);
 
 
       var message = $"{user.EmpName} has completed processing the air ticket quotations for the trip numbered {trip.Id} ";

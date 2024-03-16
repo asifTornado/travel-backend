@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using backEnd.Models;
+using backEnd.Models.DTOs;
 using backEnd.Mappings;
 using System.Text.Json;
 using MongoDB.Bson;
@@ -63,9 +64,10 @@ public class TripTicketQuoteController : ControllerBase
     private ILogService _logService;
     private IIDCheckService _idCheckService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    private INotifier _notifier;
 
     
-    public TripTicketQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
+    public TripTicketQuoteController(IJwtTokenConverter jwtTokenConverter, INotifier notifier, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)
     {    
         _idCheckService = idCheckService;
         _budgetsService = budgetsService;
@@ -76,6 +78,7 @@ public class TripTicketQuoteController : ControllerBase
         _mailer = mailer;
         _logService = logService;
         _jwtTokenConverter = jwtTokenConverter;
+        _notifier = notifier;
         
 
 
@@ -98,8 +101,8 @@ public class TripTicketQuoteController : ControllerBase
     public async Task<IActionResult> TTicketBook(IFormCollection data)
     {
              var token = data["token"];
-              var allowed = await _idCheckService.CheckAdminOrManager(token);
-              if(allowed != true){
+              var result = await _idCheckService.CheckAdminOrManagerAndReturn(token);
+              if(result.Valid != true){
                 return Ok(false);
               };
 
@@ -134,23 +137,28 @@ public class TripTicketQuoteController : ControllerBase
                  }
                 var token2 = _jwtTokenConverter.GenerateToken(request.Requester.SuperVisor);
                 _mailer.SeekSupervisorApproval(request, quotations[0].QuotationText, "air-ticket", token2);
+                var message = $"Approval is required from you for a air-ticket quotation for the trip numbered {requests[0].BudgetId}";
+                await _notifier.InsertNotification(message, result.UserId, userId, requests[0].Id, Events.SupervisorApprovalTicket);
               }
 
                
                
        }
 
-    
+      if(best != "Yes"){
+
          await _logService.InsertLogs(requestIds, userId, userId, Events.SupervisorApprovalTicket);
+      }
+         
        await _tripService.UpdateTicketQuotationsAndRequests(quotations, requests);
         var quotationToSend = quotations.FirstOrDefault(x => x.Id == quotation.Id);
          var requestToSend = requests.FirstOrDefault(x => x.Id == quotationToSend.RequestId);
 
-            var result = new {
+            var responseResult = new {
               quotation=quotationToSend,
               request = requestToSend
             };
-       return Ok(result);
+       return Ok(responseResult);
 
 }
 
@@ -261,7 +269,7 @@ public class TripTicketQuoteController : ControllerBase
 
         foreach(var request in requests){
             request.Confirmed = false;
-            request.Status = "Seeking Hotel Confirmation";
+            request.Status = "Seeking Ticket Confirmation";
         }
 
         foreach(var LQuotation in quotations){

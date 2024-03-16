@@ -2,6 +2,7 @@ using System.Text.Json;
 
 using Microsoft.AspNetCore.Mvc;
 using backEnd.Models;
+using backEnd.Models.DTOs;
 
 namespace backEnd.Services.IServices;
 
@@ -17,6 +18,8 @@ public interface IIDCheckService
     Task<bool> CheckManager(Request request, string token);
     Task<bool> CheckAdminOrManager(string token);
     bool CheckCurrent(int? currentHandlerId, string token);
+    Task<Return>  CheckAdminOrManagerAndReturn(string token);
+    Return CheckSupervisorAndReturn(Request request, string token);
   
     
 }

@@ -166,12 +166,10 @@ public class UsersService:IUsersService
 
    
 
-          _travelContext.Entry(newUser.SuperVisor).State = EntityState.Modified;
-          _travelContext.Entry(newUser.TravelHandler).State = EntityState.Modified;
-          _travelContext.Entry(newUser.ZonalHead).State = EntityState.Modified;
+      
             
 
-        await _travelContext.Users.AddAsync(newUser);
+        _travelContext.Entry(newUser).State = EntityState.Added;
         await _travelContext.SaveChangesAsync();
      
 

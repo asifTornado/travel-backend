@@ -58,6 +58,8 @@ public class RequestController : ControllerBase
     private IJwtTokenConverter _jwtTokenConverter;
 
     private IIDCheckService _idCheckService;
+    
+    private RoleService _roleService;
 
 
 
@@ -73,7 +75,9 @@ public class RequestController : ControllerBase
         IHelperClass helperClass, IFileHandler fileHandler, 
         IUsersService usersService, IAgentsService agentsService, 
         IMapper mapper, IRequestService requestService, 
-        IMailer mailer, INotifier notifier)
+        IMailer mailer, INotifier notifier,
+        RoleService roleService
+        )
     {
         _imapper = mapper;
         _requestService = requestService;
@@ -90,6 +94,7 @@ public class RequestController : ControllerBase
         _tripService = tripService;
         _jwtTokenConverter = jwtTokenConverter;
         _idCheckService = idCheckService;
+        _roleService = roleService;
     }
 
 
@@ -100,6 +105,11 @@ public class RequestController : ControllerBase
         var request = JsonSerializer.Deserialize<Request>(data["request"]);
         var user = JsonSerializer.Deserialize<User>(data["user"]);
         var token = data["token"];
+        var brand = data["brand"];
+        request.Requester = user;
+        request.RequesterId = user.Id;
+        var supervisor = await _usersService.GetOneUser(request.Requester.SuperVisorId);
+        request.Requester.SuperVisor = supervisor;
 
         
 
@@ -116,7 +126,7 @@ public class RequestController : ControllerBase
 
         
 
-        request.Requester = user;
+      
     
       
         request.Status = "Seeking Supervisor Approval For Trip";
@@ -133,6 +143,7 @@ public class RequestController : ControllerBase
         budget.Destination = request.Destination;
         budget.Initiated = "Yes";
         budget.Travelers = new List<User>();
+        budget.Brand = brand;
         budget.Travelers.Add(request.Requester);
         budget.Requests = new List<Request>();
         
@@ -321,17 +332,17 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
         public async Task<IActionResult> EmailReqeust(IFormCollection data){
             var user = JsonSerializer.Deserialize<User>(data["user"]);
             var request = JsonSerializer.Deserialize<Request>(data["request"]);
-            var recipient = data["recipient"];
+            var recipient = await _roleService.GetAccountsReceiverForMoneyReceipt();
             var whom = data["whom"];
             var type = data["type"];
 
-            var currentHandler = await _usersService.GetUserByMail(recipient);
+            
             
             User auditor;
 
             auditor = whom == "accounts" ? await _usersService.GetAuditor() : null;
 
-            request.CurrentHandlerId = currentHandler.Id;
+            request.CurrentHandlerId = recipient.Id;
 
             request.Status = whom == "accounts" ? "Being Processed" : request.Status;
             request.BeingProcessed = true;
@@ -340,9 +351,9 @@ public async Task<IActionResult> GetRequest(IFormCollection data){
             await _requestService.UpdateStatus(request);
 
 
-            var emailToken = _jwtTokenConverter.GenerateToken(currentHandler);
+            var emailToken = _jwtTokenConverter.GenerateToken(recipient);
 
-            _mailer.EmailRequest(request, recipient, auditor, type, this.ControllerContext, emailToken, user);
+            _mailer.EmailRequest(request, recipient.MailAddress, auditor, type, this.ControllerContext, emailToken, user);
 
            await _notifier.DeleteNotification(request.Id, user.Id, Events.AirTicketInvoiceSent);
 

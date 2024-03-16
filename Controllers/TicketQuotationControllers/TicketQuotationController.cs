@@ -194,10 +194,12 @@ public class TicketQuotationController : ControllerBase
         UserId = user.Id
     };
 
+    budget.TicketsMoneyDisbursed = true;
+
     await _budgetService.InsertBudgetTicketApprover(newApproval);
    
     
-    await _budgetService.UpdateAsync(ticketQuotations.Id, budget);
+    await _budgetService.UpdateBudgetSolo(budget);
 
     var message = $"Money has been disbursed for the air ticket of trip numbered {budget.Id}";
 

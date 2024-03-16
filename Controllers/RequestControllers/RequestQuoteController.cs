@@ -69,7 +69,7 @@ public class RequestQuoteController : ControllerBase
     private ILogService _logService;
 
 
-    private TripService _tripService;
+    private ITripService _tripService;
     private IJwtTokenConverter _jwtTokenConverter;
 
     private IIDCheckService _idCheckService;
@@ -80,7 +80,7 @@ public class RequestQuoteController : ControllerBase
    
 
 
-    public RequestQuoteController(IJwtTokenConverter jwtTokenConverter, TripService tripService, 
+    public RequestQuoteController(IJwtTokenConverter jwtTokenConverter, ITripService tripService, 
     IBudgetsService budgetsService, ILogService logService, 
     IQuotationService quotationService, TravelContext travelContext, 
     IHelperClass helperClass, IFileHandler fileHandler, 
@@ -129,9 +129,12 @@ public class RequestQuoteController : ControllerBase
       
         var requestFront = JsonSerializer.Deserialize<Request>(data["request"]);
 
-        var allowed =  _idCheckService.CheckSupervisor(requestFront, data["token"]);
+        var result =  _idCheckService.CheckSupervisorAndReturn(requestFront, data["token"]);
 
-        if(allowed == false){
+        System.Guid? LinkId;
+
+
+        if(result.Valid == false){
             return Ok(false);
         }
 
@@ -139,7 +142,16 @@ public class RequestQuoteController : ControllerBase
         var approval = data["approval"];
         var message = data["message"];
         var messageObject = new Message();
-        var relatedRequests = await _tripService.GetRelatedRequests(requestFront);
+
+        var relatedRequests = new List<Request>();
+
+        if(what == "ticket"){
+            relatedRequests = await _tripService.GetRelatedRequests(requestFront);
+        }else{
+            relatedRequests = await _tripService.GetRelatedHotelRequests(requestFront);
+        }
+
+
         var user = JsonSerializer.Deserialize<User>(data["user"]);
     
 
@@ -223,7 +235,7 @@ public class RequestQuoteController : ControllerBase
 
 
         
-        request.CurrentHandlerId = request.Requester.TravelHandler.Id;
+        // request.CurrentHandlerId = request.Requester.TravelHandler.Id;
         
         
 
@@ -235,6 +247,7 @@ public class RequestQuoteController : ControllerBase
 
         if(what == "ticket"){
             prevEvent = Events.SupervisorApprovalTicket;
+           
             }else if(what == "hotel"){
                 prevEvent = Events.SupervisorApprovalHotel;
             }else{
@@ -242,15 +255,16 @@ public class RequestQuoteController : ControllerBase
             }
 
 
-        await _notifier.InsertNotification(notmessage, request.Requester.SuperVisor.Id, request.Requester.Id, request.Id, newEvent);
+        await _notifier.InsertNotification(notmessage, request.Requester.SuperVisor.Id, result.UserId, request.Id, newEvent);
         await _notifier.DeleteNotification(request.Id, request.Requester.SuperVisor.Id, prevEvent);
-        await _logService.InsertLog(request.Id, request.Requester.SuperVisor.Id, request.Requester.TravelHandler.Id,  newEvent);
+        await _logService.InsertLog(request.Id, request.Requester.SuperVisor.Id, result.UserId,  newEvent);
       }
 
 
       if(what == "ticket"){
 
         var quotation = requestFront.Quotations.FirstOrDefault(x => x.Booked == true);
+        LinkId = quotation.Linker;
 
         var quotations = await _tripService.GetRelatedTicketQuotations(quotation);
 
@@ -268,6 +282,7 @@ public class RequestQuoteController : ControllerBase
 
 
         var quotation = requestFront.HotelQuotations.FirstOrDefault(x => x.Booked == true);
+        LinkId = quotation.Linker;
 
         var quotations = await _tripService.GetRelatedHotelQuotations(quotation);
 
@@ -283,7 +298,7 @@ public class RequestQuoteController : ControllerBase
      
 }
 
-        return Ok(true);
+        return Ok(LinkId);
 
 }
 

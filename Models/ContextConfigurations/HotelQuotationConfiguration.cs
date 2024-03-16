@@ -22,13 +22,19 @@ public class HotelQuotationConfiguration : IEntityTypeConfiguration<HotelQuotati
             v => string.Join(',', v),
             v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList());
 
-     builder.HasMany(x => x.Invoices)
-     .WithMany(x => x.Quotations)
-     .UsingEntity(x => x.ToTable("HotelInvoiceQuotations"));
+    builder.HasMany(x => x.HotelApprovals)
+      .WithMany(x => x.HotelApproved)
+      .UsingEntity<HotelApprovals>(
+           x => x.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId),
+           y => y.HasOne(y=> y.Quotation).WithMany().HasForeignKey(x => x.QuotationId)
+      );
 
-     builder.HasMany(x => x.HotelApprovals)
-     .WithMany(x => x.HotelApproved)
-     .UsingEntity(x => x.ToTable("HotelApprovals"));
+      builder.HasMany(x => x.Invoices)
+      .WithMany(x => x.Quotations)
+      .UsingEntity<HotelQuotationInvoices>(
+             x => x.HasOne(x => x.Invoice).WithMany().HasForeignKey(x => x.InvoiceId),
+             y => y.HasOne(y => y.Quotation).WithMany().HasForeignKey(x => x.QuotationId)
+      );
 
 
       builder.Property(x => x.TotalCosts)

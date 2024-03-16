@@ -42,7 +42,8 @@ public class  TravelContext: DbContext
     {
         // Replace "YourConnectionString" with your MySQL connection string
             
-
+       
+        
          
          optionsBuilder.EnableSensitiveDataLogging();
          optionsBuilder.UseSqlServer(ConnectionString);

@@ -1,4 +1,5 @@
 using backEnd.Models;
+using backEnd.Models.DTOs;
 using Microsoft.Data.SqlClient;
 using backEnd.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,22 @@ public class IDCheckService : IIDCheckService
         
     }
 
+    public async Task<Return>  CheckAdminOrManagerAndReturn(string token){
+        int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var user = await _usersService.GetOneUser(tokenId);
+
+        if(user.UserType == "admin" || user.UserType == "manager"){
+            return new Return{
+                Valid=true,
+                UserId=user.Id
+            };
+        }else{
+            return new Return{
+                Valid=false
+            };
+        }
+    }
+
    
 
     public bool CheckDepartmentHead(Request request, string token)
@@ -83,6 +100,24 @@ public class IDCheckService : IIDCheckService
             return true;
         }else{
             return false;
+        }
+    }
+
+     public Return CheckSupervisorAndReturn(Request request, string token)
+    {
+        int? tokenId = _jwtTokenConverter.ParseToken(token);
+        var userType = _jwtTokenConverter.GetUserType(token);
+
+        if(tokenId == request.Requester.SuperVisorId || userType == "userType: admin"){
+            return new Return{
+                Valid=true,
+                UserId=tokenId
+            };
+        }else{
+            return new Return{
+                Valid=false,
+                UserId=0
+            };
         }
     }
 

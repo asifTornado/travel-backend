@@ -52,66 +52,6 @@ namespace backEnd.Migrations
                     b.ToTable("BudgetTravelers", (string)null);
                 });
 
-            modelBuilder.Entity("HotelInvoiceHotelQuotation", b =>
-                {
-                    b.Property<int>("InvoicesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuotationsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("InvoicesId", "QuotationsId");
-
-                    b.HasIndex("QuotationsId");
-
-                    b.ToTable("HotelInvoiceQuotations", (string)null);
-                });
-
-            modelBuilder.Entity("HotelQuotationUser", b =>
-                {
-                    b.Property<int>("HotelApprovalsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HotelApprovedId")
-                        .HasColumnType("int");
-
-                    b.HasKey("HotelApprovalsId", "HotelApprovedId");
-
-                    b.HasIndex("HotelApprovedId");
-
-                    b.ToTable("HotelApprovals", (string)null);
-                });
-
-            modelBuilder.Entity("QuotationTicketInvoice", b =>
-                {
-                    b.Property<int>("InvoicesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuotationsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("InvoicesId", "QuotationsId");
-
-                    b.HasIndex("QuotationsId");
-
-                    b.ToTable("TicketInvoiceQuotations", (string)null);
-                });
-
-            modelBuilder.Entity("QuotationUser", b =>
-                {
-                    b.Property<int>("TicketApprovalsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketApprovedId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TicketApprovalsId", "TicketApprovedId");
-
-                    b.HasIndex("TicketApprovedId");
-
-                    b.ToTable("TicketApprovals", (string)null);
-                });
-
             modelBuilder.Entity("backEnd.Models.Agent", b =>
                 {
                     b.Property<int>("Id")
@@ -549,6 +489,29 @@ namespace backEnd.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "flyerNos");
                 });
 
+            modelBuilder.Entity("backEnd.Models.HotelApprovals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuotationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HotelApprovals");
+                });
+
             modelBuilder.Entity("backEnd.Models.HotelForBrands", b =>
                 {
                     b.Property<int>("Id")
@@ -695,6 +658,29 @@ namespace backEnd.Migrations
                     b.ToTable("HotelQuotations");
 
                     b.HasAnnotation("Relational:JsonPropertyName", "hotelQuotations");
+                });
+
+            modelBuilder.Entity("backEnd.Models.HotelQuotationInvoices", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("QuotationId");
+
+                    b.ToTable("HotelQuotationInvoices");
                 });
 
             modelBuilder.Entity("backEnd.Models.Hotels", b =>
@@ -1247,6 +1233,29 @@ namespace backEnd.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("backEnd.Models.TicketApprovals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuotationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TicketApprovals");
+                });
+
             modelBuilder.Entity("backEnd.Models.TicketInvoice", b =>
                 {
                     b.Property<int>("Id")
@@ -1271,6 +1280,29 @@ namespace backEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TicketInvoices");
+                });
+
+            modelBuilder.Entity("backEnd.Models.TicketQuotationInvoices", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("QuotationId");
+
+                    b.ToTable("TicketQuotationInvoices");
                 });
 
             modelBuilder.Entity("backEnd.Models.User", b =>
@@ -1446,66 +1478,6 @@ namespace backEnd.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HotelInvoiceHotelQuotation", b =>
-                {
-                    b.HasOne("backEnd.Models.HotelInvoice", null)
-                        .WithMany()
-                        .HasForeignKey("InvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backEnd.Models.HotelQuotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HotelQuotationUser", b =>
-                {
-                    b.HasOne("backEnd.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("HotelApprovalsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backEnd.Models.HotelQuotation", null)
-                        .WithMany()
-                        .HasForeignKey("HotelApprovedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QuotationTicketInvoice", b =>
-                {
-                    b.HasOne("backEnd.Models.TicketInvoice", null)
-                        .WithMany()
-                        .HasForeignKey("InvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backEnd.Models.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("QuotationUser", b =>
-                {
-                    b.HasOne("backEnd.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("TicketApprovalsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("backEnd.Models.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("TicketApprovedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("backEnd.Models.BudgetTicketApprovals", b =>
                 {
                     b.HasOne("backEnd.Models.Budget", "Budget")
@@ -1572,6 +1544,25 @@ namespace backEnd.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backEnd.Models.HotelApprovals", b =>
+                {
+                    b.HasOne("backEnd.Models.HotelQuotation", "Quotation")
+                        .WithMany()
+                        .HasForeignKey("QuotationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backEnd.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quotation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backEnd.Models.HotelLocations", b =>
                 {
                     b.HasOne("backEnd.Models.HotelForBrands", "HotelForBrands")
@@ -1594,6 +1585,25 @@ namespace backEnd.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("backEnd.Models.HotelQuotationInvoices", b =>
+                {
+                    b.HasOne("backEnd.Models.HotelInvoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backEnd.Models.HotelQuotation", "Quotation")
+                        .WithMany()
+                        .HasForeignKey("QuotationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Quotation");
                 });
 
             modelBuilder.Entity("backEnd.Models.Hotels", b =>
@@ -1678,6 +1688,44 @@ namespace backEnd.Migrations
                     b.Navigation("CurrentHandler");
 
                     b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("backEnd.Models.TicketApprovals", b =>
+                {
+                    b.HasOne("backEnd.Models.Quotation", "Quotation")
+                        .WithMany()
+                        .HasForeignKey("QuotationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backEnd.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quotation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backEnd.Models.TicketQuotationInvoices", b =>
+                {
+                    b.HasOne("backEnd.Models.TicketInvoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backEnd.Models.Quotation", "Quotation")
+                        .WithMany()
+                        .HasForeignKey("QuotationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Quotation");
                 });
 
             modelBuilder.Entity("backEnd.Models.User", b =>

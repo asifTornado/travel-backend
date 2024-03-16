@@ -24,6 +24,13 @@ namespace backEnd.Services.IServices
       Task<List<Request>> GetRelatedRequestsFromHotelQuotation(HotelQuotation quotation);
       Task UpdateRequests(List<Request> requests);
 
+      Task ApproveRelatedQuotes(Quotation quotation);
+
+      Task<List<Request>> GetRelatedHotelRequests(Request request);
+      Task ApproveRelatedHotelQuotes(HotelQuotation quotation);
+
+
+
         
     }
 }

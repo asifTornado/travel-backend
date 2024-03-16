@@ -63,6 +63,7 @@ public class TripHotelQuoteController : ControllerBase
     private ILogService _logService;
     private IIDCheckService _idCheckService;
     private readonly IJwtTokenConverter _jwtTokenConverter;
+    
 
     
     public TripHotelQuoteController(IJwtTokenConverter jwtTokenConverter, IIDCheckService idCheckService, IMailer mailer, ILogService logService, IUsersService usersService, IBudgetsService budgetsService, IMapper mapper, ITripService tripService, IFileHandler fileHandler)

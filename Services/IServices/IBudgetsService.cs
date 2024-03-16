@@ -26,5 +26,6 @@ namespace backEnd.Services.IServices
         Task<List<Budget>> GetTicketQuotationsApprovedByMe(User user);
         Task<List<Budget>> GetAllTicketQuotations();
         Task InsertBudgetTicketApprover(BudgetTicketApprovals budgetTicketApprovals);
+        Task UpdateBudgetSolo(Budget budget);
     }
 }

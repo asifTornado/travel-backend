@@ -49,6 +49,9 @@ public class RequestBudgetBreakDown {
     [JsonPropertyName("item")]
     public string? Item {get; set;} 
 
+    [JsonPropertyName("measure")]
+    public string? Measure {get; set;}
+
     [JsonPropertyName("quantity")]
     public string? Quantity {get; set;} 
      

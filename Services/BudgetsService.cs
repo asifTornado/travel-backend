@@ -51,6 +51,7 @@ public class BudgetsService : IBudgetsService
         // .AsNoTracking()
         // .Include( x => x.Requests)
         // .ThenInclude(x => x.Requester)
+        
         // .ThenInclude(x => x.SuperVisor)
         // .Include( x => x.Requests)
         // .ThenInclude(x => x.Requester)
@@ -59,6 +60,7 @@ public class BudgetsService : IBudgetsService
         // .ThenInclude(x => x.TravelHandler)
         // .Include(x => x.Requests)
         // .ThenInclude(x =>  x.Quotations)
+       
         // .ThenInclude(x => x.Invoices)
         // .Include(x => x.Requests)
         // .ThenInclude( x => x.Quotations)
@@ -75,20 +77,128 @@ public class BudgetsService : IBudgetsService
         // .FirstOrDefaultAsync(b => b.Id == id);
 
 
+    //    var result = await _travelContext.Budgets
+    // .AsNoTracking()
+    // .Where(b => b.Id == id)
+    // .Select(b => new Budget
+    // {
+    //     Id = b.Id,
+    //     // Add other properties you need from the Budget entity
+    //     Destination = b.Destination,
+    //     Subject = b.Subject,
+    //     ArrivalDate = b.ArrivalDate,
+    //     DepartureDate = b.DepartureDate,
+    //     NumberOfTravelers = b.NumberOfTravelers,
+    //     AirTicketBudget = b.AirTicketBudget,
+    //     HotelBudget = b.HotelBudget,
+    //     TotalTripBudget = b.TotalBookingCost,
+    //     TransportExpense = b.TransportExpense,
+    //     IncidentalExpense = b.IncidentalExpense,
+    //     TotalBookingCost = b.TotalBookingCost,
+        
+        
+        
+    //     Requests = b.Requests.Select(r => new Request
+    //     {
+
+    //         Id = r.Id,
+    //         Confirmed = r.Confirmed,
+    //         HotelConfirmed = r.HotelConfirmed,
+    //         Status = r.Status,
+    //         // Add other properties you need from the Request entity
+    //         Requester = new User
+    //         {
+    //             // Add properties you need from the Requester entity
+    //             // For example:
+    //             MailAddress = r.Requester.MailAddress,
+    //             Designation = r.Requester.Designation,
+    //             Department = r.Requester.Department,
+    //             EmpName = r.Requester.EmpName,
+    //             SuperVisor = new User{
+    //                 Id = r.Requester.SuperVisor.Id,
+    //                 EmpName = r.Requester.SuperVisor.EmpName,
+    //                 MailAddress = r.Requester.SuperVisor.MailAddress
+    //             },
+    //             ZonalHead = new User{
+    //                 Id = r.Requester.ZonalHead.Id,
+    //                 EmpName = r.Requester.ZonalHead.EmpName,
+    //                 MailAddress = r.Requester.ZonalHead.MailAddress
+    //             },
+    //             // Add more properties as needed
+    //         },
+          
+    //         Quotations = r.Quotations.Select(q => new Quotation
+    //         {
+    //             // Add properties you need from the Quotation entity
+    //             // For example:
+    //             Id = q.Id,
+    //             QuotationText = q.QuotationText,
+    //             QuoteGiver = q.QuoteGiver,
+    //             Confirmed = q.Confirmed,
+    //             Booked = q.Booked,
+    //             Approved = q.Approved,
+    //             Invoices = q.Invoices.Select(i => new TicketInvoice{
+    //                 Filename = i.Filename,
+    //                 FilePath = i.FilePath
+    //             }).ToList(),
+    //             TicketApprovals = q.TicketApprovals.Select(t => new User{
+    //                 EmpName = t.EmpName
+    //             }).ToList(),
+    //             // Add more properties as needed
+    //         }).ToList(),
+    //         HotelQuotations = r.HotelQuotations.Select(hq => new HotelQuotation
+    //         {
+    //             // Add properties you need from the HotelQuotation entity
+    //             // For example:
+    //             Id = hq.Id,
+    //             HotelApprovals = hq.HotelApprovals.Select(ht => new User {
+    //                 EmpName = ht.EmpName
+    //             }).ToList(),
+    //             Invoices = hq.Invoices.Select(hi => new HotelInvoice{
+    //                 Filename = hi.Filename,
+    //                 FilePath = hi.FilePath
+    //             }).ToList(),
+    //             Confirmed = hq.Confirmed,
+    //             Approved = hq.Approved,
+    //             Booked = hq.Booked,
+    //             QuoteGiver = hq.QuoteGiver,
+    //             QuotationText = hq.QuotationText,
+            
+    //             // Add more properties as nded
+    //         }).ToList(),
+    //         CurrentHandler = new User{
+    //             EmpName = r.CurrentHandler.EmpName,
+    //             Id = r.CurrentHandler.Id,
+    //             MailAddress = r.CurrentHandler.MailAddress
+    //         },
+    //         // Add projections for other related entities as needed
+    //     }).ToList(),
+    //     Travelers = b.Travelers.Select(t => new User{
+    //         EmpName = t.EmpName,
+    //         Id = t.Id,
+    //         MailAddress = t.MailAddress
+    //     }).ToList(),
+    //     // Add projections for other related entities as needed
+    // })
+    // .FirstOrDefaultAsync();
+
+
+
         var budget = await _travelContext.Budgets.AsNoTracking()
+        .AsSplitQuery()
         .Include(x => x.Travelers)
         .Include(x => x.TicketApprovals)
         .FirstOrDefaultAsync(b => b.Id == id);
 
         var requests = await _travelContext.Requests.AsNoTracking()
+        .AsSplitQuery()
         .Include(x => x.Requester)
         .Include(x => x.Requester.ZonalHead)
         .Include(x => x.Requester.SuperVisor)
-        .Include(x => x.Requester.TravelHandler)
         .Include(x => x.CurrentHandler)
         .Include("HotelQuotations.Invoices")
         .Include("HotelQuotations.HotelApprovals")
-        .Include("Quotations.Invoices")
+        .Include("Quotations.Invoices")     
         .Include("Quotations.TicketApprovals")
         .Where(x => x.BudgetId == id).ToListAsync();
         
@@ -163,6 +273,11 @@ public class BudgetsService : IBudgetsService
 
 
 
+public async Task UpdateBudgetSolo(Budget budget){
+    _travelContext.Entry(budget).State = EntityState.Modified;
+    await _travelContext.SaveChangesAsync();
+}
+
 public async Task UpdateAsync(int id, Budget budget)
 {
     // Load the existing budget with its travelers from the database
@@ -177,7 +292,7 @@ public async Task UpdateAsync(int id, Budget budget)
     }
 
     // Update the scalar properties of the budget
-    _travelContext.Entry(existingBudget).CurrentValues.SetValues(budget);
+    // _travelContext.Entry(existingBudget).CurrentValues.SetValues(budget);
 
     // Remove the travelers that are no longer associated with the budget
     foreach (var existingTraveler in existingBudget.Travelers.ToList())
@@ -197,6 +312,8 @@ public async Task UpdateAsync(int id, Budget budget)
     foreach(var request in budget.Requests){
         _travelContext.Entry(request).State = EntityState.Modified;
     }
+
+    // _travelContext.Entry(budget).State = EntityState.Modified;
 
     await _travelContext.SaveChangesAsync();
     _travelContext.ChangeTracker.Clear();

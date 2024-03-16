@@ -189,6 +189,7 @@ public async Task<List<Request>> GetRelatedRequests(Request request){
     var result = await _travelContext.Requests
                  .AsNoTracking()
                  .Include(x => x.Quotations)
+                 .Include(x => x.Requester)
                  .Include(x => x.Requester.SuperVisor)
                  .Include(x => x.Requester.ZonalHead)
                  .Include(x => x.Requester.TravelHandler)
@@ -198,6 +199,39 @@ public async Task<List<Request>> GetRelatedRequests(Request request){
     return result;    
 }
 
+
+public async Task<List<Request>> GetRelatedHotelRequests(Request request){
+
+    var quotation = request.HotelQuotations.Where(x => x.Booked == true).FirstOrDefault();
+
+    var result = await _travelContext.Requests
+                 .AsNoTracking()
+                 .Include(x => x.HotelQuotations)
+                 .Include(x => x.Requester)
+                 .Include(x => x.Requester.SuperVisor)
+                 .Include(x => x.Requester.ZonalHead)
+                 .Include(x => x.Requester.TravelHandler)
+                 .Where(x => x.HotelQuotations.Any(x => x.Linker == quotation.Linker))
+                 .ToListAsync();
+
+    return result;    
+}
+
+
+
+public async Task ApproveRelatedQuotes(Quotation quotation){
+   var linkId = quotation.Linker;
+
+   await _travelContext.Database.ExecuteSqlRawAsync($"UPDATE dbo.Quotations SET Approved = 1 WHERE Linker = {linkId}");
+
+}
+
+
+public async Task ApproveRelatedHotelQuotes(HotelQuotation quotation){
+    var linkId = quotation.Linker;
+
+    await _travelContext.Database.ExecuteSqlRawAsync($"UPDATE dbo.HotelQuotations SET Approved = 1 WHERE Linker = {linkId}");
+}
 
 public async Task<List<Request>> GetRelatedRequestsFromQuotation(Quotation quotation){
     var result = await _travelContext.Requests

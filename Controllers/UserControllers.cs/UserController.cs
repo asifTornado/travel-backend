@@ -145,6 +145,9 @@ public async Task<IActionResult> InsertUser(IFormCollection data)
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     // var userDTO = _imapper.Map<UserDTO>(user);
     var userString = JsonSerializer.Serialize(user);
+    user.ZonalHeadId = user.ZonalHead.Id;
+    user.SuperVisorId = user.SuperVisor.Id;
+  
     await _userService.CreateAsync(user);
     return Ok(true);
 }

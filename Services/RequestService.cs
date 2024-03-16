@@ -107,6 +107,7 @@ public class RequestService: IRequestService
 
 
        var results = await _travelContext.Requests.AsNoTracking()
+    .AsSplitQuery()
     .Include(x => x.Messages)
     // .Include(x => x.HotelApprovals)
     // .Include(x => x.TicketApprovals)
