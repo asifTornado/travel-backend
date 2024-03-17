@@ -146,6 +146,7 @@ public class RequestController : ControllerBase
         budget.Brand = brand;
         budget.Travelers.Add(request.Requester);
         budget.Requests = new List<Request>();
+        budget.Custom = true;
         
 
         var BudgetId = await _budgetService.CreateBudgetId(budget);

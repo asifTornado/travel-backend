@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VbunLT1T7lDtc/L4TxgM+gXzv+FvnkQA8mTAK+TgnSo=",
+  "Hash": "xsJvBOd/sB9KUE1JK0rnwsOO+oDU8uulT2w4OYZdVRA=",
   "Source": "backEnd",
   "BasePath": "_content/backEnd",
   "Mode": "Default",
@@ -1001,6 +1001,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\Capture_5ca5f424.PNG"
+    },
+    {
+      "Identity": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\uploads\\subtitle (1)_b668a2b7.txt",
+      "SourceId": "backEnd",
+      "SourceType": "Discovered",
+      "ContentRoot": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\",
+      "BasePath": "_content/backEnd",
+      "RelativePath": "uploads/subtitle (1)_b668a2b7.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\subtitle (1)_b668a2b7.txt"
+    },
+    {
+      "Identity": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\uploads\\subtitle_be64fd6f.txt",
+      "SourceId": "backEnd",
+      "SourceType": "Discovered",
+      "ContentRoot": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\",
+      "BasePath": "_content/backEnd",
+      "RelativePath": "uploads/subtitle_be64fd6f.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\subtitle_be64fd6f.txt"
     }
   ]
 }

@@ -62,8 +62,8 @@ public async Task SendMoneyReceipt(string accountsMail, string filename, int mon
             </head>
         
             <body>
-                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted. Click on the link below for more information </h1>
-                    <a href='{url}' />  
+                <h4>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted.  </h4>
+                <p><a href='{url}'> Click Here For More Information</a></p>
                
 
             </body>
@@ -112,8 +112,8 @@ public async Task SendMoneyReceipt(string accountsMail, string filename, int mon
             </head>
         
             <body>
-                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted again after rectification. Click on the link below for more information </h1>
-                    <a href='{url}' />  
+                <h1>Advance Money Requistion Form For The Trip Numbered {request.Id} has been submitted again after rectification</h1>
+                     <p><a href='{url}'> Click Here For More Information</a></p>
                
 
             </body>

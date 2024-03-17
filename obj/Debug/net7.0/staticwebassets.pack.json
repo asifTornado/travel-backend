@@ -233,6 +233,14 @@
       "PackagePath": "staticwebassets\\uploads\\asd_e2457865.pdf"
     },
     {
+      "Id": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\uploads\\subtitle (1)_b668a2b7.txt",
+      "PackagePath": "staticwebassets\\uploads\\subtitle (1)_b668a2b7.txt"
+    },
+    {
+      "Id": "e:\\travelling source code-current\\backend-dapper\\wwwroot\\uploads\\subtitle_be64fd6f.txt",
+      "PackagePath": "staticwebassets\\uploads\\subtitle_be64fd6f.txt"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.backEnd.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

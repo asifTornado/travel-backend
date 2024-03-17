@@ -152,7 +152,7 @@ public class TicketQuotationController : ControllerBase
         budget.SeekingAccountsApprovalForTickets = true;
         budget.CurrentHandlerId = accounts.Id;
 
-        await _budgetService.UpdateAsync(budget.Id, budget);
+        await _budgetService.UpdateBudgetSolo(budget);
 
         var message = $"Ticket quations for the trip numbered {budget.Id} has been sent to accounts for processing";
 

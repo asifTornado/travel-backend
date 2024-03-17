@@ -59,6 +59,9 @@ public class TripDTO : Trip{
     [JsonPropertyName("travelers")]
     public List<User>? Travelers {get; set;}
 
+    [JsonPropertyName("custom")]
+    public bool Custom {get; set;} = false;
+
     [JsonPropertyName("requests")]
     public List<Request>? Requests {get; set;}
     public List<Message> Messages { get; set; } = new List<Message>();

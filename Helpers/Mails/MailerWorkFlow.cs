@@ -64,9 +64,9 @@ public async Task WorkFlowMail(string? toEmail, string customMessage, int? id, s
             </head>
         
             <body>
-                <h1>{customMessage}. Click on the link below for more information: </h1>
+                <h4>{customMessage} </h4>
 
-                 <a href='{url}' />      
+               <p><a href='{url}'> Click Here For More Information</a></p>
 
             </body>
             </html>
