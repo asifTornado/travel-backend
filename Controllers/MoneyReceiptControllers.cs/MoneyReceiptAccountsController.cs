@@ -45,8 +45,9 @@ public class MoneyReceiptAccountsController : ControllerBase
       INotifier notifier, ILogService logService,
       IUsersService usersService, IRequestService requestService, 
       MoneyReceiptService moneyReceiptService, RoleService roleService,
-      IDCheckService idCheckService,
-      MailerWorkFlow mailerWorkFlow
+    
+      MailerWorkFlow mailerWorkFlow,
+      IIDCheckService idCheckService
       )
     {
       _moneyReceiptService = moneyReceiptService;
@@ -56,6 +57,7 @@ public class MoneyReceiptAccountsController : ControllerBase
       _notifier = notifier;
       _idCheckService = idCheckService;
       _mailerWorkFlow = mailerWorkFlow;
+      _usersService = usersService;
       
     }
 
@@ -63,7 +65,7 @@ public class MoneyReceiptAccountsController : ControllerBase
  
   [HttpPost]
   [Route("moneyReceiptForward")]
-  public async Task<IActionResult> MoneyReceiptSupervisorApprove(IFormCollection data){
+  public async Task<IActionResult> MoneyReceiptForward(IFormCollection data){
     
     var moneyReceiptId = data["id"];
     var moneyReceipt = await _moneyReceiptService.GetMoneyReceipt(int.Parse(moneyReceiptId));

@@ -169,10 +169,10 @@ public class BudgetController : ControllerBase
         request.CurrentHandlerId = request.Requester.Id;
             
         
+        request.BudgetId = budgetFromDB.Id;
 
         request.Id = await _requestService.CreateAsync(request);   
 
-        request.BudgetId = budgetFromDB.Id;
 
         budgetFromDB.Requests.Add(request);
             
@@ -193,7 +193,7 @@ public class BudgetController : ControllerBase
       
        budgetFromDB.Initiated = "Yes";
 
-       await _budgetsService.UpdateAsync(budgetFromDB.Id, budgetFromDB);
+       await _budgetsService.UpdateBudgetSolo(budgetFromDB);
 
 
     

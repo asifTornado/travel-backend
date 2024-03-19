@@ -41,7 +41,7 @@ public class ExpenseReportAccountsController : ControllerBase
     private INotifier _notifier;
     private IIDCheckService _idCheckService;
     private MailerWorkFlow _mailerWorkFlow;
-    private UsersService _userService;
+    private IUsersService _userService;
     private IJwtTokenConverter _jwtTokenConver;
 
 
@@ -51,7 +51,7 @@ public class ExpenseReportAccountsController : ControllerBase
     INotifier notifier, MailerWorkFlow mailerWorkFlow,
     IExpenseReportService expenseReportService, RoleService roleService, 
     IIDCheckService idCheckService,
-    UsersService userService,
+    IUsersService userService,
     IJwtTokenConverter jwtTokenConverter
     )
     {

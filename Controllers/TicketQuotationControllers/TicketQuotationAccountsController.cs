@@ -128,7 +128,7 @@ public class TicketQuotationAccountsController : ControllerBase
     trip.CurrentHandlerId = next;
     trip.Rejected = false;
 
-    await _budgetService.UpdateAsync(trip.Id, trip);
+    await _budgetService.UpdateBudgetSolo(trip);
 
     var message = $"{user.EmpName} has forwarded ticket quotations for the Trip numbered {trip.TripId}";
 

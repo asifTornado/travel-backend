@@ -69,7 +69,7 @@ public class MoneyReceiptService
     var result = await _context.MoneyReceipts.AsNoTracking()
     .Include(x => x.CurrentHandler)
     .ToListAsync();
-    var finalResult = result.Where(x => x.Approvals.Any(y => y.Id == user.Id)).ToList();
+    var finalResult = result.Where(x => x.PrevHandlerIds.Any(y => y == user.Id)).ToList();
     return finalResult;
   }
 
