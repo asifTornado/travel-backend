@@ -46,18 +46,19 @@ _mailer = mailer;
 [Route("share")]
 
 public async Task<IActionResult> Share(IFormCollection data){
-    var request = JsonSerializer.Deserialize<Request>(data["request"]);
-    var recipient = JsonSerializer.Deserialize<User>(data["recipient"]);
-    var sharer = JsonSerializer.Deserialize<User>(data["sharer"]);
+
+     var request = JsonSerializer.Deserialize<Request>(data["request"]);
+     var recipient = JsonSerializer.Deserialize<User>(data["recipient"]);
+     var sharer = JsonSerializer.Deserialize<User>(data["sharer"]);
      
 
-     string senderEmail = _configuration.GetValue<string>("Mail:Email");
-     string password = _configuration.GetValue<string>("Mail:Password");
-     string subject = $"{sharer.EmpName} has shared information about a travel request with you ";
+    string senderEmail =  _configuration.GetValue<string>("Mail:Email");
+    string password    =  _configuration.GetValue<string>("Mail:Password");
+    string subject     =  $"{sharer.EmpName} has shared information about a travel request with you";
      
      var message = new MimeMessage();
-   message.From.Add(new MailboxAddress("", senderEmail));
-    message.To.Add(new MailboxAddress("", recipient.MailAddress));
+     message.From.Add(new MailboxAddress("", senderEmail));
+     message.To.Add(new MailboxAddress("", recipient.MailAddress));
      var builder = new BodyBuilder();
 
      message.Subject = subject;

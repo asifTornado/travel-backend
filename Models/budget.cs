@@ -171,16 +171,15 @@ public class Budget
     [JsonPropertyName("auditPrevHandlerIds")]
     public List<int>? AuditPrevHandlerIds {get; set;} = new List<int>();
 
-    
-   
+
+    [NotMapped]
+    [JsonPropertyName("requestReportsActual")]
+    public List<RequestReport> RequestReportsActual {get; set;} = new List<RequestReport>();
 
 
-    
-
-
-
-
-
+    [NotMapped]
+    [JsonPropertyName("requestReportsBudgeted")]
+    public List<RequestReport> RequestReportsBudgeted {get; set;} = new List<RequestReport>();
 
 
 

@@ -40,6 +40,7 @@ builder.Services.AddScoped<MoneyReceiptService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<MailerWorkFlow>();
 builder.Services.AddScoped<MailerMoneyReceipt>();
+builder.Services.AddScoped<ReportService>();
 
 
 builder.Services.AddScoped<ICounterService, CounterService>();
