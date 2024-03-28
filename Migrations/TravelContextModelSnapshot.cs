@@ -1202,6 +1202,11 @@ namespace backEnd.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "totalCost");
 
+                    b.Property<string>("TripId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "tripId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BudgetId");
@@ -1400,10 +1405,6 @@ namespace backEnd.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "team");
 
-                    b.Property<int?>("TravelHandlerId")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "travelHandlerId");
-
                     b.Property<string>("Unit")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "unit");
@@ -1423,8 +1424,6 @@ namespace backEnd.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SuperVisorId");
-
-                    b.HasIndex("TravelHandlerId");
 
                     b.HasIndex("ZonalHeadId");
 
@@ -1735,19 +1734,12 @@ namespace backEnd.Migrations
                         .HasForeignKey("SuperVisorId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("backEnd.Models.User", "TravelHandler")
-                        .WithMany("TravelHandled")
-                        .HasForeignKey("TravelHandlerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("backEnd.Models.User", "ZonalHead")
                         .WithMany("Head")
                         .HasForeignKey("ZonalHeadId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("SuperVisor");
-
-                    b.Navigation("TravelHandler");
 
                     b.Navigation("ZonalHead");
                 });
@@ -1827,8 +1819,6 @@ namespace backEnd.Migrations
                     b.Navigation("Requests");
 
                     b.Navigation("SuperVised");
-
-                    b.Navigation("TravelHandled");
                 });
 #pragma warning restore 612, 618
         }

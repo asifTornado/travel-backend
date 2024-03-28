@@ -10,6 +10,7 @@ using backEnd.Helpers.IHelpers;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.AspNetCore.Mvc;
 using backEnd.Models.DTOs;
+using backEnd.Services;
 
 
 
@@ -26,15 +27,18 @@ public class TicketMailer:IMailer
      private string senderPassword;
      private string frontEnd;
 
+     private RoleService _roleService;
+
      private IReportGenerator _reportGenerator;
 
-     public TicketMailer(IConfiguration configuration, IReportGenerator reportGenerator){
+     public TicketMailer(IConfiguration configuration, IReportGenerator reportGenerator, RoleService roleService){
              _configuration = configuration;
              _reportGenerator = reportGenerator;
              
       senderEmail = _configuration.GetValue<string>("Mail:Email");
       senderPassword    = _configuration.GetValue<string>("Mail:Password");
       frontEnd    = _configuration.GetValue<string>("Url:FrontEnd");
+      _roleService = roleService;
      }
 
 
@@ -778,7 +782,8 @@ public class TicketMailer:IMailer
         
 
         Console.WriteLine("Sending Email");
-
+        
+        
     
     
                 string subject = $@"You have received invoice for the travel request number {request.Number} from {agent.Name} raised by {request.Requester.EmpName} ";
@@ -794,7 +799,6 @@ public class TicketMailer:IMailer
             
         // string senderEmail = "asifdummymail@gmail.com";
         // string senderPassword = "torw blya mtym yutl";
-        string? recipientEmail = request.Requester.TravelHandler.MailAddress;
       
 
 
@@ -804,6 +808,9 @@ public class TicketMailer:IMailer
             
             
                 string body = html;
+
+                var recipient = await _roleService.GetAccountsReceiverForExpenseReport();
+                var recipientEmail = recipient.MailAddress;
         
 
         var message = new MimeMessage();

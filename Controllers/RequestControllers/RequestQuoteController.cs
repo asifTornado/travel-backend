@@ -401,9 +401,9 @@ public class RequestQuoteController : ControllerBase
 
         var message = $"{agent.Name} has submitted quote for your travel request number {request.Id}";
 
-        await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.RequestRaised);
+        await _notifier.DeleteNotification(request.Id, request.Requester.Id, Events.RequestRaised);
 
-        await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.QuotationSent);
+        await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.QuotationSent);
 
        
       

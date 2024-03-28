@@ -31,13 +31,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
          .IsRequired(false);    
 
 
-        builder
-        .HasOne(u => u.TravelHandler)
-        .WithMany(u => u.TravelHandled)
-        .HasForeignKey(u => u.TravelHandlerId)
-           .OnDelete(DeleteBehavior.NoAction)
-         .IsRequired(false);
-
 
         builder
         .HasMany(u => u.FlyerNos)

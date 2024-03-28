@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class migration1 : Migration
+    public partial class newmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -178,7 +178,6 @@ namespace backEnd.Migrations
                     Numbers = table.Column<int>(type: "int", nullable: true),
                     SuperVisorId = table.Column<int>(type: "int", nullable: true),
                     ZonalHeadId = table.Column<int>(type: "int", nullable: true),
-                    TravelHandlerId = table.Column<int>(type: "int", nullable: true),
                     PassportNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PreferenceImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Preferences = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -190,11 +189,6 @@ namespace backEnd.Migrations
                     table.ForeignKey(
                         name: "FK_Users_Users_SuperVisorId",
                         column: x => x.SuperVisorId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Users_Users_TravelHandlerId",
-                        column: x => x.TravelHandlerId,
                         principalTable: "Users",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -952,11 +946,6 @@ namespace backEnd.Migrations
                 name: "IX_Users_SuperVisorId",
                 table: "Users",
                 column: "SuperVisorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_TravelHandlerId",
-                table: "Users",
-                column: "TravelHandlerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ZonalHeadId",

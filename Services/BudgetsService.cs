@@ -41,7 +41,20 @@ public class BudgetsService : IBudgetsService
  
     }
 
+    
 
+    public async Task UpdateBudgetTotalCost(string cost, int id){
+         string sqlQuery = "UPDATE dbo.Budgets SET TotalTripBudget = @NewValue WHERE Id = @PrimaryKeyValue";
+
+    // Provide parameter values
+    var parameters = new[]
+    {
+        new SqlParameter("@NewValue", cost),  // newValue is the value you want to set
+        new SqlParameter("@PrimaryKeyValue", id)  // primaryKeyValue is the value of the primary key for the row you want to update
+    };
+
+       await _travelContext.Database.ExecuteSqlRawAsync(sqlQuery, parameters);
+    }
 
 
     public async Task<Budget?> GetAsync(int id){
@@ -221,7 +234,7 @@ public class BudgetsService : IBudgetsService
     }
 
 
-    public async Task<int> CreateBudgetId(Budget budget){
+    public async Task<dynamic> CreateBudgetId(Budget budget){
           _travelContext.Entry(budget).State = EntityState.Added;
 
         budget.Travelers.ForEach((x)=>{
@@ -232,7 +245,10 @@ public class BudgetsService : IBudgetsService
 
         
 
-        return budget.Id;
+        return new {
+            Id = budget.Id,
+            TripId = budget.TripId
+        };
 
         
         

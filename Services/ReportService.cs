@@ -34,7 +34,7 @@ namespace backEnd.Services
             var result = await _travelContext.Budgets.AsNoTracking().AsSplitQuery()
             .Include(x =>  x.Requests)
             .ThenInclude(x => x.ExpenseReport)
-            .Where(x => x.Initiated == "Yes")
+            .Where(x => x.Initiated == "Yes" && x.Requests.Any(x => x.ExpenseReportGiven != false))
             .Select(x => new Budget{
                   Id = x.Id,
                   Subject = x.Subject,

@@ -176,7 +176,10 @@ public class ApprovalController : ControllerBase
         if(allowed != true){
             return Ok(false);
         }
+
+         
         if(request.Custom == true){
+        await _budgetService.UpdateBudgetTotalCost(request.RequestBudget.TotalBudget, (int)request.BudgetId);
         request.DepartmentHeadApproved = false;
         request.SupervisorApproved = true;
         request.Status = "Seeking Approval From Department Head";

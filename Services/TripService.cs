@@ -192,7 +192,6 @@ public async Task<List<Request>> GetRelatedRequests(Request request){
                  .Include(x => x.Requester)
                  .Include(x => x.Requester.SuperVisor)
                  .Include(x => x.Requester.ZonalHead)
-                 .Include(x => x.Requester.TravelHandler)
                  .Where(x => x.Quotations.Any(x => x.Linker == quotation.Linker))
                  .ToListAsync();
 
@@ -210,7 +209,6 @@ public async Task<List<Request>> GetRelatedHotelRequests(Request request){
                  .Include(x => x.Requester)
                  .Include(x => x.Requester.SuperVisor)
                  .Include(x => x.Requester.ZonalHead)
-                 .Include(x => x.Requester.TravelHandler)
                  .Where(x => x.HotelQuotations.Any(x => x.Linker == quotation.Linker))
                  .ToListAsync();
 
@@ -243,7 +241,6 @@ public async Task<List<Request>> GetRelatedRequestsFromQuotation(Quotation quota
                     .ThenInclude(x => x.TicketApprovals)
                     .Include(x => x.Requester.SuperVisor)
                     .Include(x => x.Requester.ZonalHead)
-                    .Include(x => x.Requester.TravelHandler)
                     .Where(x => x.Quotations.Any(x => x.Linker == quotation.Linker))
                     .ToListAsync();
     return result;
@@ -262,7 +259,6 @@ public async Task<List<Request>> GetRelatedRequestsFromHotelQuotation(HotelQuota
                     .ThenInclude(x => x.HotelApprovals)
                     .Include(x => x.Requester.SuperVisor)
                     .Include(x => x.Requester.ZonalHead)
-                    .Include(x => x.Requester.TravelHandler)
                     .Where(x => x.HotelQuotations.Any(x => x.Linker == quotation.Linker))
                     .ToListAsync();
     return result;

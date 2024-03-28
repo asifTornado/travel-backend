@@ -82,7 +82,7 @@ public class UsersService:IUsersService
         public async Task<User> GetUserByName(string name)
     {
             var result = await _travelContext.Users.AsNoTracking().Where(user => user.EmpName.Trim() == name.Trim())
-            .Include(x => x.TravelHandler)
+           
             
             .FirstOrDefaultAsync();
       
@@ -108,7 +108,7 @@ public class UsersService:IUsersService
         var result = await _travelContext.Users
                .AsNoTracking()
         .Include(User => User.SuperVisor)
-        .Include(User => User.TravelHandler)
+       
         .Include(User => User.ZonalHead)
         .Include(User => User.FlyerNos)
  
@@ -143,7 +143,7 @@ public class UsersService:IUsersService
         var result = await _travelContext.Users
            .AsNoTracking()
         .Include(user => user.SuperVisor)
-        .Include(user => user.TravelHandler)
+       
         .Include(user => user.ZonalHead)
         .Include(user => user.FlyerNos)
         .Include(user => user.Roles)

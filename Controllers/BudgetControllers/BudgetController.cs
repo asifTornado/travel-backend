@@ -128,6 +128,9 @@ public class BudgetController : ControllerBase
             return Ok(false);
         }
         var budget = JsonSerializer.Deserialize<Budget>(data["budget"]);
+        if(budget.Initiated == "Yes"){
+            return Ok(false);
+        }
         await _budgetsService.UpdateAsync(budget.Id, budget);
         return Ok();
     }
@@ -164,6 +167,8 @@ public class BudgetController : ControllerBase
         request.Status = "Seeking Information From Traveler";
         request.SupervisorApproved = false;
         request.DepartmentHeadApproved = true;
+        request.TripId = budgetFromDB.TripId;
+        
         
 
         request.CurrentHandlerId = request.Requester.Id;

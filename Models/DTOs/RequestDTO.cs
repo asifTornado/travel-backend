@@ -9,6 +9,9 @@ public class RequestDTO {
 [JsonPropertyName("_id")]
 [Key]
 public int Id { get; set; }
+
+[JsonPropertyName("tripId")]
+public string TripId { get; set; } = "";
         
 [JsonPropertyName("destination")]
 public string? Destination { get; set; }  = string.Empty;
@@ -36,5 +39,8 @@ public bool?  SupervisorApproved {get; set;} = false;
 
 [JsonPropertyName("departmentHeadApproved")]
 public bool? DepartmentHeadApproved {get; set;} = false;
+
+[JsonPropertyName("custom")]
+public bool? Custom {get; set;} = false;
 
 }

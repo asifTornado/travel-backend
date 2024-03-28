@@ -21,11 +21,13 @@ namespace backEnd.Services.IServices
 
         Task<Budget> GetTicketQuotation(int id);
 
-        Task<int> CreateBudgetId(Budget budget);
+        Task<dynamic> CreateBudgetId(Budget budget);
         Task<List<Budget>> GetTicketQuotationsForMe(User user);
         Task<List<Budget>> GetTicketQuotationsApprovedByMe(User user);
         Task<List<Budget>> GetAllTicketQuotations();
         Task InsertBudgetTicketApprover(BudgetTicketApprovals budgetTicketApprovals);
         Task UpdateBudgetSolo(Budget budget);
+
+        Task UpdateBudgetTotalCost(string cost, int id);
     }
 }

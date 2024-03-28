@@ -37,7 +37,7 @@ public static class Events {
 
     public static string AirTicketInvoiceSent {get;} = "Air Ticket Invoice Sent";
 
-    public static string HotelInvoiceSent {get;} = "Hotel Invocie Sent";
+    public static string HotelInvoiceSent {get;} = "Hotel Invoice Sent";
 
 
     public static string Processed {get;} = "Request Processing Complete";

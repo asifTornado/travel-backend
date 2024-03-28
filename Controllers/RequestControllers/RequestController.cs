@@ -147,9 +147,10 @@ public class RequestController : ControllerBase
         budget.Travelers.Add(request.Requester);
         budget.Requests = new List<Request>();
         budget.Custom = true;
+    
         
 
-        var BudgetId = await _budgetService.CreateBudgetId(budget);
+        var Budget = await _budgetService.CreateBudgetId(budget);
       
             
         //     var agentEmails = new List<Agent>();
@@ -158,7 +159,8 @@ public class RequestController : ControllerBase
         //  }
 
    
-      request.BudgetId = BudgetId;
+      request.BudgetId = Budget.Id;
+      request.TripId = Budget.TripId;
       
       var requestId = await _requestService.CreateAsync(request); 
 

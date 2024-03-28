@@ -189,10 +189,10 @@ public class RequestHotelQuoteController : ControllerBase
         // _mailer.SendMailQuoteReceived(request, agent);
 
 
-       await _notifier.DeleteNotification(request.Id, request.Requester.TravelHandler.Id, Events.RequestRaised);
+       await _notifier.DeleteNotification(request.Id, request.Requester.Id, Events.RequestRaised);
 
 
-       await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.HotelQuotationSent);
+       await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.HotelQuotationSent);
 
         return Ok(request);
 
@@ -248,8 +248,8 @@ public class RequestHotelQuoteController : ControllerBase
             if( best == "Yes"){
 
             request.Status = "Seeking Hotel Confirmation";
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-            request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+            request.CurrentHandler = request.Requester;
             request.HotelBooked = true;
             quotation.Approved = true;
             }else{
@@ -275,7 +275,7 @@ public class RequestHotelQuoteController : ControllerBase
             // _mailer.SendMailBook(quotation.Agent, request, quotation);
 
 
-            await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.HotelQuotationBooked);
+            await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.HotelQuotationBooked);
 
 
    
@@ -322,8 +322,8 @@ public class RequestHotelQuoteController : ControllerBase
                  
                  request.HotelConfirmed = false;
      
-                 request.CurrentHandler.Id = request.Requester.TravelHandler.Id;
-                 request.CurrentHandler = request.Requester.TravelHandler;
+                 request.CurrentHandler.Id = request.Requester.Id;
+                 request.CurrentHandler = request.Requester;
                  request.Status = "Seeking Hotel Confirmation";
                  request.SeekingHotelInvoices = false;
      
@@ -337,7 +337,7 @@ public class RequestHotelQuoteController : ControllerBase
      
                  //  _mailer.SendMailConfirm(quotation.Agent, request, quotation);
      
-                 await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.HotelQuotationRevoked);
+                 await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.HotelQuotationRevoked);
 
 
 
@@ -383,8 +383,8 @@ public class RequestHotelQuoteController : ControllerBase
 
             request.Status = "Seeking Hotel Quotations";
 
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-               request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+               request.CurrentHandler = request.Requester;
 
 
 
@@ -394,7 +394,7 @@ public class RequestHotelQuoteController : ControllerBase
             await _requestService.UpdateAsync(request);
 
 
-            await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.HotelQuotationUnbooked);
+            await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.HotelQuotationUnbooked);
 
 
             return Ok(request);
@@ -430,8 +430,8 @@ public class RequestHotelQuoteController : ControllerBase
             
             request.HotelConfirmed = true;
 
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-               request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+               request.CurrentHandler = request.Requester;
             request.Status = "Seeking Invoices";
             request.SeekingHotelInvoices = true;
 
@@ -446,7 +446,7 @@ public class RequestHotelQuoteController : ControllerBase
 
             //  _mailer.SendMailConfirm(quotation.Agent, request, quotation);
 
-            await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.HotelQuotationConfirmed);
+            await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.HotelQuotationConfirmed);
             return Ok(request);
         }
 

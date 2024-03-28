@@ -242,10 +242,7 @@ public async Task<IActionResult> Share(IFormCollection data){
                     <span>{ request.Requester.ZonalHead.EmpName }</span>
                 </div
 
-                      <div class='row'>
-                    <span class='label'>Travel Handler</span>
-                    <span>{ request.Requester.TravelHandler.EmpName }</span>
-                </div
+                  
                 <!-- Add more rows as needed -->
             </div>
         </div>

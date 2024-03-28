@@ -10,6 +10,8 @@ public class TripReportDTO{
 
     [JsonPropertyName("_id")]
     public int Id {get; set;}
+
+    public string TripId {get; set;} = string.Empty;
     public string Subject {get; set;} = string.Empty;
     public string Destination {get; set;} = string.Empty;
     public string Departure_date {get; set;} = string.Empty;

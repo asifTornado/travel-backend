@@ -121,7 +121,6 @@ public async Task<IActionResult> UpdateUserNormal(IFormCollection data)
          }
     var user = JsonSerializer.Deserialize<User>(data["user"]);
     user.SuperVisorId = user.SuperVisor?.Id;
-    user.TravelHandlerId = user.TravelHandler?.Id;
     user.ZonalHeadId = user.ZonalHead?.Id;
     // user.SuperVisor.SuperVised = new List<User>();
     // user.TravelHandler.TravelHandled = new List<User>();

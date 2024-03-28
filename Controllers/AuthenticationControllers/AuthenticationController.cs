@@ -92,9 +92,9 @@ namespace backEnd.Controllers.AuthenticationControllers
 
 
                 var user = JsonSerializer.Deserialize<User>(data["user"]) ;
-                var userDTO = _mapper.Map<UserDTO>(user);
-                userDTO.UserType = "normal";
-                userDTO.Password = data["Password"];
+               
+                user.UserType = "normal";
+                user.Password = data["Password"];
               
                 await _usersService.CreateAsync(user);
                 return Ok(true);

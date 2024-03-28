@@ -22,6 +22,11 @@ public class Request{
 public int Id { get; set; }
 
 
+[JsonPropertyName("tripId")]
+
+public string TripId { get; set; } = "";
+
+
 [JsonPropertyName("custom")]
 public bool? Custom {get; set;} = false;
 

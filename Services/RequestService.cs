@@ -130,7 +130,7 @@ public class RequestService: IRequestService
     // .Include(x => x.TicketApprovals)
     .Include(x => x.Requester)
         .Include(x => x.Requester.SuperVisor)
-        .Include(x => x.Requester.TravelHandler)
+      
         .Include(x => x.Requester.ZonalHead)
     .Include(x => x.HotelQuotations)
     .ThenInclude(x => x.Invoices)
@@ -178,7 +178,7 @@ public class RequestService: IRequestService
 
    var result = await _travelContext.Requests.Include( r => r.CurrentHandler)
    .AsNoTracking()
-   .Where(x => x.Custom == false)
+//    .Where(x => x.Custom == false)
    .ProjectTo<RequestDTO>(_imapper.ConfigurationProvider)
    .ToListAsync();
          return result;
@@ -355,10 +355,10 @@ public class RequestService: IRequestService
 
          var request = await _travelContext.Requests
          .Include(r => r.Requester)
-         .Include(r => r.Requester.TravelHandler)
+       
          .AsNoTracking()
          .Where(r => r.Id == id)
-         .Select(r => new {r.Requester.TravelHandler.MailAddress, r.Requester.TravelHandler.EmpName})
+         .Select(r => new {r.Requester.MailAddress, r.Requester.EmpName})
          
          .FirstOrDefaultAsync();
 
@@ -442,7 +442,6 @@ public class RequestService: IRequestService
    public async Task<Request> GetRequestForApproval(int id){
     var result = await _travelContext.Requests.AsNoTracking()
                      .Include(x => x.Requester.SuperVisor)
-                     .Include(x => x.Requester.TravelHandler)
                      .Include(x => x.Requester.ZonalHead)
                      .Include(x => x.Requester)
                      .Where(x => x.Id == id && x.PermanentlyRejected != true).FirstOrDefaultAsync();

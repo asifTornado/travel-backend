@@ -162,18 +162,6 @@ public class User
 
 
 
-
-    [JsonPropertyName("travelHandlerId")]
-    public int? TravelHandlerId { get; set; }
-
-
-
-    [NotMapped]
-    [JsonPropertyName("travelHandler")]
-    public virtual User? TravelHandler { get; set; } 
-
-    
-
     [JsonPropertyName("passportNo")]
     public string? PassportNo { get; set; } 
 
@@ -214,9 +202,7 @@ public class User
    [JsonPropertyName("head")] 
    public virtual List<User>? Head {get; set;} =  new List<User>();
 
-    [NotMapped]
-    [JsonPropertyName("travelHandled")]
-    public virtual List<User>? TravelHandled {get; set;} = new List<User>();
+    
 
 
 

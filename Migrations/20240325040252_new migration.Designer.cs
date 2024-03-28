@@ -12,8 +12,8 @@ using backEnd.Models;
 namespace backEnd.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20240322063917_request budget changed 2")]
-    partial class requestbudgetchanged2
+    [Migration("20240325040252_new migration")]
+    partial class newmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1403,10 +1403,6 @@ namespace backEnd.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "team");
 
-                    b.Property<int?>("TravelHandlerId")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "travelHandlerId");
-
                     b.Property<string>("Unit")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "unit");
@@ -1426,8 +1422,6 @@ namespace backEnd.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SuperVisorId");
-
-                    b.HasIndex("TravelHandlerId");
 
                     b.HasIndex("ZonalHeadId");
 
@@ -1738,19 +1732,12 @@ namespace backEnd.Migrations
                         .HasForeignKey("SuperVisorId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("backEnd.Models.User", "TravelHandler")
-                        .WithMany("TravelHandled")
-                        .HasForeignKey("TravelHandlerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("backEnd.Models.User", "ZonalHead")
                         .WithMany("Head")
                         .HasForeignKey("ZonalHeadId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("SuperVisor");
-
-                    b.Navigation("TravelHandler");
 
                     b.Navigation("ZonalHead");
                 });
@@ -1830,8 +1817,6 @@ namespace backEnd.Migrations
                     b.Navigation("Requests");
 
                     b.Navigation("SuperVised");
-
-                    b.Navigation("TravelHandled");
                 });
 #pragma warning restore 612, 618
         }

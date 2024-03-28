@@ -150,10 +150,10 @@ public class RequestTicketQuoteController : ControllerBase
 
 
         await _notifier.InsertNotification(message, agent.Id, request.Requester.Id, request.Id, Events.QuotationSent);
-        await _logService.InsertLog(request.Id, request.Requester.Id, request.Requester.TravelHandler.Id, Events.QuotationSent);
+        await _logService.InsertLog(request.Id, request.Requester.Id, request.Requester.Id, Events.QuotationSent);
 
 
-        var travelHandler = await _usersService.GetUserByMail(request.Requester.TravelHandler.MailAddress);
+        var travelHandler = await _usersService.GetUserByMail(request.Requester.MailAddress);
 
        
 
@@ -212,8 +212,8 @@ public class RequestTicketQuoteController : ControllerBase
             // request.AgentIds = new List<string>()
             if( best == "Yes"){
             request.Status = "Seeking Confirmation";
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-            request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+            request.CurrentHandler = request.Requester;
             quotation.Approved = true;
         
             //  _mailer.SendMailBook(quotation.Agent, request, quotation);
@@ -231,7 +231,7 @@ public class RequestTicketQuoteController : ControllerBase
             // var quotationDTO = _imapper.Map<QuotationDTO>(quotation);
             // await _requestService.UpdateAsyncDapper(requestDTO, quotationDTO, "dbo.Quotations");
            await _requestService.UpdateAsync(request);           
-           await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.QuotationBooked);
+           await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.QuotationBooked);
  
        
            
@@ -274,8 +274,8 @@ public class RequestTicketQuoteController : ControllerBase
             
             request.Confirmed = true;
 
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-            request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+            request.CurrentHandler = request.Requester;
             request.Status = "Seeking Quotes For Hotel";
             request.SeekingInvoices = true;
 
@@ -294,7 +294,7 @@ public class RequestTicketQuoteController : ControllerBase
 
 
 
-            await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.QuotationConfirmed);
+            await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.QuotationConfirmed);
 
 
 
@@ -334,8 +334,8 @@ public class RequestTicketQuoteController : ControllerBase
             
             request.Confirmed = false;
 
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-            request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+            request.CurrentHandler = request.Requester;
             request.Status = "Seeking Confirmation";
             request.SeekingInvoices = false;
 
@@ -346,7 +346,7 @@ public class RequestTicketQuoteController : ControllerBase
             await _requestService.UpdateAsync(request);
 
 
-             await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.QuotationRevoked);
+             await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.QuotationRevoked);
 
             // await _requestService.UpdateAsyncDapper(requestDTO, quotationDTO, "dbo.Quotations")
             //  _mailer.SendMailConfirm(quotation.Agent, request, quotation);
@@ -387,8 +387,8 @@ public class RequestTicketQuoteController : ControllerBase
 
             request.Status = "Seeking Quotations";
 
-            request.CurrentHandlerId = request.Requester.TravelHandler.Id;
-               request.CurrentHandler = request.Requester.TravelHandler;
+            request.CurrentHandlerId = request.Requester.Id;
+               request.CurrentHandler = request.Requester;
 
 
             var requestDTO = _imapper.Map<RequestDTO>(request);
@@ -402,7 +402,7 @@ public class RequestTicketQuoteController : ControllerBase
 
             // _mailer.Revert(request, quotation.Agent, msg, "Your quotation has been unbooked");
 
-           await _logService.InsertLog(request.Id, user.Id, request.Requester.TravelHandler.Id, Events.QuotationUnbooked);
+           await _logService.InsertLog(request.Id, user.Id, request.Requester.Id, Events.QuotationUnbooked);
 
 
 

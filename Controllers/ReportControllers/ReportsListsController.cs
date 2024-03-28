@@ -61,6 +61,7 @@ public class ReportsListController : ControllerBase
         report.Departure_date = result.DepartureDate;
         report.Destination = result.Destination;
         report.Id = result.Id;
+        report.TripId = result.TripId;
 
        
         foreach(var request in result.Requests){

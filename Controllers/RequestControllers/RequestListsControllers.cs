@@ -122,9 +122,9 @@ public async Task<IActionResult> GetMyRequests(IFormCollection data){
      Console.WriteLine(user.EmpName);
      var result =await _requestService.GetRequestssRaisedByUser(user);
 
-     var resultDTO = _imapper.Map<List<RequestDTO>>(result);
+   
 
-     return Ok(resultDTO);
+     return Ok(result);
 
 
 
@@ -147,9 +147,9 @@ public async Task<IActionResult> GetAllRequests(IFormCollection data){
      var result =await _requestService.GetAllRequests();
 
 
-    var resultDTO = _imapper.Map<List<RequestDTO>>(result);
+ 
 
-     return Ok(resultDTO);
+     return Ok(result);
 
  
 
