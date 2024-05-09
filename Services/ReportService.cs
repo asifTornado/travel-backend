@@ -41,6 +41,7 @@ namespace backEnd.Services
                   Destination = x.Destination,
                   ArrivalDate = x.ArrivalDate,
                   DepartureDate = x.DepartureDate,
+                  TripId = x.TripId,
                  TotalTripBudget = x.TotalTripBudget,
                  Requests = x.Requests.Select(x => new Request {
                     Id = x.Id,

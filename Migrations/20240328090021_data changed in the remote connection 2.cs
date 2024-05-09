@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class newmigration : Migration
+    public partial class datachangedintheremoteconnection2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -295,6 +295,7 @@ namespace backEnd.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TripId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Custom = table.Column<bool>(type: "bit", nullable: true),
                     Objectives = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Meetings = table.Column<string>(type: "nvarchar(max)", nullable: true),

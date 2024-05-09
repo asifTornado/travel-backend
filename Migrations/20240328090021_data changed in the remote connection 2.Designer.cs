@@ -12,8 +12,8 @@ using backEnd.Models;
 namespace backEnd.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20240325040252_new migration")]
-    partial class newmigration
+    [Migration("20240328090021_data changed in the remote connection 2")]
+    partial class datachangedintheremoteconnection2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1204,6 +1204,11 @@ namespace backEnd.Migrations
                     b.Property<int?>("TotalCost")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "totalCost");
+
+                    b.Property<string>("TripId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "tripId");
 
                     b.HasKey("Id");
 

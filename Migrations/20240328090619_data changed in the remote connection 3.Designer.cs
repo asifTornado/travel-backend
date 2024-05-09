@@ -12,8 +12,8 @@ using backEnd.Models;
 namespace backEnd.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20240328050504_request changed")]
-    partial class requestchanged
+    [Migration("20240328090619_data changed in the remote connection 3")]
+    partial class datachangedintheremoteconnection3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
