@@ -124,19 +124,10 @@ public class HotelForBrandService: IHotelForBrandService
 
 
 
-        var result = await _travelContext.HotelForBrands
-                            .Include(h => h.Locations).ThenInclude(h => h.Hotels)
-                            .AsNoTracking()
-                            .Where(h => h.Id == id).FirstOrDefaultAsync();
-
-
-           if(result != null){
-           _travelContext.HotelForBrands.Remove(result);
-           }
-
-           await _travelContext.SaveChangesAsync();
-
-
+        await _travelContext.HotelForBrands.AsNoTracking()
+                             .Where(x => x.Id == id)
+                             .ExecuteDeleteAsync();
+                    
 
     }
 
@@ -302,8 +293,9 @@ public class HotelForBrandService: IHotelForBrandService
 
     }
 
-    public async Task CreateHotel(Hotels hotels)
-    {
+    public async Task CreateHotel(Hotels hotels, int id)
+    {    
+        hotels.HotelLocationsId = id;
         _travelContext.Entry(hotels).State = EntityState.Added;
         await _travelContext.SaveChangesAsync();
     }

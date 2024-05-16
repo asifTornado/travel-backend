@@ -9,21 +9,21 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = backEnd
 build_property.RootNamespace = backEnd
-build_property.ProjectDir = f:\asifTornadoTravel\backend\
+build_property.ProjectDir = D:\travel-original\BackEnd\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = f:\asifTornadoTravel\backend
+build_property.MSBuildProjectDirectory = D:\travel-original\BackEnd
 build_property._RazorSourceGeneratorDebug = 
 
-[f:/asifTornadoTravel/backend/Pages/Shared/CSStatement.cshtml]
+[D:/travel-original/BackEnd/Pages/Shared/CSStatement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXENTU3RhdGVtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/asifTornadoTravel/backend/Pages/Shared/ExpenseReport.cshtml]
+[D:/travel-original/BackEnd/Pages/Shared/ExpenseReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXEV4cGVuc2VSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/asifTornadoTravel/backend/Pages/Shared/MoneyReceipt.cshtml]
+[D:/travel-original/BackEnd/Pages/Shared/MoneyReceipt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXE1vbmV5UmVjZWlwdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

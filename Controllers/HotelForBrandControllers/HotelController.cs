@@ -38,18 +38,6 @@ namespace backEnd.Controllers.HotelForBrandControllers
 
     
 
-        [HttpPost]
-        [Route("/deleteHotel")]
-        public async Task<IActionResult> DeleteHotel(IFormCollection data){
-            var hotel = JsonSerializer.Deserialize<Hotels>(data["hotel"]);
-            await _hotelForBrandService.DeleteHotel(hotel);
-            return Ok();
-
-
-       
-
-            
-        }
 
 
 

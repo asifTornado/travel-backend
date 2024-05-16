@@ -178,7 +178,8 @@ namespace backEnd.Controllers.HotelForBrandControllers
         public async Task<IActionResult> CreateHotel(IFormCollection data)
         { 
               var hotel = JsonSerializer.Deserialize<Hotels>(data["hotel"]);
-              await _hotelForBrandService.CreateHotel(hotel);
+             
+              await _hotelForBrandService.CreateHotel(hotel, int.Parse(data["id"]));
               return Ok();
         }
 

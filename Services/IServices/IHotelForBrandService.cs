@@ -40,6 +40,6 @@ namespace backEnd.Services.IServices
 
         Task UpdateHotel(Hotels hotels);
 
-        Task CreateHotel(Hotels hotels);
+        Task CreateHotel(Hotels hotels, int id);
     }
 }
