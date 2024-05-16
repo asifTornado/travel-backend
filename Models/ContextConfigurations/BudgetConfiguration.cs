@@ -20,28 +20,28 @@ public class BudgetConfiguration : IEntityTypeConfiguration<Budget>
              .UsingEntity(j => j.ToTable("BudgetTravelers"));
 
 
-             builder
-            .Property(b => b.TripId)
-            .HasComputedColumnSql("CONCAT('B', RIGHT('00000' + CAST(Id AS NVARCHAR(5)), 5))")
-            .ValueGeneratedOnAddOrUpdate();
+            //  builder
+            // .Property(b => b.TripId)
+            // .HasComputedColumnSql("CONCAT('B', RIGHT('00000' + CAST(Id AS NVARCHAR(5)), 5))")
+            // .ValueGeneratedOnAddOrUpdate();
 
             
     builder.Property(x => x.PrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+    
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
     );
 
     builder.Property(x => x.AuditPrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+    
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)
     );
 
     builder.Property(x => x.AccountsPrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+    
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)

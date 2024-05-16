@@ -96,7 +96,7 @@ public class BudgetListsController : ControllerBase
            } 
         
        
-            var result = await _budgetsService.GetAllBudgets();
+            var result = await _budgetsService.GetAllBudgets("");
 
     
             return Ok(result);

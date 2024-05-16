@@ -17,9 +17,9 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 
    
 
-      builder
-      .Property( e => e.Number)
-      .HasComputedColumnSql("REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))");  
+      // builder
+      // .Property( e => e.Number)
+      // .HasComputedColumnSql("REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))");  
 
 
        builder
@@ -57,7 +57,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
      .UsingEntity(j => j.ToTable("RequestAgents"));
 
     builder.Property(x => x.Activities)
-    .HasColumnType("nvarchar(max)")
+
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<Activity>>(v, JsonSerializerOptions.Default)
@@ -65,7 +65,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 
 
     builder.Property(x => x.Meetings)
-    .HasColumnType("nvarchar(max)")
+
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<Meeting>>(v, JsonSerializerOptions.Default)
@@ -73,7 +73,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
 
     
      builder.Property(x => x.RequestBudget)
-     .HasColumnType("nvarchar(max)")
+   
      .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<RequestBudget>(v, JsonSerializerOptions.Default)
@@ -100,7 +100,7 @@ public class RequestConfiguration : IEntityTypeConfiguration<Request>
    
 
     builder.Property(x => x.PrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)

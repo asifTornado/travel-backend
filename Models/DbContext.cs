@@ -46,7 +46,8 @@ public class  TravelContext: DbContext
         
          
          optionsBuilder.EnableSensitiveDataLogging();
-         optionsBuilder.UseSqlServer(ConnectionString);
+         optionsBuilder.UseSqlite("Data Source=.\\data.db");
+         
    
 
   

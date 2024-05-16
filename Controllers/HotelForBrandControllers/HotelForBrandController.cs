@@ -51,6 +51,9 @@ namespace backEnd.Controllers.HotelForBrandControllers
         }
 
 
+        
+
+
         [HttpPost]
         [Route("/createHotelForBrand")]
         public async Task<IActionResult> CreateHotelsForBrand(IFormCollection data)
@@ -80,6 +83,36 @@ namespace backEnd.Controllers.HotelForBrandControllers
         }
 
 
+        [HttpPost]
+        [Route("/updateBrand")]
+        public async Task<IActionResult> UpdateBrand(IFormCollection data)
+        { 
+           var brand = JsonSerializer.Deserialize<HotelForBrands>(data["brand"]);
+
+
+           await _hotelForBrandService.UpdateBrand(brand);
+
+           return Ok();
+
+        }
+
+
+        // [HttpPost]
+        // [Route("/deleteBrand")]
+        // public async Task<IActionResult> DeleteBrand(IFormCollection data)
+        // { 
+        //    var brand = JsonSerializer.Deserialize<HotelForBrands>(data["brand"]);
+
+
+        //    await _hotelForBrandService.DeleteBrand(brand);
+
+        //    return Ok();
+
+        // }
+
+
+
+
 
         
         [HttpPost]
@@ -91,6 +124,101 @@ namespace backEnd.Controllers.HotelForBrandControllers
               return Ok();
 
         }
+
+
+
+
+
+          
+        [HttpPost]
+        [Route("/getHotelLocation")]
+        public async Task<IActionResult> GetHotelLocation(IFormCollection data)
+        { 
+          
+              var result = await _hotelForBrandService.GetHotelLocation(int.Parse(data["id"]));
+              return Ok(result);
+
+        }
+
+
+        [HttpPost]
+        [Route("/updateHotelLocation")]
+        public async Task<IActionResult> UpdateHotelLocation(IFormCollection data)
+        { 
+              var location = JsonSerializer.Deserialize<HotelLocations>(data["location"]);
+              await _hotelForBrandService.UpdateHotelLocation(location);
+              return Ok();
+        }
+
+
+        [HttpPost]
+        [Route("/createHotelLocation")]
+        public async Task<IActionResult> CreateHotelLocation(IFormCollection data)
+        { 
+              var location = JsonSerializer.Deserialize<HotelLocations>(data["location"]);
+              location.HotelForBrandsId = int.Parse(data["id"]);
+              await _hotelForBrandService.CreateHotelLocation(location);
+              return Ok();
+        }
+
+
+          [HttpPost]
+        [Route("/deleteHotelLocation")]
+        public async Task<IActionResult> DeleteHotelLocation(IFormCollection data)
+        { 
+              
+              await _hotelForBrandService.DeleteHotelLocation(int.Parse(data["id"]));
+              return Ok();
+        }
+
+
+
+        [HttpPost]
+        [Route("/createHotel")]
+        public async Task<IActionResult> CreateHotel(IFormCollection data)
+        { 
+              var hotel = JsonSerializer.Deserialize<Hotels>(data["hotel"]);
+              await _hotelForBrandService.CreateHotel(hotel);
+              return Ok();
+        }
+
+
+        [HttpPost]
+        [Route("/getHotel")]
+        public async Task<IActionResult> GetHotel(IFormCollection data)
+        { 
+              var result = await _hotelForBrandService.GetHotel(int.Parse(data["id"]));
+              return Ok(result);
+        }
+        
+
+
+        [HttpPost]
+        [Route("/deleteHotel")]
+        public async Task<IActionResult> DeleteHotel(IFormCollection data)
+        { 
+              await _hotelForBrandService.DeleteHotel(int.Parse(data["id"]));
+              return Ok();
+        }
+
+
+        [HttpPost]
+        [Route("/updateHotel")]
+        public async Task<IActionResult> UpdateHotel(IFormCollection data)
+        {     var hotel = JsonSerializer.Deserialize<Hotels>(data["hotel"]);
+              await _hotelForBrandService.UpdateHotel(hotel);
+              return Ok();
+        }
+
+
+
+
+
+
+
+
+
+
     
 
 

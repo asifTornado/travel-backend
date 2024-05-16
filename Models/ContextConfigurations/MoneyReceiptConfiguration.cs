@@ -21,7 +21,7 @@ public class MoneyReceiptConfiguration : IEntityTypeConfiguration<MoneyReceipt>
 
 
       builder.Property(x => x.PrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+  
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)

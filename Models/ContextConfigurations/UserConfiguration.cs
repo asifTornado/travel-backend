@@ -10,9 +10,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
 
-         builder
-         .Property( e => e.EmpId)
-         .HasComputedColumnSql("REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))");
+        //  builder
+        //  .Property( e => e.EmpId)
+        //  .HasComputedColumnSql("REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))");
 
 
 

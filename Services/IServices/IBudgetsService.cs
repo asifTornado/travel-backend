@@ -11,7 +11,7 @@ namespace backEnd.Services.IServices
     {
         Task<Budget?> GetAsync(int id);
         Task CreateBudget(Budget budget);
-        Task<List<Budget>> GetAllBudgets();
+        Task<List<Budget>> GetAllBudgets(string where);
         Task UpdateAsync(int id, Budget budget);
         Task RemoveAsync(int id);
         Task<JsonResult> SearchBudget(Dictionary<string, string> searchObject);

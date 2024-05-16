@@ -58,6 +58,28 @@ namespace backEnd.Controllers
         }
 
 
+        [HttpPost]
+        [Route("/getHotelLocations")]
+        public async Task<IActionResult> GetHotelLocations(IFormCollection data)
+        {
+            var id = data["id"];
+            var result = await _hotelForBrandService.GetHotelLocations(int.Parse(id));
+            return Ok(result);
+
+        }
+
+
+        [HttpPost]
+        [Route("/getHotels")]
+        public async Task<IActionResult> GetHotels(IFormCollection data)
+        {
+            var id = data["id"];
+            var result = await _hotelForBrandService.GetHotels(int.Parse(id));
+            return Ok(result);
+
+        }
+
+
       
 
 

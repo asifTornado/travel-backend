@@ -13,7 +13,7 @@ using System.Text.Json.Serialization;
 using backEnd.Factories;
 using backEnd.Factories.IFactories;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
-
+using Amazon.Runtime.SharedInterfaces.Internal;
 
 
 
@@ -67,7 +67,7 @@ builder.Services.AddScoped<IHelperClass, HelperClass>();
 builder.Services.AddScoped<INotifier, Notifier>();  
 builder.Services.AddScoped<IConnection, Connection>();
 
-
+// builder.Services.AddCoreAdmin();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSwaggerGen();

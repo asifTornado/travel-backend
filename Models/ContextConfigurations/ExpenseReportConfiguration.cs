@@ -18,7 +18,7 @@ public class ExpenseReportConfiguration : IEntityTypeConfiguration<ExpenseReport
     .OnDelete(DeleteBehavior.Cascade);
 
      builder.Property(x => x.PrevHandlerIds)
-    .HasColumnType("nvarchar(max)")
+    
     .HasConversion(
       v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
       v => JsonSerializer.Deserialize<List<int>>(v, JsonSerializerOptions.Default)

@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Travel App\\backend\\backEnd.csproj": {}
+    "f:\\asifTornadoTravel\\backend\\backEnd.csproj": {}
   },
   "projects": {
-    "C:\\Travel App\\backend\\backEnd.csproj": {
+    "f:\\asifTornadoTravel\\backend\\backEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Travel App\\backend\\backEnd.csproj",
+        "projectUniqueName": "f:\\asifTornadoTravel\\backend\\backEnd.csproj",
         "projectName": "backEnd",
-        "projectPath": "C:\\Travel App\\backend\\backEnd.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Travel App\\backend\\obj\\",
+        "projectPath": "f:\\asifTornadoTravel\\backend\\backEnd.csproj",
+        "packagesPath": "C:\\Users\\Hameem\\.nuget\\packages\\",
+        "outputPath": "f:\\asifTornadoTravel\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Hameem\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,6 +47,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "CoreAdmin": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             },
             "Dapper": {
               "target": "Package",
@@ -73,6 +79,10 @@
               "version": "[7.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[7.0.0, )"
             },
@@ -126,7 +136,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -281,9 +281,13 @@ public class BudgetsService : IBudgetsService
     }
 
 
-    public async Task<List<Budget>> GetAllBudgets(){
-
-      var results = await _travelContext.Budgets.AsNoTracking()
+    public async Task<List<Budget>> GetAllBudgets(string where){
+      
+      var queryString = "Select * from Budgets" + where; 
+      var results = await _travelContext
+                          .Budgets
+                          .FromSqlRaw<Budget>(queryString)
+                          .AsNoTracking()
       .ToListAsync();
       return results;
 

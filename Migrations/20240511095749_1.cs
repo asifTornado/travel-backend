@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class datachangedintheremoteconnection2 : Migration
+    public partial class _1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,12 +15,12 @@ namespace backEnd.Migrations
                 name: "Agents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Professional = table.Column<bool>(type: "bit", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Phone = table.Column<string>(type: "TEXT", nullable: true),
+                    Professional = table.Column<bool>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,44 +31,44 @@ namespace backEnd.Migrations
                 name: "Budgets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TripId = table.Column<string>(type: "nvarchar(max)", nullable: true, computedColumnSql: "CONCAT('B', RIGHT('00000' + CAST(Id AS NVARCHAR(5)), 5))"),
-                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Destination = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DepartureDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ArrivalDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfDays = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfTravelers = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AirTicketBudget = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelBudget = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalBookingCost = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TransportExpense = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IncidentalExpense = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalTripBudget = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Initiated = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Custom = table.Column<bool>(type: "bit", nullable: true),
-                    TicketsApprovedByAccounts = table.Column<bool>(type: "bit", nullable: true),
-                    SeekingAccountsApprovalForTickets = table.Column<bool>(type: "bit", nullable: true),
-                    CurrentHandlerId = table.Column<int>(type: "int", nullable: true),
-                    PrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rejected = table.Column<bool>(type: "bit", nullable: true),
-                    Processed = table.Column<bool>(type: "bit", nullable: true),
-                    TicketsMoneyDisbursed = table.Column<bool>(type: "bit", nullable: true),
-                    AmountDisbursedTickets = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TicketsAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TicketsAccountHolderNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeingProcessed = table.Column<bool>(type: "bit", nullable: true),
-                    BeingProcessedAccounts = table.Column<bool>(type: "bit", nullable: true),
-                    BeingProcessedAudit = table.Column<bool>(type: "bit", nullable: true),
-                    AccountsProcessed = table.Column<bool>(type: "bit", nullable: true),
-                    AuditProcessed = table.Column<bool>(type: "bit", nullable: true),
-                    CurrentAccountsHandlerId = table.Column<int>(type: "int", nullable: true),
-                    CurrentAuditHandlerId = table.Column<int>(type: "int", nullable: true),
-                    AccountsPrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuditPrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TripId = table.Column<string>(type: "TEXT", nullable: true),
+                    Subject = table.Column<string>(type: "TEXT", nullable: true),
+                    Brand = table.Column<string>(type: "TEXT", nullable: true),
+                    Destination = table.Column<string>(type: "TEXT", nullable: true),
+                    DepartureDate = table.Column<string>(type: "TEXT", nullable: true),
+                    ArrivalDate = table.Column<string>(type: "TEXT", nullable: true),
+                    NumberOfDays = table.Column<string>(type: "TEXT", nullable: true),
+                    NumberOfTravelers = table.Column<string>(type: "TEXT", nullable: true),
+                    AirTicketBudget = table.Column<string>(type: "TEXT", nullable: true),
+                    HotelBudget = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalBookingCost = table.Column<string>(type: "TEXT", nullable: true),
+                    TransportExpense = table.Column<string>(type: "TEXT", nullable: true),
+                    IncidentalExpense = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalTripBudget = table.Column<string>(type: "TEXT", nullable: true),
+                    Initiated = table.Column<string>(type: "TEXT", nullable: true),
+                    CreationDate = table.Column<string>(type: "TEXT", nullable: true),
+                    Custom = table.Column<bool>(type: "INTEGER", nullable: true),
+                    TicketsApprovedByAccounts = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SeekingAccountsApprovalForTickets = table.Column<bool>(type: "INTEGER", nullable: true),
+                    CurrentHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true),
+                    Rejected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Processed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    TicketsMoneyDisbursed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AmountDisbursedTickets = table.Column<string>(type: "TEXT", nullable: true),
+                    TicketsAccountNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    TicketsAccountHolderNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    BeingProcessed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    BeingProcessedAccounts = table.Column<bool>(type: "INTEGER", nullable: true),
+                    BeingProcessedAudit = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AccountsProcessed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AuditProcessed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    CurrentAccountsHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CurrentAuditHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    AccountsPrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true),
+                    AuditPrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,10 +79,10 @@ namespace backEnd.Migrations
                 name: "HotelForBrands",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BrandOfficeAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Brand = table.Column<string>(type: "TEXT", nullable: true),
+                    BrandOfficeAddress = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,11 +93,11 @@ namespace backEnd.Migrations
                 name: "HotelInvoices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<string>(type: "TEXT", nullable: true),
+                    Filename = table.Column<string>(type: "TEXT", nullable: true),
+                    FilePath = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,15 +108,15 @@ namespace backEnd.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SourceId = table.Column<int>(type: "int", nullable: true),
-                    From = table.Column<int>(type: "int", nullable: true),
-                    To = table.Column<int>(type: "int", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Event = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Time = table.Column<string>(type: "TEXT", nullable: true),
+                    Message = table.Column<string>(type: "TEXT", nullable: true),
+                    SourceId = table.Column<int>(type: "INTEGER", nullable: true),
+                    From = table.Column<int>(type: "INTEGER", nullable: true),
+                    To = table.Column<int>(type: "INTEGER", nullable: true),
+                    Type = table.Column<string>(type: "TEXT", nullable: true),
+                    Event = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,9 +127,9 @@ namespace backEnd.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -140,11 +140,11 @@ namespace backEnd.Migrations
                 name: "TicketInvoices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<string>(type: "TEXT", nullable: true),
+                    Filename = table.Column<string>(type: "TEXT", nullable: true),
+                    FilePath = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,33 +155,33 @@ namespace backEnd.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpId = table.Column<string>(type: "nvarchar(max)", nullable: true, computedColumnSql: "REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))"),
-                    EmpName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmpCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Section = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Wing = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Team = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Available = table.Column<bool>(type: "bit", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: true),
-                    Raters = table.Column<int>(type: "int", nullable: true),
-                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Numbers = table.Column<int>(type: "int", nullable: true),
-                    SuperVisorId = table.Column<int>(type: "int", nullable: true),
-                    ZonalHeadId = table.Column<int>(type: "int", nullable: true),
-                    PassportNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PreferenceImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Preferences = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HasFrequentFlyerNo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EmpId = table.Column<string>(type: "TEXT", nullable: true),
+                    EmpName = table.Column<string>(type: "TEXT", nullable: true),
+                    EmpCode = table.Column<string>(type: "TEXT", nullable: true),
+                    Designation = table.Column<string>(type: "TEXT", nullable: true),
+                    MailAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    Unit = table.Column<string>(type: "TEXT", nullable: true),
+                    Section = table.Column<string>(type: "TEXT", nullable: true),
+                    Wing = table.Column<string>(type: "TEXT", nullable: true),
+                    Team = table.Column<string>(type: "TEXT", nullable: true),
+                    Department = table.Column<string>(type: "TEXT", nullable: true),
+                    Password = table.Column<string>(type: "TEXT", nullable: true),
+                    UserType = table.Column<string>(type: "TEXT", nullable: true),
+                    Available = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Rating = table.Column<int>(type: "INTEGER", nullable: true),
+                    Raters = table.Column<int>(type: "INTEGER", nullable: true),
+                    Extension = table.Column<string>(type: "TEXT", nullable: true),
+                    MobileNo = table.Column<string>(type: "TEXT", nullable: true),
+                    Location = table.Column<string>(type: "TEXT", nullable: true),
+                    Numbers = table.Column<int>(type: "INTEGER", nullable: true),
+                    SuperVisorId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ZonalHeadId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PassportNo = table.Column<string>(type: "TEXT", nullable: true),
+                    PreferenceImage = table.Column<string>(type: "TEXT", nullable: true),
+                    Preferences = table.Column<string>(type: "TEXT", nullable: true),
+                    HasFrequentFlyerNo = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -202,10 +202,10 @@ namespace backEnd.Migrations
                 name: "HotelLocations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelForBrandsId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LocationName = table.Column<string>(type: "TEXT", nullable: true),
+                    HotelForBrandsId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,10 +222,10 @@ namespace backEnd.Migrations
                 name: "BudgetTicketApprovals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BudgetId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BudgetId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,8 +248,8 @@ namespace backEnd.Migrations
                 name: "BudgetTravelers",
                 columns: table => new
                 {
-                    BudgetsId = table.Column<int>(type: "int", nullable: false),
-                    TravelersId = table.Column<int>(type: "int", nullable: false)
+                    BudgetsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TravelersId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,11 +272,11 @@ namespace backEnd.Migrations
                 name: "FlyerNos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Airline = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Airline = table.Column<string>(type: "TEXT", nullable: true),
+                    Number = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -293,53 +293,53 @@ namespace backEnd.Migrations
                 name: "Requests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TripId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Custom = table.Column<bool>(type: "bit", nullable: true),
-                    Objectives = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Meetings = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Items = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Personnel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Destination = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Purpose = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccomodationRequired = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfNights = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalCost = table.Column<int>(type: "int", nullable: true),
-                    RequesterId = table.Column<int>(type: "int", nullable: true),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true, computedColumnSql: "REPLICATE('0', 7 - LEN(Id)) + CAST(Id AS VARCHAR(7))"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AgentNumbers = table.Column<int>(type: "int", nullable: true),
-                    PrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentHandlerId = table.Column<int>(type: "int", nullable: true),
-                    Date = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EndDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Booked = table.Column<bool>(type: "bit", nullable: true),
-                    Confirmed = table.Column<bool>(type: "bit", nullable: true),
-                    Selected = table.Column<bool>(type: "bit", nullable: true),
-                    BeingProcessed = table.Column<bool>(type: "bit", nullable: true),
-                    Processed = table.Column<bool>(type: "bit", nullable: true),
-                    SeekingInvoices = table.Column<bool>(type: "bit", nullable: true),
-                    SeekingHotelInvoices = table.Column<bool>(type: "bit", nullable: true),
-                    InTrip = table.Column<bool>(type: "bit", nullable: true),
-                    Best = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BestHotel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelBooked = table.Column<bool>(type: "bit", nullable: true),
-                    HotelConfirmed = table.Column<bool>(type: "bit", nullable: true),
-                    TicketInvoiceUploaded = table.Column<bool>(type: "bit", nullable: true),
-                    HotelInvoiceUploaded = table.Column<bool>(type: "bit", nullable: true),
-                    BudgetId = table.Column<int>(type: "int", nullable: true),
-                    RequestBudget = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpenseReportGiven = table.Column<bool>(type: "bit", nullable: true),
-                    DepartmentHeadApproved = table.Column<bool>(type: "bit", nullable: true),
-                    SupervisorApproved = table.Column<bool>(type: "bit", nullable: true),
-                    PermanentlyRejected = table.Column<bool>(type: "bit", nullable: true),
-                    Activities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MoneyReceiptId = table.Column<int>(type: "int", nullable: false),
-                    MoneyReceiptSubmitted = table.Column<bool>(type: "bit", nullable: false),
-                    Approvals = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TripId = table.Column<string>(type: "TEXT", nullable: false),
+                    Custom = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Objectives = table.Column<string>(type: "TEXT", nullable: true),
+                    Meetings = table.Column<string>(type: "TEXT", nullable: true),
+                    Items = table.Column<string>(type: "TEXT", nullable: true),
+                    Personnel = table.Column<string>(type: "TEXT", nullable: true),
+                    Destination = table.Column<string>(type: "TEXT", nullable: true),
+                    Purpose = table.Column<string>(type: "TEXT", nullable: true),
+                    Mode = table.Column<string>(type: "TEXT", nullable: true),
+                    AccomodationRequired = table.Column<string>(type: "TEXT", nullable: true),
+                    NumberOfNights = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalCost = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequesterId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Number = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    AgentNumbers = table.Column<int>(type: "INTEGER", nullable: true),
+                    PrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true),
+                    CurrentHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Date = table.Column<string>(type: "TEXT", nullable: true),
+                    StartDate = table.Column<string>(type: "TEXT", nullable: true),
+                    EndDate = table.Column<string>(type: "TEXT", nullable: true),
+                    Booked = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Confirmed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Selected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    BeingProcessed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Processed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SeekingInvoices = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SeekingHotelInvoices = table.Column<bool>(type: "INTEGER", nullable: true),
+                    InTrip = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Best = table.Column<string>(type: "TEXT", nullable: true),
+                    BestHotel = table.Column<string>(type: "TEXT", nullable: true),
+                    HotelBooked = table.Column<bool>(type: "INTEGER", nullable: true),
+                    HotelConfirmed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    TicketInvoiceUploaded = table.Column<bool>(type: "INTEGER", nullable: true),
+                    HotelInvoiceUploaded = table.Column<bool>(type: "INTEGER", nullable: true),
+                    BudgetId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequestBudget = table.Column<string>(type: "TEXT", nullable: true),
+                    ExpenseReportGiven = table.Column<bool>(type: "INTEGER", nullable: true),
+                    DepartmentHeadApproved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SupervisorApproved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    PermanentlyRejected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Activities = table.Column<string>(type: "TEXT", nullable: true),
+                    MoneyReceiptId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MoneyReceiptSubmitted = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Approvals = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -365,8 +365,8 @@ namespace backEnd.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -389,12 +389,12 @@ namespace backEnd.Migrations
                 name: "Hotels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HotelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelLocationsId = table.Column<int>(type: "int", nullable: true),
-                    Rooms = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    HotelName = table.Column<string>(type: "TEXT", nullable: true),
+                    HotelAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    HotelLocationsId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Rooms = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -411,13 +411,13 @@ namespace backEnd.Migrations
                 name: "Costs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Item = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemCost = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfItems = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalItemCost = table.Column<int>(type: "int", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Item = table.Column<string>(type: "TEXT", nullable: true),
+                    ItemCost = table.Column<string>(type: "TEXT", nullable: true),
+                    NumberOfItems = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalItemCost = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -433,27 +433,27 @@ namespace backEnd.Migrations
                 name: "ExpenseReports",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true),
-                    Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EndDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Processed = table.Column<bool>(type: "bit", nullable: true),
-                    SupervisorApproved = table.Column<bool>(type: "bit", nullable: true),
-                    Submitted = table.Column<bool>(type: "bit", nullable: true),
-                    Approvals = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentHandlerId = table.Column<int>(type: "int", nullable: true),
-                    PrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rejected = table.Column<bool>(type: "bit", nullable: true),
-                    TravelManagerSubmitted = table.Column<bool>(type: "bit", nullable: true),
-                    Disbursed = table.Column<bool>(type: "bit", nullable: true),
-                    AmountDisbursed = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAccountHolderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    EmployeeName = table.Column<string>(type: "TEXT", nullable: true),
+                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Department = table.Column<string>(type: "TEXT", nullable: true),
+                    StartDate = table.Column<string>(type: "TEXT", nullable: true),
+                    EndDate = table.Column<string>(type: "TEXT", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    Processed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SupervisorApproved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Submitted = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Approvals = table.Column<string>(type: "TEXT", nullable: true),
+                    CurrentHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true),
+                    Rejected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    TravelManagerSubmitted = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Disbursed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AmountDisbursed = table.Column<string>(type: "TEXT", nullable: true),
+                    BankAccountHolderName = table.Column<string>(type: "TEXT", nullable: true),
+                    BankAccountNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -474,21 +474,21 @@ namespace backEnd.Migrations
                 name: "HotelQuotations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Linker = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RequestIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuoteGiver = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuotationText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Selected = table.Column<bool>(type: "bit", nullable: true),
-                    Booked = table.Column<bool>(type: "bit", nullable: true),
-                    Confirmed = table.Column<bool>(type: "bit", nullable: true),
-                    Hovered = table.Column<bool>(type: "bit", nullable: true),
-                    Custom = table.Column<bool>(type: "bit", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true),
-                    Approved = table.Column<bool>(type: "bit", nullable: true),
-                    AgentId = table.Column<int>(type: "int", nullable: true),
-                    TotalCosts = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Linker = table.Column<Guid>(type: "TEXT", nullable: true),
+                    RequestIds = table.Column<string>(type: "TEXT", nullable: true),
+                    QuoteGiver = table.Column<string>(type: "TEXT", nullable: true),
+                    QuotationText = table.Column<string>(type: "TEXT", nullable: true),
+                    Selected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Booked = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Confirmed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Hovered = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Custom = table.Column<bool>(type: "INTEGER", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Approved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AgentId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TotalCosts = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -510,13 +510,13 @@ namespace backEnd.Migrations
                 name: "Logs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Event = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FromId = table.Column<int>(type: "int", nullable: true),
-                    ToId = table.Column<int>(type: "int", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<string>(type: "TEXT", nullable: false),
+                    Event = table.Column<string>(type: "TEXT", nullable: false),
+                    FromId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ToId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -532,11 +532,11 @@ namespace backEnd.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -552,31 +552,31 @@ namespace backEnd.Migrations
                 name: "MoneyReceipts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AdvanceMoneyInHand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Section = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    I = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequiredTK = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Taka = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AsAdvanceAgainst = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SerialNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Processed = table.Column<bool>(type: "bit", nullable: true),
-                    SupervisorApproved = table.Column<bool>(type: "bit", nullable: true),
-                    Submitted = table.Column<bool>(type: "bit", nullable: true),
-                    Approvals = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentHandlerId = table.Column<int>(type: "int", nullable: true),
-                    PrevHandlerIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true),
-                    Rejected = table.Column<bool>(type: "bit", nullable: true),
-                    Disbursed = table.Column<bool>(type: "bit", nullable: true),
-                    AmountDisbursed = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAccountHolderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<string>(type: "TEXT", nullable: true),
+                    Unit = table.Column<string>(type: "TEXT", nullable: true),
+                    AdvanceMoneyInHand = table.Column<string>(type: "TEXT", nullable: true),
+                    Section = table.Column<string>(type: "TEXT", nullable: true),
+                    I = table.Column<string>(type: "TEXT", nullable: true),
+                    Designation = table.Column<string>(type: "TEXT", nullable: true),
+                    RequiredTK = table.Column<string>(type: "TEXT", nullable: true),
+                    Taka = table.Column<string>(type: "TEXT", nullable: true),
+                    AsAdvanceAgainst = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    SerialNo = table.Column<string>(type: "TEXT", nullable: true),
+                    Processed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    SupervisorApproved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Submitted = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Approvals = table.Column<string>(type: "TEXT", nullable: true),
+                    CurrentHandlerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PrevHandlerIds = table.Column<string>(type: "TEXT", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Rejected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Disbursed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AmountDisbursed = table.Column<string>(type: "TEXT", nullable: true),
+                    BankAccountHolderName = table.Column<string>(type: "TEXT", nullable: true),
+                    BankAccountNumber = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -597,21 +597,21 @@ namespace backEnd.Migrations
                 name: "Quotations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Linker = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    QuoteGiver = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuotationText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Selected = table.Column<bool>(type: "bit", nullable: true),
-                    Booked = table.Column<bool>(type: "bit", nullable: true),
-                    Confirmed = table.Column<bool>(type: "bit", nullable: true),
-                    Hovered = table.Column<bool>(type: "bit", nullable: true),
-                    Custom = table.Column<bool>(type: "bit", nullable: true),
-                    RequestIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: true),
-                    Approved = table.Column<bool>(type: "bit", nullable: true),
-                    AgentId = table.Column<int>(type: "int", nullable: true),
-                    TotalCosts = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Linker = table.Column<Guid>(type: "TEXT", nullable: true),
+                    QuoteGiver = table.Column<string>(type: "TEXT", nullable: true),
+                    QuotationText = table.Column<string>(type: "TEXT", nullable: true),
+                    Selected = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Booked = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Confirmed = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Hovered = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Custom = table.Column<bool>(type: "INTEGER", nullable: true),
+                    RequestIds = table.Column<string>(type: "TEXT", nullable: true),
+                    RequestId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Approved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    AgentId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TotalCosts = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -633,8 +633,8 @@ namespace backEnd.Migrations
                 name: "RequestAgents",
                 columns: table => new
                 {
-                    AgentsId = table.Column<int>(type: "int", nullable: false),
-                    RequestsId = table.Column<int>(type: "int", nullable: false)
+                    AgentsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RequestsId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -657,17 +657,17 @@ namespace backEnd.Migrations
                 name: "Expenses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpenseType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Amount = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpenseReportId = table.Column<int>(type: "int", nullable: true),
-                    Voucher = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VoucherGiven = table.Column<bool>(type: "bit", nullable: true),
-                    Source = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<string>(type: "TEXT", nullable: true),
+                    ExpenseType = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Amount = table.Column<string>(type: "TEXT", nullable: true),
+                    Notes = table.Column<string>(type: "TEXT", nullable: true),
+                    ExpenseReportId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Voucher = table.Column<string>(type: "TEXT", nullable: true),
+                    VoucherGiven = table.Column<bool>(type: "INTEGER", nullable: true),
+                    Source = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -684,10 +684,10 @@ namespace backEnd.Migrations
                 name: "HotelApprovals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    QuotationId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    QuotationId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -710,10 +710,10 @@ namespace backEnd.Migrations
                 name: "HotelQuotationInvoices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    QuotationId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    InvoiceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    QuotationId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -736,10 +736,10 @@ namespace backEnd.Migrations
                 name: "TicketApprovals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    QuotationId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    QuotationId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -762,10 +762,10 @@ namespace backEnd.Migrations
                 name: "TicketQuotationInvoices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    QuotationId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    InvoiceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    QuotationId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -813,8 +813,7 @@ namespace backEnd.Migrations
                 name: "IX_ExpenseReports_RequestId",
                 table: "ExpenseReports",
                 column: "RequestId",
-                unique: true,
-                filter: "[RequestId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_ExpenseReportId",
@@ -885,8 +884,7 @@ namespace backEnd.Migrations
                 name: "IX_MoneyReceipts_RequestId",
                 table: "MoneyReceipts",
                 column: "RequestId",
-                unique: true,
-                filter: "[RequestId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quotations_AgentId",

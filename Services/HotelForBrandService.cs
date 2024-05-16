@@ -40,9 +40,6 @@ public class HotelForBrandService: IHotelForBrandService
     public async Task InsertHotelsForBrand(HotelForBrands hotelForBrands){
 
 
- 
-
-      
          _travelContext.HotelForBrands.Add(hotelForBrands);
 
          await _travelContext.SaveChangesAsync();
@@ -233,15 +230,83 @@ public class HotelForBrandService: IHotelForBrandService
  
 
 
-  
+  public async Task UpdateBrand(HotelForBrands hotelForBrands){
+       _travelContext.Entry(hotelForBrands).State = EntityState.Modified;
+       await _travelContext.SaveChangesAsync();
+  } 
+
+  public async Task DeleteBrand(HotelForBrands hotelForBrands){
+       _travelContext.Entry(hotelForBrands).State = EntityState.Deleted;
+       await _travelContext.SaveChangesAsync();
+  }
 
 
+  public async Task<List<HotelLocations>> GetHotelLocations(int id){
+    var locations = await _travelContext.HotelLocations.AsNoTracking()
+                    .Where((x)=>x.HotelForBrandsId == id)
+                    .ToListAsync();
 
+    return locations;
+  }
 
+    public async Task DeleteHotelLocation(int id){
+            await _travelContext.HotelLocations.AsNoTracking().Where( h => h.Id == id).ExecuteDeleteAsync();
+    }
 
+    public async Task<HotelLocations> GetHotelLocation(int id)
+    {
+        var result = await _travelContext.HotelLocations.AsNoTracking().Where((x)=>x.HotelForBrandsId == id).FirstOrDefaultAsync();
+        return result;
+    }
 
+    public async Task UpdateHotelLocation(HotelLocations hotelLocation)
+    {
+        _travelContext.Entry(hotelLocation).State = EntityState.Modified;
+        await _travelContext.SaveChangesAsync();
+    }
 
+    public async Task<List<Hotels>> GetHotels(int id)
+    {
+        var result = await _travelContext.Hotels.AsNoTracking().Where(x => x.HotelLocationsId == id).ToListAsync();
+        return result;
+    }
 
+    public async Task<Hotels> GetHotel(int id)
+    {
+        var result = await _travelContext
+                     .Hotels
+                     .AsNoTracking()
+                     .Where(x => x.Id == id)
+                     .FirstOrDefaultAsync();
+
+        return result;
+    }
+
+    public async Task DeleteHotel(int id)
+    {
+        await _travelContext.Hotels.AsNoTracking()
+               .Where(x => x.Id == id)
+               .ExecuteDeleteAsync();
+    }
+
+    public async Task UpdateHotel(Hotels hotels)
+    {
+         _travelContext.Entry(hotels).State = EntityState.Modified;
+         await _travelContext.SaveChangesAsync();
+    }
+
+    public async Task CreateHotelLocation(HotelLocations hotelLocation)
+    {
+        _travelContext.Entry(hotelLocation).State = EntityState.Added;
+        await _travelContext.SaveChangesAsync();
+
+    }
+
+    public async Task CreateHotel(Hotels hotels)
+    {
+        _travelContext.Entry(hotels).State = EntityState.Added;
+        await _travelContext.SaveChangesAsync();
+    }
 }
 
 
