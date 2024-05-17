@@ -15,6 +15,9 @@ using Newtonsoft.Json;
 
 public class Meeting{
 
+    [JsonPropertyName("date")]
+    public string? Data {get; set;}
+
     [JsonPropertyName("subject")]
     public string? Subject {get; set;}
 

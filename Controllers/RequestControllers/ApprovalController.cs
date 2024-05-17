@@ -179,7 +179,8 @@ public class ApprovalController : ControllerBase
 
          
         if(request.Custom == true){
-        await _budgetService.UpdateBudgetTotalCost(request.RequestBudget.TotalBudget, (int)request.BudgetId);
+          
+        await _budgetService.UpdateBudgetTotalCost(request.RequestBudget.TotalBudget, request.BudgetId ?? 0);
         request.DepartmentHeadApproved = false;
         request.SupervisorApproved = true;
         request.Status = "Seeking Approval From Department Head";

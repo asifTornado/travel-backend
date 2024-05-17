@@ -171,6 +171,11 @@ public class UsersService:IUsersService
 
         _travelContext.Entry(newUser).State = EntityState.Added;
         await _travelContext.SaveChangesAsync();
+
+        var id  = newUser.Id;
+        var formattedNumber = "U" + id.ToString("D5");
+        await _travelContext.Users.AsNoTracking().Where(x => x.Id == id).ExecuteUpdateAsync(s => s.SetProperty(b => b.EmpId, formattedNumber));
+        
      
 
       

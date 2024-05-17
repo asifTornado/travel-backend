@@ -7,6 +7,7 @@ using backEnd.Helpers;
 using backEnd.Helpers.IHelpers;
 using backEnd.Services.IServices;
 using backEnd.Helpers;
+using Microsoft.EntityFrameworkCore;
 using backEnd.Helpers.Mails;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<MailerMoneyReceipt>();
 builder.Services.AddScoped<ReportService>();
 
 
+
 builder.Services.AddScoped<ICounterService, CounterService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -67,7 +69,6 @@ builder.Services.AddScoped<IHelperClass, HelperClass>();
 builder.Services.AddScoped<INotifier, Notifier>();  
 builder.Services.AddScoped<IConnection, Connection>();
 
-// builder.Services.AddCoreAdmin();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSwaggerGen();

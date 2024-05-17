@@ -132,9 +132,10 @@ public class NotificationService:INotificationService {
     public async Task DeleteNotification(int? sourceId, int? To, string Event){
 
         
-         await _travelContext.Database
-    .ExecuteSqlRawAsync("DELETE FROM dbo.Notifications WHERE SourceId = {0} AND [To] = {1} AND [Event] = {2}", sourceId, To, Event);
-
+         await _travelContext.Notifications.AsNoTracking()
+         .Where(x => x.SourceId == sourceId && x.To == To && x.Event == Event)
+         .ExecuteDeleteAsync();
+   
 
     }
 

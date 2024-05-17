@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "DG2HPAq0BP4rCsVoEySqBl9LUIhsw1q3D7woSX/s9wU=",
+  "Hash": "uLsjVM1L0XfU+jNqkjlKlwwSI/vaIuet2f56JVHHHQY=",
   "Source": "backEnd",
   "BasePath": "_content/backEnd",
   "Mode": "Default",
@@ -1001,6 +1001,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\reports\\ExpenseReport_4057.pdf"
+    },
+    {
+      "Identity": "D:\\travel-original\\BackEnd\\wwwroot\\reports\\MoneyRequisition_1.pdf",
+      "SourceId": "backEnd",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\travel-original\\BackEnd\\wwwroot\\",
+      "BasePath": "_content/backEnd",
+      "RelativePath": "reports/MoneyRequisition_1.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\reports\\MoneyRequisition_1.pdf"
     },
     {
       "Identity": "D:\\travel-original\\BackEnd\\wwwroot\\reports\\MoneyRequisition_13.pdf",

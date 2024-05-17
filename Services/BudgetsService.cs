@@ -44,16 +44,20 @@ public class BudgetsService : IBudgetsService
     
 
     public async Task UpdateBudgetTotalCost(string cost, int id){
-         string sqlQuery = "UPDATE dbo.Budgets SET TotalTripBudget = @NewValue WHERE Id = @PrimaryKeyValue";
 
-    // Provide parameter values
-    var parameters = new[]
-    {
-        new SqlParameter("@NewValue", cost),  // newValue is the value you want to set
-        new SqlParameter("@PrimaryKeyValue", id)  // primaryKeyValue is the value of the primary key for the row you want to update
-    };
+        await _travelContext.Budgets.AsNoTracking()
+        .Where(x => x.Id == id)
+        .ExecuteUpdateAsync((s)=>s.SetProperty(b => b.TotalTripBudget, cost));
+    //      string sqlQuery = "UPDATE dbo.Budgets SET TotalTripBudget = @NewValue WHERE Id = @PrimaryKeyValue";
 
-       await _travelContext.Database.ExecuteSqlRawAsync(sqlQuery, parameters);
+    // // Provide parameter values
+    // var parameters = new[]
+    // {
+    //     new SqliParameter("@NewValue", cost),  // newValue is the value you want to set
+    //     new SqlParameter("@PrimaryKeyValue", id)  // primaryKeyValue is the value of the primary key for the row you want to update
+    // };
+
+    //    await _travelContext.Database.ExecuteSqlRawAsync(sqlQuery, parameters);
     }
 
 
@@ -243,11 +247,17 @@ public class BudgetsService : IBudgetsService
 
         await _travelContext.SaveChangesAsync();
 
+        var formattedNumber = "U" + budget.Id.ToString("D5");
+
+        await _travelContext.Budgets.AsNoTracking()
+               .Where(x => x.Id == budget.Id)
+               .ExecuteUpdateAsync(s => s.SetProperty(b => b.TripId, formattedNumber));
+
         
 
         return new {
             Id = budget.Id,
-            TripId = budget.TripId
+            TripId = formattedNumber
         };
 
         
@@ -263,7 +273,15 @@ public class BudgetsService : IBudgetsService
             _travelContext.Entry(x).State = EntityState.Modified;            
         });
 
+
+
         await _travelContext.SaveChangesAsync();
+
+        var formattedNumber = "P" + budget.Id.ToString("D5");
+
+        await _travelContext.Budgets.AsNoTracking()
+        .Where(x => x.Id == budget.Id)
+        .ExecuteUpdateAsync(s => s.SetProperty(b=> b.TripId, formattedNumber));
         
     }
 
