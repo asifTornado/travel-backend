@@ -19,8 +19,8 @@ public class TripReportDTO{
 
     public int NumberOfTravelers {get; set;} = 0;
 
-    public int Budget {get; set;} = 0;
-    public int Actual_cost {get; set;} = 0;
+    public float Budget {get; set;} = 0;
+    public float Actual_cost {get; set;} = 0;
    
 }
 

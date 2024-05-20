@@ -60,32 +60,32 @@ public class ReportController: ControllerBase
 
       foreach(var breakdown in request.RequestBudget.Breakdown){
         if(breakdown.ExpenseType == "air-ticket"){
-          requestReportBudget.AirTicket += int.Parse(breakdown.Total);
+          requestReportBudget.AirTicket += float.Parse(breakdown.Total);
         }else if(breakdown.ExpenseType == "hotel"){
-          requestReportBudget.Hotel += int.Parse(breakdown.Total);
+          requestReportBudget.Hotel += float.Parse(breakdown.Total);
         }else if(breakdown.ExpenseType == "transport"){
-          requestReportBudget.Transport += int.Parse(breakdown.Total);
+          requestReportBudget.Transport += float.Parse(breakdown.Total);
         }else if(breakdown.ExpenseType == "incidental"){
-          requestReportBudget.Incidental += int.Parse(breakdown.Total);
+          requestReportBudget.Incidental += float.Parse(breakdown.Total);
         }
         else if(breakdown.ExpenseType == "miscellaneuous"){
-          requestReportBudget.Miscellaneuous += int.Parse(breakdown.Total);
+          requestReportBudget.Miscellaneuous += float.Parse(breakdown.Total);
         }
       }
 
 
       foreach(var breakdown in request.ExpenseReport.Expenses){
         if(breakdown.ExpenseType == "air-ticket"){
-          requestReportActual.AirTicket += int.Parse(breakdown.Amount);
+          requestReportActual.AirTicket += float.Parse(breakdown.Amount);
         }else if(breakdown.ExpenseType == "hotel"){
-          requestReportActual.Hotel += int.Parse(breakdown.Amount);
+          requestReportActual.Hotel += float.Parse(breakdown.Amount);
         }else if(breakdown.ExpenseType == "transport"){
-          requestReportActual.Transport += int.Parse(breakdown.Amount);
+          requestReportActual.Transport += float.Parse(breakdown.Amount);
         }else if(breakdown.ExpenseType == "incidental"){
-          requestReportActual.Incidental += int.Parse(breakdown.Amount);
+          requestReportActual.Incidental += float.Parse(breakdown.Amount);
         }
         else if(breakdown.ExpenseType == "miscellaneuous"){
-          requestReportActual.Miscellaneuous += int.Parse(breakdown.Amount);
+          requestReportActual.Miscellaneuous += float.Parse(breakdown.Amount);
         }
       }
       

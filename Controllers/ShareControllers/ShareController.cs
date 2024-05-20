@@ -55,6 +55,7 @@ public async Task<IActionResult> Share(IFormCollection data){
     string senderEmail =  _configuration.GetValue<string>("Mail:Email");
     string password    =  _configuration.GetValue<string>("Mail:Password");
     string subject     =  $"{sharer.EmpName} has shared information about a travel request with you";
+    var currentHandler = request.CurrentHandler != null ? request.CurrentHandler.EmpName : "Not Available";
      
      var message = new MimeMessage();
      message.From.Add(new MailboxAddress("", senderEmail));
@@ -198,7 +199,7 @@ public async Task<IActionResult> Share(IFormCollection data){
                 </div>
                <div class='row'>
                     <span class='label'>Current Handler:</span>
-                    <span>{ request.CurrentHandler.EmpName }</span>
+                    <span>{ currentHandler }</span>
                 </div>
                 <!-- Add more rows as needed -->
             </div>

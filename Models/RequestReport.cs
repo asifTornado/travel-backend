@@ -15,10 +15,10 @@ namespace backEnd.Models;
 
 
 public class RequestReport {
-    public int AirTicket {get; set;} = 0;
-    public int Hotel {get; set;} = 0;
-    public int Transport {get; set;} = 0;
-    public int Incidental {get; set;} = 0;
-    public int Miscellaneuous {get; set;} = 0;
-    public int Total {get; set;} = 0;
+    public float AirTicket {get; set;} = 0;
+    public float Hotel {get; set;} = 0;
+    public float Transport {get; set;} = 0;
+    public float Incidental {get; set;} = 0;
+    public float Miscellaneuous {get; set;} = 0;
+    public float Total {get; set;} = 0;
 }

@@ -400,6 +400,7 @@ return new JsonResult(filteredResults);
     public async Task<List<Budget>> GetAllInitiatedTrips()
     {   
         var result = await _travelContext.Budgets.AsNoTracking()
+        .Include(x =>x.Travelers)
         .Where(b => b.Initiated == "Yes")
         
         .ToListAsync();

@@ -141,6 +141,7 @@ public class RequestController : ControllerBase
         budget.ArrivalDate = request.EndDate;
         budget.DepartureDate = request.StartDate;
         budget.Destination = request.Destination;
+        budget.NumberOfDays = request.NumberOfNights;
         budget.Initiated = "Yes";
         budget.Travelers = new List<User>();
         budget.Brand = brand;

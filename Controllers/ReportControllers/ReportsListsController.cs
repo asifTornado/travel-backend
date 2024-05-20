@@ -15,6 +15,7 @@ using backEnd.Services;
 using backEnd.Helpers.Mails;
 using Org.BouncyCastle.Security;
 using backEnd.Models.DTOs;
+using Microsoft.EntityFrameworkCore.Storage;
 
 
 namespace backEnd.Controllers;
@@ -52,10 +53,15 @@ public class ReportsListController : ControllerBase
 
     //Iterate and get the total of all the expenses
     foreach(var result in results){
-
+        float budget = 0;
+        if(result.TotalTripBudget == null || result.TotalTripBudget == "NaN"){
+            budget = 0;
+        }else{
+            budget = float.Parse(result.TotalTripBudget);
+        }
         //Getting the report budget
         var report  = new TripReportDTO();
-        report.Budget = int.Parse(result.TotalTripBudget);
+        report.Budget = budget;
         report.Subject = result.Subject;
         report.Arrival_date = result.ArrivalDate;
         report.Departure_date = result.DepartureDate;
@@ -68,12 +74,11 @@ public class ReportsListController : ControllerBase
              report.NumberOfTravelers += 1;
 
             foreach(var expense in request.ExpenseReport.Expenses){
-                report.Actual_cost += int.Parse(expense.Amount);
+                report.Actual_cost += float.Parse(expense.Amount);
             }
         }
 
         reports.Add(report);
-
     }
 
     //get the budget as a number

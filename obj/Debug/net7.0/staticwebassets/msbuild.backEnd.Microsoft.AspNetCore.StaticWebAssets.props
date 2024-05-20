@@ -1120,6 +1120,54 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\0_UdbPL3zR59LFVEjN_ff083293.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__3e92980f.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__3e92980f.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__3e92980f.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__8ac4d5fa.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__8ac4d5fa.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__8ac4d5fa.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__d8c4f989.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__d8c4f989.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\APznzaYZKJNMZ9Slhpks5aendwFWSzSUJCDzvHgs6jqlVOQZbwIPlY3C9JN9TA-pI6LEAN6N5s0KuEvrLYff2-C_6zK4uer-etGZ0uJIYuRtX_pAvXi-LRumYWGfKLxKPVctGuuAKWyfJQclZ4za9JxjSokU0kHmrz92kuBAOZ5y68wg__d8c4f989.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\asd_18b1e70a.pdf))">
       <SourceType>Package</SourceType>
       <SourceId>backEnd</SourceId>
@@ -1488,6 +1536,102 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\channels4_profile_9a011d52.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_Courtyard San Francisco Unior Square_63c0ebb3.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Hotel Booking_Courtyard San Francisco Unior Square_63c0ebb3.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_Courtyard San Francisco Unior Square_63c0ebb3.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_Residence Inn New York_c35473cc.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Hotel Booking_Residence Inn New York_c35473cc.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_Residence Inn New York_c35473cc.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_SILA Urban Living Ho Chi Minh City, Vietnam_f042d1d2.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Hotel Booking_SILA Urban Living Ho Chi Minh City, Vietnam_f042d1d2.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Hotel Booking_SILA Urban Living Ho Chi Minh City, Vietnam_f042d1d2.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-1_17a62190.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/imran_and_yakup-1_17a62190.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-1_17a62190.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-1_41ff49e9.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/imran_and_yakup-1_41ff49e9.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-1_41ff49e9.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-2_f326e2fa.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/imran_and_yakup-2_f326e2fa.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\imran_and_yakup-2_f326e2fa.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_4c0cd0d7.pdf))">
       <SourceType>Package</SourceType>
       <SourceId>backEnd</SourceId>
@@ -1503,6 +1647,54 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_4c0cd0d7.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_Dynamic Travel_20240305_0001 (1)_d862d5d5.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Invoice_Dynamic Travel_20240305_0001 (1)_d862d5d5.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_Dynamic Travel_20240305_0001 (1)_d862d5d5.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_Dynamic Travel_20240305_0001_c8ce9a43.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Invoice_Dynamic Travel_20240305_0001_c8ce9a43.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Invoice_Dynamic Travel_20240305_0001_c8ce9a43.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Kazi-shafiqul-islam_690a534e.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Kazi-shafiqul-islam_690a534e.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Kazi-shafiqul-islam_690a534e.pdf))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Letter of Intent_9d02a3ef.doc))">
       <SourceType>Package</SourceType>
@@ -1711,6 +1903,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\subtitle_be64fd6f.txt))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Yakup-15_9b9c7de1.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>backEnd</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/backEnd</BasePath>
+      <RelativePath>uploads/Yakup-15_9b9c7de1.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\Yakup-15_9b9c7de1.pdf))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

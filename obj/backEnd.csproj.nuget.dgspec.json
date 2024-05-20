@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\travel-original\\BackEnd\\backEnd.csproj": {}
+    "d:\\travel-original\\BackEnd\\backEnd.csproj": {}
   },
   "projects": {
-    "D:\\travel-original\\BackEnd\\backEnd.csproj": {
+    "d:\\travel-original\\BackEnd\\backEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\travel-original\\BackEnd\\backEnd.csproj",
+        "projectUniqueName": "d:\\travel-original\\BackEnd\\backEnd.csproj",
         "projectName": "backEnd",
-        "projectPath": "D:\\travel-original\\BackEnd\\backEnd.csproj",
+        "projectPath": "d:\\travel-original\\BackEnd\\backEnd.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "D:\\travel-original\\BackEnd\\obj\\",
+        "outputPath": "d:\\travel-original\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config"
