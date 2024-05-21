@@ -38,7 +38,7 @@ public class CSVController : ControllerBase
 
     }
 
- [HttpPost]
+ [HttpGet]
  [Route("/getCSV")]
  public async Task<IActionResult> GetCSV(){
     var budgets = await _reportService.GetReportsForDownload();
@@ -59,7 +59,7 @@ public class CSVController : ControllerBase
         }
     }
 
-   return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "users.csv");
+   return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "report.csv");
 
  }
 
@@ -71,7 +71,7 @@ public class CSVController : ControllerBase
        c.Transport = 0;
        c.Daily = 0;
        c.Others = 0;
-       c.Emergency = float.Parse(request.RequestBudget.EmergencyFund);
+       c.Emergency = 0 ;
 
        foreach (var item in request.RequestBudget.Breakdown)
        {
@@ -107,12 +107,12 @@ public class CSVController : ControllerBase
        c.Location = request.Destination;
        c.Brand = budget.Brand;
        c.Days = request.NumberOfNights;
-       c.Air =   float.Parse(budget.AirTicketBudget);
-       c.Hotel = float.Parse(budget.HotelBudget);
-       c.Total = float.Parse(budget.TotalBookingCost);
-       c.Transport = float.Parse(budget.TransportExpense);
-       c.Others = float.Parse(budget.IncidentalExpense);
-       c.TotalTrip = float.Parse(budget.TotalTripBudget);
+       c.Air =   float.Parse(budget.AirTicketBudget ?? "0");
+       c.Hotel = float.Parse(budget.HotelBudget ?? "0");
+       c.Total = float.Parse(budget.TotalBookingCost ?? "0");
+       c.Transport = float.Parse(budget.TransportExpense ?? "0");
+       c.Others = float.Parse(budget.IncidentalExpense ?? "0");
+       c.TotalTrip = float.Parse(budget.TotalTripBudget ?? "0");
 
        return c;
 
@@ -121,7 +121,7 @@ public class CSVController : ControllerBase
 
 private CSVActual GetActual(Budget budget, Request request){
      var c = new CSVActual();
-     c.Advance = request.MoneyReceipt.AmountDisbursed;
+   //   c.Advance = request.MoneyReceipt.AmountDisbursed;
      c.Air = 0;
      c.Hotel = 0;
      c.Transport = 0;

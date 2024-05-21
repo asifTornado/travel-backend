@@ -78,11 +78,13 @@ namespace backEnd.Services
 
         public async Task<List<Budget>> GetReportsForDownload(){
             var result = await _travelContext.Budgets.AsNoTracking().AsSplitQuery()
-            .Include(x => x.Requests)
+            .Include(x => x.Requests.Where(x => x.ExpenseReportGiven == true))
             .ThenInclude(x => x.ExpenseReport)
             .ThenInclude(x => x.Expenses)
             .Include(x => x.Requests)
             .ThenInclude(x => x.Requester)
+            .Include(x => x.Requests)
+            .ThenInclude(x => x.MoneyReceipt)
             .ToListAsync();
 
             return result;

@@ -55,32 +55,32 @@ public class Budget
 
 
     [JsonPropertyName("numberOfDays")]
-    public string? NumberOfDays {get; set;} 
+    public string? NumberOfDays {get; set;} = "0";
 
     [JsonPropertyName("numberOfTravelers")]
-    public string? NumberOfTravelers {get; set;}
+    public string? NumberOfTravelers {get; set;} = "0";
 
 
 
         
     [JsonPropertyName("airTicketBudget")]
-    public string? AirTicketBudget {get; set;} 
+    public string? AirTicketBudget {get; set;} = "0";
 
 
     [JsonPropertyName("hotelBudget")]
-    public string? HotelBudget {get; set;}
+    public string? HotelBudget {get; set;} = "0";
 
     [JsonPropertyName("totalBookingCost")]
-    public string? TotalBookingCost {get; set;}
+    public string? TotalBookingCost {get; set;} = "0";
 
     [JsonPropertyName("transportExpense")]
-    public string? TransportExpense {get; set;}
+    public string? TransportExpense {get; set;} = "0";
 
     [JsonPropertyName("incidentalExpense")]
-    public string? IncidentalExpense {get; set;}
+    public string? IncidentalExpense {get; set;} = "0";
 
     [JsonPropertyName("totalTripBudget")]
-    public string? TotalTripBudget {get; set;}
+    public string? TotalTripBudget {get; set;} = "0";
 
 
 
